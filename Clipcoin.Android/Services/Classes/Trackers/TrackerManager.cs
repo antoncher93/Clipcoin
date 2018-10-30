@@ -10,71 +10,87 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Clipcoin.Phone.Logging;
+using Clipcoin.Phone.Runnable;
 using Clipcoin.Phone.Services.Interfaces;
+using Clipcoin.Phone.Settings;
+using Java.Lang;
 
 namespace Clipcoin.Phone.Services.Classes.Trackers
 {
-    public class TrackerManager : ICollection<ITracker>
+    public class TrackerManager
     {
-        private ICollection<ITracker> trakers = new List<ITracker>();
+        
+        public ICollection<ITracker> Trakers { get; private set; } = new List<ITracker>();
+        public IDictionary<string, int> CheckList { get; private set; } = new Dictionary<string, int>();
 
-        public event EventHandler OnNewTracker;
-        public event EventHandler OnTrackerRemove;
+        public event EventHandler<TrackerEventArgs> OnNewTracker;
+        public event EventHandler<TrackerEventArgs> OnTrackerRemove;
 
-        public void Update(IAccessPoint item)
+        private Guid Guid = Guid.NewGuid();
+
+        public void Remove(string bssid)
         {
-            trakers.FirstOrDefault(t => t.Bssid.Equals(item.Bssid, StringComparison.CurrentCultureIgnoreCase))?.Update();
+            Trakers.Remove(Trakers.FirstOrDefault(
+                t => t.AccessPoint.Bssid.Equals(bssid, StringComparison.CurrentCultureIgnoreCase)));
         }
 
-        public void Add(ITracker item)
+        public void CheckAccessPoint(IAccessPoint item)
         {
-            if(!trakers.Any(t => t.Uid.Equals(item.Uid, StringComparison.CurrentCultureIgnoreCase)))
+            if(!CheckList.ContainsKey(item.Bssid))
             {
-                trakers.Add(item);
+                CheckList.Add(item.Bssid, 0);
+                var task = new RequestKeyTask(item, UserSettings.Token);
+                task.OnComplete += (s, e) =>
+                {
+                    System.Diagnostics.Debug.WriteLine(task.AccessPoint.Ssid + $" ({task.AccessPoint.Bssid}) " + " Responce: " + e.Code + " " + e.Status.ToString());
+
+                    if (CheckList.ContainsKey(e.AccessPoint.Bssid))
+                    {
+                        CheckList[e.AccessPoint.Bssid] = e.Code;
+                    }
+
+                    switch (e.Status)
+                    {
+                        case Enums.KeyResponceStatus.Ok:
+                            Logger.Info("Found " + task.AccessPoint.Ssid);
+                            ITracker tracker = new TrackerBuilder()
+                            .Uid(e.Uid)
+                            .AccessPoint(e.AccessPoint)
+                            .Build();
+
+                            Add(tracker);
+                            break;
+
+                        case Enums.KeyResponceStatus.Fail:
+                            break;
+
+                        case Enums.KeyResponceStatus.NotFound:
+                            break;
+                    }
+                };
+                task.Run();
+
+            }
+          
+        }
+
+        private void Add(ITracker item)
+        {
+
+            if(!Trakers.Any(t => t.Uid.Equals(item.Uid, StringComparison.CurrentCultureIgnoreCase)))
+            {
+                Trakers.Add(item);
 
                 // удалить трекер из списка, если он устарел
                 item.OnObsolete += (s, e) =>
                 {
-                    trakers.Remove(item);
+                    Trakers.Remove(item);
+                    OnTrackerRemove?.Invoke(this, null);
                 };
 
-                OnNewTracker?.Invoke(this, new EventArgs());
+                OnNewTracker?.Invoke(this, new TrackerEventArgs { Tracker = item});
             }
         }
-
-        
-
-
-#region Collection
-        
-        public int Count => trakers.Count;
-        public bool IsReadOnly => trakers.IsReadOnly;
-        public void Clear()
-        {
-            trakers.Clear();
-        }
-        public bool Contains(ITracker item)
-        {
-            return trakers.Contains(item);
-        }
-        public void CopyTo(ITracker[] array, int arrayIndex)
-        {
-            trakers.CopyTo(array, arrayIndex);
-        }
-        public IEnumerator<ITracker> GetEnumerator()
-        {
-            return trakers.GetEnumerator();
-        }
-        public bool Remove(ITracker item)
-        {
-            OnTrackerRemove?.Invoke(this, new EventArgs());
-            return trakers.Remove(item);
-        }
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return trakers.GetEnumerator();
-        }
-        
-#endregion
     }
 }

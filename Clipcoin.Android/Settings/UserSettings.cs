@@ -5,16 +5,15 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
-using Android.Net.Wifi;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-namespace Clipcoin.Phone.Services.Classes
+namespace Clipcoin.Phone.Settings
 {
-    public class WifiScanEventArgs : EventArgs
+    public static class UserSettings
     {
-        public ICollection<ScanResult> ScanResults { get; set; }
+        public static string Token { get; set; }
     }
 }

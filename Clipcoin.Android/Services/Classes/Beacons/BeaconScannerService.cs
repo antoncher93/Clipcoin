@@ -25,24 +25,11 @@ namespace Clipcoin.Phone.Services.Classes.Beacons
     {
         Context IBeaconConsumer.ApplicationContext => this;
         BeaconManager beaconManager;
-        static bool bManagerIsStarted = false;
         private static List<Region> regions;
         public static event EventHandler<BeaconScannerEventArgs> OnStaticRanginBeacons;
+        public static event EventHandler<ServiceEventArgs> OnStateChanged;
 
-
-
-
-        public List<Region> Regions
-        {
-            get => regions;
-            private set => regions = value;
-        }
         private static Region region = new Region("Common", null, null, null);
-        private Region Region
-        {
-            get => region;
-            set => region = value;
-        }
 
         private static int fsp = 1000;
         private static int fbsp = 0;
@@ -103,6 +90,7 @@ namespace Clipcoin.Phone.Services.Classes.Beacons
         {
             beaconManager.Bind(this);
             Logger.Info("Start Beacon Scanner");
+            OnStateChanged?.Invoke(this, new ServiceEventArgs { State = Enums.ServiceState.Started });
             return base.OnStartCommand(intent, flags, startId);
         }
 
@@ -132,7 +120,7 @@ namespace Clipcoin.Phone.Services.Classes.Beacons
             beaconManager.Unbind(this);
             bleManager?.Adapter.Disable();
             bleManager.Adapter.Disable();
-
+            OnStateChanged?.Invoke(this, new ServiceEventArgs { State = Enums.ServiceState.Destroyed });
             Toast.MakeText(this.ApplicationContext, "Beacon Service done.", ToastLength.Short).Show();
         }
         void IBeaconConsumer.UnbindService(IServiceConnection serviceConnection)

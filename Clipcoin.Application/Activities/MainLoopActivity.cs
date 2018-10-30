@@ -11,8 +11,12 @@ using Android.Text.Method;
 using Android.Views;
 using Android.Widget;
 using Clipcoin.Application.Settings;
+using Clipcoin.Phone.Help;
 using Clipcoin.Phone.Logging;
 using Clipcoin.Phone.Services.Classes;
+using Clipcoin.Phone.Services.Classes.Beacons;
+using Clipcoin.Phone.Services.Classes.Trackers;
+using Clipcoin.Phone.Services.Enums;
 
 namespace Clipcoin.Application.Activities
 {
@@ -21,7 +25,26 @@ namespace Clipcoin.Application.Activities
     {
         TextView tvLog;
         UserSettings settings;
-        AccessPointService service;
+        TrackerScannerService service;
+        Handler handler;
+
+        TextView tvBeacScanStatus;
+
+        private void Initial()
+        {
+            BeaconScannerService.OnStateChanged += (s, e) =>
+            {
+                switch (e.State)
+                {
+                    case ServiceState.Started:
+                        RunOnUiThread(() => tvBeacScanStatus.Text = "Scanning");
+                        break;
+                    case ServiceState.Destroyed:
+                        RunOnUiThread(() => tvBeacScanStatus.Text = "Disable");
+                        break;
+                }
+            };
+        }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -30,21 +53,32 @@ namespace Clipcoin.Application.Activities
 
             // Create your application here
 
+            Initial();
+
+            tvBeacScanStatus = FindViewById<TextView>(Resource.Id.textView_BeaconScannerStatus);
+
             settings = UserSettings.GetInstanceForApp(this);
             tvLog = FindViewById<TextView>(Resource.Id.textView_Log);
             tvLog.MovementMethod = new ScrollingMovementMethod();
 
             Logger.OnEvent += OnLoggerEvent;
 
-            service = new AccessPointService();
-            service.Token = settings.Token;
+            service = new TrackerScannerService
+            {
+                Token = settings.Token
+            };
 
 
-            StartService(new Intent(this, service.Class));
+            //StartService(new Intent(this, service.Class));
         }
 
         protected override void OnResume()
         {
+            if(!Tools.IsServiceRunning(this, service.Class))
+            {
+                StartService(new Intent(this, service.Class));
+            }
+
             base.OnResume();
         }
 
@@ -58,7 +92,10 @@ namespace Clipcoin.Application.Activities
 
         protected override void OnDestroy()
         {
-            StopService(new Intent(this, service.Class));
+            if (Tools.IsServiceRunning(this, service.Class))
+            {
+                StopService(new Intent(this, service.Class));
+            }
 
             base.OnDestroy();
         }

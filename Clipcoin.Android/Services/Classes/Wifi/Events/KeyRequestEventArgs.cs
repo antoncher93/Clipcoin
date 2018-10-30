@@ -19,5 +19,6 @@ namespace Clipcoin.Phone.Services.Classes.Wifi.Events
         public KeyResponceStatus Status { get; set; }
         public int Code { get; set; }
         public IAccessPoint AccessPoint { get; set;}
+        public string Uid { get; set; }
     }
 }

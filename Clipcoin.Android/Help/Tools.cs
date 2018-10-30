@@ -9,6 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Newtonsoft.Json;
 
 namespace Clipcoin.Phone.Help
 {
@@ -27,6 +28,30 @@ namespace Clipcoin.Phone.Help
                 }
             }
             return false;
+        }
+
+        public static string FormateDateTimeToTime(DateTime time)
+        {
+            string result = "";
+            string str = JsonConvert.SerializeObject(time);
+            bool write = false;
+            for (int i = 0; i < str.Length; i++)
+            {
+                if (str[i] == '+')
+                {
+                    break;
+                }
+
+                if (write)
+                    result += str[i];
+
+                if (str[i] == 'T')
+                {
+                    write = true;
+                }
+            }
+
+            return result;
         }
     }
 }

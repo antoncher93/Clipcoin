@@ -11,17 +11,18 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Clipcoin.Phone.Logging;
+using Clipcoin.Phone.Services.Classes.Trackers;
 using Clipcoin.Phone.Services.Classes.Wifi.Events;
 using Clipcoin.Phone.Services.Interfaces;
+using Clipcoin.Phone.Settings;
 
 namespace Clipcoin.Phone.Services.Classes
 {
     public class APointManager// : ICollection<IAccessPoint>
     {
         public ICollection<IAccessPoint> AccessPoints { get; private set; } = new List<IAccessPoint>();
-        public event EventHandler<NetworkEventArgs> NewAccessPoint;
-        public event EventHandler<NetworkEventArgs> OnNetworDisappear;
-        
+
+        public TrackerManager TrackerManager { get; private set; } = new TrackerManager();
 
         public void Add(IAccessPoint item)
         {
@@ -30,21 +31,16 @@ namespace Clipcoin.Phone.Services.Classes
             if(ap == null)
             {
                 AccessPoints.Add(item);
-
-                //Logger.Info("New Access Point: " + item.Ssid + " " + item.Bssid);
-
-                item.Update();
                 item.OnDisAppear += (s, e) =>
                 {
-                    AccessPoints.Remove((APointInfo)s);
+                    AccessPoints.Remove((IAccessPoint)s);
+                    TrackerManager.Remove(item.Bssid);
                 };
 
-                NewAccessPoint?.Invoke(this, new NetworkEventArgs { AccessPoint = item });
+                TrackerManager.CheckAccessPoint(item);
             }
-            else
-            {
-                ap.Update();
-            }
+
+            item.Update();
         }
 
      

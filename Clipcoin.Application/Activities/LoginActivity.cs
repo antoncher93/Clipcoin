@@ -110,7 +110,7 @@ namespace Clipcoin.Application.Activities
             etLogin.Text = settings.Login;
             etPassword.Text = settings.Password;
 
-            Login();
+            //Login();
         }
 
         public override void OnBackPressed()

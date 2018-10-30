@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Clipcoin.Phone.Help;
 using Clipcoin.Phone.Logging;
+using Clipcoin.Phone.Settings;
 using Java.IO;
 using SCAppLibrary.Android.Services.Telemetry;
 using Square.OkHttp;
@@ -51,16 +52,7 @@ namespace Clipcoin.Phone.Services.Signals
     {
         private const string Url = "http://192.168.0.9:5000";
         TelemetryDatabaseWriter dbWriter;
-        static string _token;
-        public string Token
-        {
-            get => _token;
-            set => _token = value;
-        }
-
         ICollection<int> ids;
-
-
         Timer timer;
         string userId;
 
@@ -73,7 +65,7 @@ namespace Clipcoin.Phone.Services.Signals
         {
             base.OnCreate();
 
-            userId = JwtHelper.GetAspNetUserId(_token);
+            userId = JwtHelper.GetAspNetUserId(UserSettings.Token);
 
             dbWriter = new TelemetryDatabaseWriter(this);
             timer = new Timer
@@ -103,10 +95,7 @@ namespace Clipcoin.Phone.Services.Signals
                     Logger.Info("Send Telemetry");
                     client.NewCall(request).Enqueue(c);
                 }
-               
             };
-
-            
         }
 
         [return: GeneratedEnum]

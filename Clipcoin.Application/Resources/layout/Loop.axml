@@ -5,8 +5,56 @@
     android:layout_height="match_parent"
     android:minWidth="25px"
     android:minHeight="25px">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout1">
+        <TextView
+            android:text="Tracker Scanner: "
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/textView_ts" />
+        <TextView
+            android:text="value"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/textView_TrackerScannerValue" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout2">
+        <TextView
+            android:text="Trackers Count: "
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/textView1" />
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/textView_TrackersCount" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout3">
+        <TextView
+            android:text="Beacon Scanner: "
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/textView2" />
+        <TextView
+            android:text="Disable"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/textView_BeaconScannerStatus" />
+    </LinearLayout>
     <TextView
-        android:text="Text"
+        android:text="Log"
         android:layout_width="match_parent"
         android:maxLines="999"
         android:scrollbars="vertical"

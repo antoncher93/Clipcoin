@@ -38,7 +38,7 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
 
         
 
-        private Timer timer1 = new Timer { Interval = 5000, Enabled = true };
+        private Timer timer1 = new Timer { Interval = 3600000, Enabled = true };
 
         public Tracker()
         {
