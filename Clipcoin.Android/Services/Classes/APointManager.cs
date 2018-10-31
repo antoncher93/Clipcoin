@@ -20,6 +20,7 @@ namespace Clipcoin.Phone.Services.Classes
 {
     public class APointManager// : ICollection<IAccessPoint>
     {
+        public const int MAX_AP_INVISIBLE_TIME_SEC = 5;
         public ICollection<IAccessPoint> AccessPoints { get; private set; } = new List<IAccessPoint>();
 
         public TrackerManager TrackerManager { get; private set; } = new TrackerManager();
@@ -31,16 +32,19 @@ namespace Clipcoin.Phone.Services.Classes
             if(ap == null)
             {
                 AccessPoints.Add(item);
-                item.OnDisAppear += (s, e) =>
-                {
-                    AccessPoints.Remove((IAccessPoint)s);
-                    TrackerManager.Remove(item.Bssid);
-                };
 
                 TrackerManager.CheckAccessPoint(item);
             }
+            else
+            {
+                ap.LastTime = item.LastTime;
+            }
+        }
 
-            item.Update();
+        public void Update()
+        {
+            AccessPoints = AccessPoints.Where(
+                ap => (ap.LastTime != null) && ((DateTime.Now - ap.LastTime) < TimeSpan.FromSeconds(MAX_AP_INVISIBLE_TIME_SEC))).ToList();
         }
 
      

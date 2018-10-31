@@ -11,6 +11,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Clipcoin.Phone.Database;
 using Clipcoin.Phone.Help;
 using Clipcoin.Phone.Logging;
 using Clipcoin.Phone.Runnable;
@@ -18,11 +19,10 @@ using Clipcoin.Phone.Services.Classes.Beacons;
 using Clipcoin.Phone.Services.Classes.Trackers;
 using Clipcoin.Phone.Services.Classes.Wifi;
 using Clipcoin.Phone.Services.Interfaces;
-using Clipcoin.Phone.Services.Signals;
+using Clipcoin.Phone.Services.Classes.Signals;
 using Clipcoin.Phone.Settings;
 using Java.Lang;
 using Newtonsoft.Json;
-using SCAppLibrary.Android.Services.Telemetry;
 using Square.OkHttp;
 
 namespace Clipcoin.Phone.Services.Classes.Trackers
@@ -158,12 +158,13 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
             {
                 Thread.Sleep(50);
 
-                Task.Factory.StartNew(()
-                    => ApManager.Add(
-                        new APointInfo { Bssid = res.Bssid, Ssid = res.Ssid }));
+                ApManager.Add(
+                        new APointInfo { Bssid = res.Bssid, Ssid = res.Ssid, });
 
-                
+
             }
+            ApManager.Update();
+
 
             _scanComplete = true;
         }

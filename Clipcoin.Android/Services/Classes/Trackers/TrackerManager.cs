@@ -21,19 +21,13 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
     public class TrackerManager
     {
         
-        public ICollection<ITracker> Trakers { get; private set; } = new List<ITracker>();
+        public IList<ITracker> Trakers { get; private set; } = new List<ITracker>();
         public IDictionary<string, int> CheckList { get; private set; } = new Dictionary<string, int>();
 
         public event EventHandler<TrackerEventArgs> OnNewTracker;
         public event EventHandler<TrackerEventArgs> OnTrackerRemove;
 
         private Guid Guid = Guid.NewGuid();
-
-        public void Remove(string bssid)
-        {
-            Trakers.Remove(Trakers.FirstOrDefault(
-                t => t.AccessPoint.Bssid.Equals(bssid, StringComparison.CurrentCultureIgnoreCase)));
-        }
 
         public void CheckAccessPoint(IAccessPoint item)
         {
@@ -43,7 +37,11 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
                 var task = new RequestKeyTask(item, UserSettings.Token);
                 task.OnComplete += (s, e) =>
                 {
-                    System.Diagnostics.Debug.WriteLine(task.AccessPoint.Ssid + $" ({task.AccessPoint.Bssid}) " + " Responce: " + e.Code + " " + e.Status.ToString());
+                    System.Diagnostics.Debug.WriteLine(
+                        task.AccessPoint.Ssid + 
+                        $" ({task.AccessPoint.Bssid}) " + 
+                        " Responce: " + 
+                        e.Code + " " + e.Status.ToString());
 
                     if (CheckList.ContainsKey(e.AccessPoint.Bssid))
                     {

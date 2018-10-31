@@ -56,7 +56,7 @@ namespace Clipcoin.Phone.Runnable
             if(code == 200)
             {
                 var ap_data = new { password = "", uid = "" };
-                Newtonsoft.Json.JsonConvert.DeserializeAnonymousType(body, ap_data);
+                ap_data = Newtonsoft.Json.JsonConvert.DeserializeAnonymousType(body, ap_data);
                 AccessPoint.Password = ap_data.password;
                 OnComplete?.Invoke(this, new KeyRequestEventArgs { Status = KeyResponceStatus.Ok, Code = code, AccessPoint = this.AccessPoint, Uid = ap_data.uid});
             }

@@ -31,7 +31,7 @@ namespace Clipcoin.Phone.Services.Classes.Beacons
 
         private static Region region = new Region("Common", null, null, null);
 
-        private static int fsp = 1000;
+        private static int fsp = 300;
         private static int fbsp = 0;
         private static int bsp = 5000;
         private static int bbsp = 0;

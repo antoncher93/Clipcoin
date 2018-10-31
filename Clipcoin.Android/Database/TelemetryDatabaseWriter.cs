@@ -12,6 +12,8 @@ using Android.Views;
 using Android.Widget;
 using Clipcoin.Phone.Database.Sqlite;
 using Clipcoin.Phone.Help;
+using Trigger.Beacons;
+using Trigger.Classes.Beacons;
 
 namespace Clipcoin.Phone.Database
 {
@@ -136,7 +138,18 @@ namespace Clipcoin.Phone.Database
                 string uid = cursor.GetString(uidColIndex);
                 DateTime time = Newtonsoft.Json.JsonConvert.DeserializeObject<DateTime>($"\"{cursor.GetString(dateColIndex)}\"");
 
-                telemetry.NewBeacon(mac, rssi, uid, time);
+                telemetry.Append(
+                    new BeaconData
+                    {
+                        Address = mac
+                    }.Add(new BeaconItem[]
+                    {
+                         new BeaconItem
+                        {
+                            Rssi = rssi,
+                            Time = time
+                        }
+                    }));
 
                 ids.Add(id);
 
@@ -148,7 +161,19 @@ namespace Clipcoin.Phone.Database
                     uid = cursor.GetString(uidColIndex);
                     time = Newtonsoft.Json.JsonConvert.DeserializeObject<DateTime>($"\"{cursor.GetString(dateColIndex)}\"");
 
-                    telemetry.NewBeacon(mac, rssi, uid, time);
+                    telemetry.Append(
+                    new BeaconData
+                    {
+                        Address = mac
+                    }.Add(new BeaconItem[]
+                    {
+                         new BeaconItem
+                        {
+                            Rssi = rssi,
+                            Time = time
+                        }
+                    }));
+
 
                     ids.Add(id);
                 }

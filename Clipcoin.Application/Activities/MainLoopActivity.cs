@@ -20,16 +20,31 @@ using Clipcoin.Phone.Services.Enums;
 
 namespace Clipcoin.Application.Activities
 {
-    [Activity(Label = "MainLoopActivity")]
+    [Activity(Label = "MainLoopActivity", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class MainLoopActivity : Activity
     {
         TextView tvLog;
         UserSettings settings;
         TrackerScannerService service;
-        Handler handler;
 
         TextView tvBeacScanStatus;
+        TextView tvSignalCount;
 
+        int count;
+
+        int Signal_count
+        {
+            get => count;
+            set
+            {
+                RunOnUiThread(() =>
+                {
+                    tvSignalCount.Text = value.ToString();
+                    count = value;
+                });
+            }
+
+        }
         private void Initial()
         {
             BeaconScannerService.OnStateChanged += (s, e) =>
@@ -44,6 +59,16 @@ namespace Clipcoin.Application.Activities
                         break;
                 }
             };
+
+
+            BeaconScannerService.OnStaticRanginBeacons += (s, e) =>
+            {
+                if(e.Beacons.Count > 0)
+                {
+                    Signal_count = Signal_count + e.Beacons.Count;
+                }
+                
+            };
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -53,12 +78,16 @@ namespace Clipcoin.Application.Activities
 
             // Create your application here
 
+            count = 0;
+
             Initial();
 
             tvBeacScanStatus = FindViewById<TextView>(Resource.Id.textView_BeaconScannerStatus);
 
             settings = UserSettings.GetInstanceForApp(this);
             tvLog = FindViewById<TextView>(Resource.Id.textView_Log);
+            tvSignalCount = FindViewById<TextView>(Resource.Id.textView_SignalsCount);
+            Signal_count = 0;
             tvLog.MovementMethod = new ScrollingMovementMethod();
 
             Logger.OnEvent += OnLoggerEvent;

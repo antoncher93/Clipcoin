@@ -17,8 +17,6 @@ namespace Clipcoin.Phone.Services.Interfaces
         string Ssid { get; }
         string Bssid { get; }
         string Password { get; set; }
-        void Update();
-        bool Visible { get; }
-        event EventHandler OnDisAppear;
+        DateTime LastTime { get; set; }
     }
 }

@@ -96,11 +96,11 @@ namespace Clipcoin.Application
 			// aapt resource value: 0x7f05000f
 			public const int textView_Log = 2131034127;
 			
+			// aapt resource value: 0x7f05000b
+			public const int textView_SignalsCount = 2131034123;
+			
 			// aapt resource value: 0x7f050008
 			public const int textView_TrackerScannerValue = 2131034120;
-			
-			// aapt resource value: 0x7f05000b
-			public const int textView_TrackersCount = 2131034123;
 			
 			// aapt resource value: 0x7f050000
 			public const int textView_login = 2131034112;

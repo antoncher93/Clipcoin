@@ -27,12 +27,7 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
             get => _apoint;
             set
             {
-                if(_apoint != null)
-                    _apoint.OnDisAppear -= StartObsolete;
-
                 _apoint = value;
-                _apoint.OnDisAppear += StartObsolete;
-
             }
         }
 

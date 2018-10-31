@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/linearLayout2">
         <TextView
-            android:text="Trackers Count: "
+            android:text="Signals Count: "
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:id="@+id/textView1" />
@@ -35,7 +35,7 @@
             android:text="0"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/textView_TrackersCount" />
+            android:id="@+id/textView_SignalsCount" />
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"

@@ -66,7 +66,10 @@
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
-    <Reference Include="Trigger, Version=1.0.0.1, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="Trigger, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Trigger\Trigger\bin\Release\netstandard2.0\Trigger.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BroadcastReceivers\Internet\InternetReceiver.cs" />
@@ -114,7 +117,7 @@
     <Compile Include="Services\Interfaces\IManageListener.cs" />
     <Compile Include="Services\Interfaces\IServiceListener.cs" />
     <Compile Include="Services\Interfaces\ITracker.cs" />
-    <Compile Include="Services\Signals\TelemetrySendService.cs" />
+    <Compile Include="Services\Classes\Signals\TelemetrySendService.cs" />
     <Compile Include="Settings\UserSettings.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -123,12 +126,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Resources\AboutResources.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SCAppLibrary\SCAppLibrary.csproj">
-      <Project>{867334B6-2E59-4B8F-B930-0331772B1389}</Project>
-      <Name>SCAppLibrary</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
