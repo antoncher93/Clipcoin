@@ -11,7 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Clipcoin.Phone.Services.Interfaces;
 
-namespace Clipcoin.Phone.Services.Classes.Trackers
+namespace Clipcoin.Phone.Services.Trackers
 {
     public class TrackerBuilder
     {

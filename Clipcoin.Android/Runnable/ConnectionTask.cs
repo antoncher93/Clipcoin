@@ -14,7 +14,6 @@ using Android.Widget;
 using Java.Lang;
 using Android.Net;
 using Clipcoin.Phone.Services.Interfaces;
-using Clipcoin.Phone.Services.Classes.Wifi.Events;
 using Clipcoin.Phone.BroadcastReceivers.Wifi;
 using Clipcoin.Phone.Logging;
 
@@ -24,7 +23,6 @@ namespace Clipcoin.Phone.Runnable
     {
         private WifiManager _manager;
         public IAccessPoint AccessPoint { get; private set; }
-        public event EventHandler<TaskEventArgs> OnComplete;
 
         public ConnectionTask(WifiManager manager, IAccessPoint point)
         {
@@ -91,12 +89,10 @@ namespace Clipcoin.Phone.Runnable
             {
                 if(_manager.ConnectionInfo.BSSID.Equals(AccessPoint.Bssid))
                 {
-                    OnComplete?.Invoke(this, new TaskEventArgs { Success = true });
                     Logger.Info("Connected to " + AccessPoint.Ssid);
                 }
                 else
                 {
-                    OnComplete?.Invoke(this, new TaskEventArgs { Success = false });
                 }
             }
         }

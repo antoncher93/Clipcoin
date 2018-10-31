@@ -11,10 +11,10 @@ using Android.Views;
 using Android.Widget;
 using Clipcoin.Phone.Services.Interfaces;
 
-namespace Clipcoin.Phone.Services.Classes.Wifi.Events
+namespace Clipcoin.Phone.Services.Trackers
 {
-    public class NetworkEventArgs : EventArgs
+    public class TrackerEventArgs : EventArgs
     {
-        public IAccessPoint AccessPoint { get; set; }
+        public ITracker Tracker { get; set; }
     }
 }

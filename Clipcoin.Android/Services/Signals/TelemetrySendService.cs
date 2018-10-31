@@ -17,11 +17,11 @@ using Java.IO;
 using Square.OkHttp;
 
 
-namespace Clipcoin.Phone.Services.Classes.Signals
+namespace Clipcoin.Phone.Services.Signals
 {
     public class Callback : Java.Lang.Object, ICallback
     {
-        public TelemetryDatabaseWriter Writer { get; set; }
+        public SignalsDBWriter Writer { get; set; }
         public ICollection<int> Ids { get; set; }
 
         public void OnFailure(Request request, IOException iOException)
@@ -51,7 +51,7 @@ namespace Clipcoin.Phone.Services.Classes.Signals
     public class TelemetrySendService : Service
     {
         private const string Url = "http://192.168.0.9:5000";
-        TelemetryDatabaseWriter dbWriter;
+        SignalsDBWriter dbWriter;
         ICollection<int> ids;
         Timer timer;
         string userId;
@@ -67,7 +67,7 @@ namespace Clipcoin.Phone.Services.Classes.Signals
 
             userId = JwtHelper.GetAspNetUserId(UserSettings.Token);
 
-            dbWriter = new TelemetryDatabaseWriter(this);
+            dbWriter = new SignalsDBWriter(this);
             timer = new Timer
             {
                 Interval = 30000,

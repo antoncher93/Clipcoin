@@ -17,9 +17,9 @@ using Clipcoin.Phone.Logging;
 using Clipcoin.Phone.Runnable;
 using Clipcoin.Phone.Services.Classes.Beacons;
 using Clipcoin.Phone.Services.Classes.Trackers;
-using Clipcoin.Phone.Services.Classes.Wifi;
 using Clipcoin.Phone.Services.Interfaces;
-using Clipcoin.Phone.Services.Classes.Signals;
+using Clipcoin.Phone.Services.Signals;
+using Clipcoin.Phone.Services.TrackerScanner;
 using Clipcoin.Phone.Settings;
 using Java.Lang;
 using Newtonsoft.Json;
@@ -28,13 +28,35 @@ using Square.OkHttp;
 namespace Clipcoin.Phone.Services.Classes.Trackers
 {
     [Service]
-    public class TrackerScannerService : Service
+    public class TrackerScannerService : Service, IObservable<TrackerScanInfo>
     {
+        private class Unsubscriber : IDisposable
+        {
+            private IObserver<TrackerScanInfo> _observer;
+            private IList<IObserver<TrackerScanInfo>> _observers;
+            public Unsubscriber(IObserver<TrackerScanInfo> observer, IList<IObserver<TrackerScanInfo>> observers)
+            {
+                _observer = observer;
+                _observers = observers;
+            }
+            public void Dispose()
+            {
+                if (_observer != null && _observers.Contains(_observer))
+                {
+                    _observers.Remove(_observer);
+                }
+            }
+        }
+
         private WifiManager _wifiManager;
         private Timer _timer;
         private static int _interval = 500;
         private static string token;
         private bool _scanComplete;
+
+        static private IList<IObserver<TrackerScanInfo>> _observers = new List<IObserver<TrackerScanInfo>>();
+
+        
 
         public string Token
         {
@@ -50,14 +72,9 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
         private TelemetrySendService sendService;
 
         public APointManager ApManager { get; private set; } // список активных сетей
-
-        public static event EventHandler OnBeaconScannerStarted;
-        public static event EventHandler OnTelemetrySended;
         public static event EventHandler OnTrackerScanLoop;
-        public static event EventHandler OnNewTracker;
-        public static event EventHandler OnTrackerDisAppear;
 
-        private TelemetryDatabaseWriter dbWriter;
+        private SignalsDBWriter dbWriter;
 
 
         public override IBinder OnBind(Intent intent)
@@ -76,7 +93,7 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
             beaconServ = new BeaconScannerService();
             sendService = new TelemetrySendService();
 
-            dbWriter = new TelemetryDatabaseWriter(this);
+            dbWriter = new SignalsDBWriter(this);
 
 
             _timer = new Timer
@@ -158,15 +175,19 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
             {
                 Thread.Sleep(50);
 
-                ApManager.Add(
-                        new APointInfo { Bssid = res.Bssid, Ssid = res.Ssid, });
-
-
+                ApManager.Add(new APointInfo { Bssid = res.Bssid, Ssid = res.Ssid, });
             }
             ApManager.Update();
-
-
             _scanComplete = true;
+        }
+
+        public IDisposable Subscribe(IObserver<TrackerScanInfo> observer)
+        {
+            if(!_observers.Contains(observer))
+            {
+                _observers.Add(observer);
+            }
+            return new Unsubscriber(observer, _observers);
         }
     }
 }

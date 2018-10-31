@@ -9,9 +9,9 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Clipcoin.Phone.Services.Classes.Wifi.Events;
 using Clipcoin.Phone.Services.Enums;
 using Clipcoin.Phone.Services.Interfaces;
+using Clipcoin.Phone.Services.TrackerScanner;
 using Java.IO;
 using Square.OkHttp;
 

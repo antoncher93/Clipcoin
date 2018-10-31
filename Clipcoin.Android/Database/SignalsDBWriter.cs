@@ -17,7 +17,7 @@ using Trigger.Classes.Beacons;
 
 namespace Clipcoin.Phone.Database
 {
-    public class TelemetryDatabaseWriter
+    public class SignalsDBWriter
     {
         public const string MacAddressKey = "macaddress";
         public const string RssiKey = "rssi";
@@ -43,7 +43,7 @@ namespace Clipcoin.Phone.Database
             }
         }
 
-        public TelemetryDatabaseWriter(Context c)
+        public SignalsDBWriter(Context c)
         {
             context = c ?? throw new NullReferenceException("Context cannot be null.");
             Helper = new DBHelper(c);

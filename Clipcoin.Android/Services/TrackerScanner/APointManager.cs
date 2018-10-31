@@ -12,11 +12,11 @@ using Android.Views;
 using Android.Widget;
 using Clipcoin.Phone.Logging;
 using Clipcoin.Phone.Services.Classes.Trackers;
-using Clipcoin.Phone.Services.Classes.Wifi.Events;
 using Clipcoin.Phone.Services.Interfaces;
+using Clipcoin.Phone.Services.Trackers;
 using Clipcoin.Phone.Settings;
 
-namespace Clipcoin.Phone.Services.Classes
+namespace Clipcoin.Phone.Services.TrackerScanner
 {
     public class APointManager// : ICollection<IAccessPoint>
     {

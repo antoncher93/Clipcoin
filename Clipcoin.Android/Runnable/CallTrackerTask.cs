@@ -10,7 +10,6 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Clipcoin.Phone.Http;
-using Clipcoin.Phone.Services.Classes.Wifi.Events;
 using Clipcoin.Phone.Runnable;
 using Java.IO;
 using Java.Lang;
@@ -28,7 +27,6 @@ namespace Clipcoin.Phone.Runnable
 
         private string _deviceId;
 
-        public event EventHandler<ExchangeEventArgs> OnComplete;
 
         public CallTrackerTask(string IpAddress, string deviceId)
         {
@@ -69,19 +67,12 @@ namespace Clipcoin.Phone.Runnable
 
         public void OnFailure(Request request, IOException iOException)
         {
-            OnComplete?.Invoke(this, new ExchangeEventArgs { Success = false });
+            
         }
 
         public void OnResponse(Response response)
         {
             string body = response.Body()?.String();
-
-            OnComplete?.Invoke(this, 
-                new ExchangeEventArgs {
-                    Success = true,
-                    Body = body,
-                    Code = response.Code()
-                });
 
             System.Diagnostics.Debug.WriteLine("TRACKER: " + body);
         }

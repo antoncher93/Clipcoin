@@ -11,10 +11,12 @@ using Android.Views;
 using Android.Widget;
 using Clipcoin.Phone.Services.Interfaces;
 
-namespace Clipcoin.Phone.Services.Classes.Trackers
+namespace Clipcoin.Phone.Services.TrackerScanner
 {
-    public class TrackerEventArgs : EventArgs
+    public class TrackerScanInfo
     {
-        public ITracker Tracker { get; set; }
+        public ICollection<ITracker> Trackers { get; set; }
+
+
     }
 }

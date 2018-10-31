@@ -9,14 +9,16 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Clipcoin.Phone.Services.Enums;
 using Clipcoin.Phone.Services.Interfaces;
 
-namespace Clipcoin.Phone.Services.Classes.Wifi.Events
+namespace Clipcoin.Phone.Services.TrackerScanner
 {
-    public class ExchangeEventArgs : TaskEventArgs
+    public class KeyRequestEventArgs : EventArgs
     {
-        public IAccessPoint AccessPoint { get; set; }
+        public KeyResponceStatus Status { get; set; }
         public int Code { get; set; }
-        public string Body { get; set; }
+        public IAccessPoint AccessPoint { get; set; }
+        public string Uid { get; set; }
     }
 }

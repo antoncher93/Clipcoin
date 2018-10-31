@@ -13,10 +13,11 @@ using Android.Widget;
 using Clipcoin.Phone.Logging;
 using Clipcoin.Phone.Runnable;
 using Clipcoin.Phone.Services.Interfaces;
+using Clipcoin.Phone.Services.Trackers;
 using Clipcoin.Phone.Settings;
 using Java.Lang;
 
-namespace Clipcoin.Phone.Services.Classes.Trackers
+namespace Clipcoin.Phone.Services.Trackers
 {
     public class TrackerManager
     {

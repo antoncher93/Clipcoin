@@ -97,8 +97,6 @@ namespace Clipcoin.Application.Activities
                 Token = settings.Token
             };
 
-
-            //StartService(new Intent(this, service.Class));
         }
 
         protected override void OnResume()

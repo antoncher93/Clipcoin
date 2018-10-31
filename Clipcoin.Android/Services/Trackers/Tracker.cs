@@ -12,7 +12,7 @@ using Android.Widget;
 using Clipcoin.Phone.Services.Interfaces;
 using Newtonsoft.Json;
 
-namespace Clipcoin.Phone.Services.Classes.Trackers
+namespace Clipcoin.Phone.Services.Trackers
 {
     public class Tracker : ITracker 
     {
