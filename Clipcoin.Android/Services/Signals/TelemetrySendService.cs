@@ -31,7 +31,8 @@ namespace Clipcoin.Phone.Services.Signals
 
         public void OnResponse(Response response)
         {
-            switch (response.Code())
+            int code = response.Code();
+            switch (code)
             {
                 case 200:
                     Logger.Info("Success");
@@ -51,6 +52,7 @@ namespace Clipcoin.Phone.Services.Signals
     public class TelemetrySendService : Service
     {
         private const string Url = "http://192.168.0.9:5000";
+        //private const string Url = "http://technobee.elementstore.ru:5000";
         SignalsDBWriter dbWriter;
         ICollection<int> ids;
         Timer timer;

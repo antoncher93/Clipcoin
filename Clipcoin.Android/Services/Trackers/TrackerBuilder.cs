@@ -29,8 +29,8 @@ namespace Clipcoin.Phone.Services.Trackers
         public TrackerBuilder AccessPoint(IAccessPoint apoint)
             => Modify(() => tracker.AccessPoint = apoint);
 
-        public TrackerBuilder Beacon(string mac)
-            => Modify(() => tracker.Beacons.Add(mac));
+        //public TrackerBuilder Beacon(string mac)
+        //    => Modify(() => tracker.Beacons.Add(mac));
 
         public Tracker Build() => tracker;
 

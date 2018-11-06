@@ -11,7 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Clipcoin.Phone.Services.Enums;
 
-namespace Clipcoin.Phone.Services.Classes
+namespace Clipcoin.Phone.Services
 {
     public class ServiceEventArgs : EventArgs
     {

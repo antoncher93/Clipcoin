@@ -15,8 +15,7 @@ using Clipcoin.Phone.Database;
 using Clipcoin.Phone.Help;
 using Clipcoin.Phone.Logging;
 using Clipcoin.Phone.Runnable;
-using Clipcoin.Phone.Services.Classes.Beacons;
-using Clipcoin.Phone.Services.Classes.Trackers;
+using Clipcoin.Phone.Services.Beacons;
 using Clipcoin.Phone.Services.Interfaces;
 using Clipcoin.Phone.Services.Signals;
 using Clipcoin.Phone.Services.TrackerScanner;
@@ -28,7 +27,7 @@ using Square.OkHttp;
 namespace Clipcoin.Phone.Services.Classes.Trackers
 {
     [Service]
-    public class TrackerScannerService : Service, IObservable<TrackerScanInfo>
+    public class TrackerScannerService : Service, IObservable<TrackerScanInfo>, IObserver<BeaconScanResult>
     {
         private class Unsubscriber : IDisposable
         {
@@ -72,7 +71,6 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
         private TelemetrySendService sendService;
 
         public APointManager ApManager { get; private set; } // список активных сетей
-        public static event EventHandler OnTrackerScanLoop;
 
         private SignalsDBWriter dbWriter;
 
@@ -117,18 +115,21 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
                 StartService(beaconServ);
                 StartService(sendService);
             };
-            
 
-            BeaconScannerService.OnStaticRanginBeacons += (s, e) =>
-            {
-                foreach(var beacon in e.Beacons)
-                {
-                    if( ApManager.TrackerManager.Trakers.Any())
-                    {
-                        dbWriter.NewBeaconSignal(beacon, ApManager.TrackerManager.Trakers.FirstOrDefault().Uid, e.Time);
-                    }
-                }
-            };
+            BeaconScannerService.RangeNotifier.Subscribe(this);
+
+            //BeaconScannerService.OnStaticRanginBeacons += (s, e) =>
+            //{
+            //    foreach(var beacon in e.Beacons)
+            //    {
+            //        if( ApManager.TrackerManager.Trakers.Any())
+            //        {
+            //            dbWriter.NewBeaconSignal(beacon, ApManager.TrackerManager.Trakers.FirstOrDefault().Uid, e.Time);
+            //        }
+            //    }
+            //};
+
+
         }
 
         private void StartService(Service service)
@@ -169,7 +170,12 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
         {
             _wifiManager.StartScan();
 
-            OnTrackerScanLoop?.Invoke(this, null);
+            //OnTrackerScanLoop?.Invoke(this, null);
+
+            foreach(var o in _observers)
+            {
+                o.OnNext(new TrackerScanInfo { Trackers = ApManager.TrackerManager.Trakers });
+            }
 
             foreach(var res in _wifiManager.ScanResults)
             {
@@ -188,6 +194,27 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
                 _observers.Add(observer);
             }
             return new Unsubscriber(observer, _observers);
+        }
+
+        public void OnNext(BeaconScanResult value)
+        {
+            foreach (var beacon in value.Signals)
+            {
+                if (ApManager.TrackerManager.Trakers.Any())
+                {
+                    dbWriter.NewBeaconSignal(beacon, ApManager.TrackerManager.Trakers.FirstOrDefault().Uid, value.Time);
+                }
+            }
+        }
+
+        public void OnError(System.Exception error)
+        {
+            
+        }
+
+        public void OnCompleted()
+        {
+            
         }
     }
 }

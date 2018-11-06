@@ -11,8 +11,9 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Clipcoin.Phone.Logging;
+using Java.Util;
 
-namespace Clipcoin.Phone.Services.Classes.Beacons
+namespace Clipcoin.Phone.Services.Beacons
 {
     public class BeaconScannerEventArgs : EventArgs
     {
@@ -21,26 +22,29 @@ namespace Clipcoin.Phone.Services.Classes.Beacons
     }
 
     [Service]
-    public class BeaconScannerService : Service, IBeaconConsumer, IRangeNotifier
+    public class BeaconScannerService : Service, IBeaconConsumer
     {
         Context IBeaconConsumer.ApplicationContext => this;
         BeaconManager beaconManager;
-        private static List<Region> regions;
         public static event EventHandler<BeaconScannerEventArgs> OnStaticRanginBeacons;
         public static event EventHandler<ServiceEventArgs> OnStateChanged;
 
-        private static Region region = new Region("Common", null, null, null);
+        private static Region region; //=  new Region("Common", null, null, null);
+        
+        private static RangeNotifier _rangeNotifier = new RangeNotifier();
+        public static RangeNotifier RangeNotifier => _rangeNotifier;
 
-        private static int fsp = 300;
-        private static int fbsp = 0;
-        private static int bsp = 5000;
-        private static int bbsp = 0;
-
+        private static int fsp = 200;
+        private static int fbsp = 1000;
+        private static int bsp = 2000;
+        private static int bbsp = 2000;
+        
         public int ForegroundScanPeriod { get => fsp; set => fsp = value; }
         public int ForegroundBetweenScanPeriod { get => fbsp; set => fbsp = value; }
         public int BackgroundScanPeriod { get => bsp; set => bsp = value; }
         public int BackgroundBetweenScanPeriod { get => bbsp; set => bbsp = value; }
 
+        
         private BluetoothManager bleManager;
 
         public override IBinder OnBind(Intent intent)
@@ -52,30 +56,29 @@ namespace Clipcoin.Phone.Services.Classes.Beacons
         {
             base.OnCreate();
             beaconManager = BeaconManager.GetInstanceForApplication(this);
-            beaconManager = BeaconManager.GetInstanceForApplication(this);
-            beaconManager.BeaconParsers.Add(new BeaconParser()//.SetBeaconLayout(BeaconParser.AltbeaconLayout));
-                .SetBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:25-25"));
+         
+            beaconManager.BeaconParsers.Add(new BeaconParser().SetBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:25-25"));
+            beaconManager.BeaconParsers.Add(new BeaconParser().SetBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
+            beaconManager.BeaconParsers.Add(new BeaconParser().SetBeaconLayout("m:0-3=4c000215,i:4-19,i:20-21,i:22-23,p:24-24"));
 
+            beaconManager.BeaconParsers.Add(new BeaconParser().SetBeaconLayout(BeaconParser.AltbeaconLayout));
+            beaconManager.BeaconParsers.Add(new BeaconParser().SetBeaconLayout(BeaconParser.EddystoneTlmLayout));
+            beaconManager.BeaconParsers.Add(new BeaconParser().SetBeaconLayout(BeaconParser.EddystoneUidLayout));
+            beaconManager.BeaconParsers.Add(new BeaconParser().SetBeaconLayout(BeaconParser.EddystoneUrlLayout));
+
+            region = new Region("Common", null, null, null);
+            //BeaconManager.SetDebug(true);
+            BeaconManager.AndroidLScanningDisabled = true;
             beaconManager.Bind(this);
 
-            SetScanPeriods(ForegroundScanPeriod, ForegroundBetweenScanPeriod, BackgroundScanPeriod, BackgroundBetweenScanPeriod);
+
+            ChangeManagerScanPeriods();
+
             bleManager = (BluetoothManager)GetSystemService(Context.BluetoothService);
             bleManager.Adapter.Enable();
         }
 
-        public void SetScanPeriods(
-            int foregroundScanPeriod,
-            int foregroundBetweenScanPeriod,
-            int backgroundScanPeriod,
-            int backgroundBetweenScanPeriod)
-        {
-            ForegroundScanPeriod = foregroundScanPeriod;
-            ForegroundBetweenScanPeriod = 0;
-            BackgroundScanPeriod = backgroundScanPeriod;
-            BackgroundBetweenScanPeriod = 0;
-
-            ChangeManagerScanPeriods();
-        }
+     
 
         private void ChangeManagerScanPeriods()
         {
@@ -105,9 +108,10 @@ namespace Clipcoin.Phone.Services.Classes.Beacons
             {
                 beaconManager.UpdateScanPeriods();
             }
-
-            beaconManager.SetRangeNotifier(this);
+            
+            beaconManager.RangingNotifiers.Add(_rangeNotifier);
             beaconManager.StartRangingBeaconsInRegion(region);
+
             Toast.MakeText(this.ApplicationContext, "Beacon Scanner started.", ToastLength.Short).Show();
         }
 
@@ -128,9 +132,23 @@ namespace Clipcoin.Phone.Services.Classes.Beacons
             this.ApplicationContext.UnbindService(serviceConnection);
         }
 
-        public void DidRangeBeaconsInRegion(ICollection<Beacon> beacons, Region region)
-        {
-            OnStaticRanginBeacons?.Invoke(this, new BeaconScannerEventArgs {Beacons = beacons, Time = DateTime.Now });
-        }
+        //public void DidRangeBeaconsInRegion(ICollection<Beacon> beacons, Region region)
+        //{
+
+        //    if(beacons.Count > 0)
+        //    {
+
+        //    }
+
+        //    System.Diagnostics.Debug.WriteLine("BEACONS COUNT: " + beacons.Count);
+
+        //    OnStaticRanginBeacons?.Invoke(this, new BeaconScannerEventArgs {Beacons = beacons, Time = DateTime.Now });
+           
+        //}
+
+        
+
+       
+
     }
 }

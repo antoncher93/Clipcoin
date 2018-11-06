@@ -16,10 +16,10 @@ namespace Clipcoin.Phone.Services.Trackers
 {
     public class Tracker : ITracker 
     {
-        public string Uid { get; set; }
+        private const string EmptyKey = "";
 
-        public ICollection<string> Beacons { get; set; }
-        public event EventHandler OnObsolete;
+        public string Uid { get; set; }
+        public string Key { get; set; } = EmptyKey;
         public bool IsObsolete { get; private set; } = false;
         private IAccessPoint _apoint;
         public IAccessPoint AccessPoint
@@ -40,7 +40,6 @@ namespace Clipcoin.Phone.Services.Trackers
             timer1.Elapsed += (s, e) =>
             {
                 IsObsolete = true;
-                OnObsolete?.Invoke(this, new EventArgs());
                 timer1.Stop();
             };
         }

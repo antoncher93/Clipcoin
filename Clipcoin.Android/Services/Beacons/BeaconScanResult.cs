@@ -10,10 +10,11 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-namespace Clipcoin.Phone.Services.Interfaces
+namespace Clipcoin.Phone.Services.Beacons
 {
-    public interface IManageListener
+    public class BeaconScanResult
     {
-        void OnComplete();
+        public IList<BeaconSignal> Signals { get; set; }
+        public DateTime Time { get; set; }
     }
 }

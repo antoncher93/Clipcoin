@@ -12,6 +12,7 @@ using Android.Views;
 using Android.Widget;
 using Clipcoin.Phone.Database.Sqlite;
 using Clipcoin.Phone.Help;
+using Clipcoin.Phone.Services.Beacons;
 using Trigger.Beacons;
 using Trigger.Classes.Beacons;
 
@@ -20,6 +21,7 @@ namespace Clipcoin.Phone.Database
     public class SignalsDBWriter
     {
         public const string MacAddressKey = "macaddress";
+        public const string UuidKey = "uuid";
         public const string RssiKey = "rssi";
         public const string APointKey = "apoint";
         public const string DateTimeKey = "datetime";
@@ -36,6 +38,7 @@ namespace Clipcoin.Phone.Database
                 return new Dictionary<string, string>
                 {
                     {MacAddressKey, "text" },
+                    {UuidKey, "text" },
                     {RssiKey, "int" },
                     {APointKey, "text" },
                     {DateTimeKey, "text" }
@@ -57,7 +60,7 @@ namespace Clipcoin.Phone.Database
             }
         }
 
-        public void NewBeaconSignal(Beacon beacon, string apointUid, DateTime time)
+        public void NewBeaconSignal(BeaconSignal beacon, string apointUid, DateTime time)
         {
             if (!Helper.TableExist(BeaconTableName))
             {
@@ -66,10 +69,11 @@ namespace Clipcoin.Phone.Database
 
             var cv = new ContentValues();
 
-            cv.Put(MacAddressKey, beacon.BluetoothAddress);
+            cv.Put(MacAddressKey, beacon.Mac);
             cv.Put(RssiKey, beacon.Rssi);
             cv.Put(APointKey, apointUid);
             cv.Put(DateTimeKey, Tools.FormateDateTimeToTime(time));
+            //cv.Put(UuidKey, beacon.UUID);
 
             try
             {

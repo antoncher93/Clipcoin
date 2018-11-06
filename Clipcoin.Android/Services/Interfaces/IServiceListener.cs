@@ -14,7 +14,6 @@ namespace Clipcoin.Phone.Services.Interfaces
 {
     public interface IServiceListener
     {
-        void OnServiceStart();
-        void OnServiceStop();
+        
     }
 }

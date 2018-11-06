@@ -18,8 +18,7 @@ namespace Clipcoin.Phone.Services.Interfaces
         IAccessPoint AccessPoint { get; set; }
 
         string Uid { get; }
-        ICollection<string> Beacons { get; }
+        string Key { get; set; }
         bool IsObsolete { get; }
-        event EventHandler OnObsolete;
     }
 }

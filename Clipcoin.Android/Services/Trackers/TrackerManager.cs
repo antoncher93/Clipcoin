@@ -12,6 +12,7 @@ using Android.Views;
 using Android.Widget;
 using Clipcoin.Phone.Logging;
 using Clipcoin.Phone.Runnable;
+using Clipcoin.Phone.Services.Beacons;
 using Clipcoin.Phone.Services.Interfaces;
 using Clipcoin.Phone.Services.Trackers;
 using Clipcoin.Phone.Settings;
@@ -38,6 +39,7 @@ namespace Clipcoin.Phone.Services.Trackers
                 var task = new RequestKeyTask(item, UserSettings.Token);
                 task.OnComplete += (s, e) =>
                 {
+
                     System.Diagnostics.Debug.WriteLine(
                         task.AccessPoint.Ssid + 
                         $" ({task.AccessPoint.Bssid}) " + 
@@ -59,6 +61,8 @@ namespace Clipcoin.Phone.Services.Trackers
                             .Build();
 
                             Add(tracker);
+
+                            
                             break;
 
                         case Enums.KeyResponceStatus.Fail:
@@ -82,12 +86,6 @@ namespace Clipcoin.Phone.Services.Trackers
                 Trakers.Add(item);
 
                 // удалить трекер из списка, если он устарел
-                item.OnObsolete += (s, e) =>
-                {
-                    Trakers.Remove(item);
-                    OnTrackerRemove?.Invoke(this, null);
-                };
-
                 OnNewTracker?.Invoke(this, new TrackerEventArgs { Tracker = item});
             }
         }
