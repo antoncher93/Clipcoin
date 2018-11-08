@@ -6,6 +6,7 @@ using System.Text;
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Preferences;
 using Android.Runtime;
 using Android.Text.Method;
 using Android.Views;
@@ -30,6 +31,8 @@ namespace Clipcoin.Application.Activities
         TextView tvBeacScanStatus;
         TextView tvSignalCount;
         TextView tvTrackerValue;
+
+        
 
         IDisposable unsubscriber;
         int count;
@@ -81,6 +84,8 @@ namespace Clipcoin.Application.Activities
             tvBeacScanStatus = FindViewById<TextView>(Resource.Id.textView_BeaconScannerStatus);
            
             settings = UserSettings.GetInstanceForApp(this);
+
+
             tvLog = FindViewById<TextView>(Resource.Id.textView_Log);
             tvSignalCount = FindViewById<TextView>(Resource.Id.textView_SignalsCount);
             tvTrackerValue = FindViewById<TextView>(Resource.Id.textView_TrackerScannerValue);
@@ -94,7 +99,6 @@ namespace Clipcoin.Application.Activities
                 Token = settings.Token
             };
             
-
             unsubscriber = service.Subscribe(this);
 
             BeaconScannerService.RangeNotifier.Subscribe(this);

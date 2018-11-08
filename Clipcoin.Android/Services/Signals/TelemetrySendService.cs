@@ -78,6 +78,8 @@ namespace Clipcoin.Phone.Services.Signals
 
             timer.Elapsed += (s, e) =>
             {
+                Logger.Info("trying to sent telemetry...");
+
                 var type = MediaType.Parse("application/json; charset=utf-8");
                 var telemetry = dbWriter.ReadTelemetry(userId, out ids);
 
@@ -98,6 +100,10 @@ namespace Clipcoin.Phone.Services.Signals
 
                     Logger.Info("Send Telemetry: " + all_signals.Count.ToString());
                     client.NewCall(request).Enqueue(c);
+                }
+                else
+                {
+                    Logger.Info("No signals to send");
                 }
             };
         }

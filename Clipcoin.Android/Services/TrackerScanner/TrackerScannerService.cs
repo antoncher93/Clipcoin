@@ -51,11 +51,22 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
         private Timer _timer;
         private static int _interval = 500;
         private static string token;
+        private static int beacon_scan_interval = 500;
+
         private bool _scanComplete;
 
         static private IList<IObserver<TrackerScanInfo>> _observers = new List<IObserver<TrackerScanInfo>>();
 
         
+
+       
+
+        private BeaconScannerService beaconServ;
+        private TelemetrySendService sendService;
+
+        public APointManager ApManager { get; private set; } // список активных сетей
+
+        private SignalsDBWriter dbWriter;
 
         public string Token
         {
@@ -67,13 +78,11 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
             }
         }
 
-        private BeaconScannerService beaconServ;
-        private TelemetrySendService sendService;
-
-        public APointManager ApManager { get; private set; } // список активных сетей
-
-        private SignalsDBWriter dbWriter;
-
+        public int BeaconScanInterval
+        {
+            get => beacon_scan_interval;
+            set => beacon_scan_interval = value;
+        }
 
         public override IBinder OnBind(Intent intent)
         {
@@ -88,7 +97,10 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
            
             _wifiManager = (WifiManager)GetSystemService(Context.WifiService);
             ApManager = new APointManager();
+
             beaconServ = new BeaconScannerService();
+            //beaconServ.BackgroundScanPeriod = beacon_scan_interval;
+
             sendService = new TelemetrySendService();
 
             dbWriter = new SignalsDBWriter(this);
@@ -118,16 +130,7 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
 
             BeaconScannerService.RangeNotifier.Subscribe(this);
 
-            //BeaconScannerService.OnStaticRanginBeacons += (s, e) =>
-            //{
-            //    foreach(var beacon in e.Beacons)
-            //    {
-            //        if( ApManager.TrackerManager.Trakers.Any())
-            //        {
-            //            dbWriter.NewBeaconSignal(beacon, ApManager.TrackerManager.Trakers.FirstOrDefault().Uid, e.Time);
-            //        }
-            //    }
-            //};
+           
 
 
         }

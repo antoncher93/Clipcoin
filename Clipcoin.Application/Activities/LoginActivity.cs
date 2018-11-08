@@ -132,5 +132,13 @@ namespace Clipcoin.Application.Activities
         }
 
 
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            var item = menu.Add(0, 1, 1, "Settings");
+            item.SetIntent(new Intent(this, new CommonPreferencesActivity().Class));
+            return base.OnCreateOptionsMenu(menu);
+        }
+
+
     }
 }

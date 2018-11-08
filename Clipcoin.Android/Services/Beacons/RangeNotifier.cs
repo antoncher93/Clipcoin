@@ -19,7 +19,8 @@ namespace Clipcoin.Phone.Services.Beacons
 
         public void DidRangeBeaconsInRegion(ICollection<Beacon> beacons, Region region)
         {
-            System.Diagnostics.Debug.WriteLine($"[{System.DateTime.Now.ToString()}] Beacons: {beacons.Count} Region Id {region.UniqueId}");
+            var now = System.DateTime.Now;
+            System.Diagnostics.Debug.WriteLine($"[{now}.{now.Millisecond}] Beacons: {beacons.Count}");
             foreach (var obs in _observers)
             {
                 obs.OnNext(new BeaconScanResult
