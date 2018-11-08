@@ -16,6 +16,7 @@ using Clipcoin.Phone.Help;
 using Clipcoin.Phone.Logging;
 using Clipcoin.Phone.Runnable;
 using Clipcoin.Phone.Services.Beacons;
+using Clipcoin.Phone.Services.Demonstration;
 using Clipcoin.Phone.Services.Interfaces;
 using Clipcoin.Phone.Services.Signals;
 using Clipcoin.Phone.Services.TrackerScanner;
@@ -63,6 +64,7 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
 
         private BeaconScannerService beaconServ;
         private TelemetrySendService sendService;
+        private RangerService rangerServ;
 
         public APointManager ApManager { get; private set; } // список активных сетей
 
@@ -103,6 +105,8 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
 
             sendService = new TelemetrySendService();
 
+            rangerServ = new RangerService(this);
+
             dbWriter = new SignalsDBWriter(this);
 
 
@@ -126,13 +130,11 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
             {
                 StartService(beaconServ);
                 StartService(sendService);
+
+                rangerServ.Subscribe(BeaconScannerService.RangeNotifier);
             };
 
             BeaconScannerService.RangeNotifier.Subscribe(this);
-
-           
-
-
         }
 
         private void StartService(Service service)

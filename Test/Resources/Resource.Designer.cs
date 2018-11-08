@@ -26,6 +26,8 @@ namespace Test
 		
 		public static void UpdateIdValues()
 		{
+			global::Clipcoin.Phone.Resource.Drawable.enter = global::Test.Resource.Drawable.enter;
+			global::Clipcoin.Phone.Resource.Drawable.exit = global::Test.Resource.Drawable.exit;
 			global::Xamarin.Android.NUnitLite.Resource.Id.OptionHostName = global::Test.Resource.Id.OptionHostName;
 			global::Xamarin.Android.NUnitLite.Resource.Id.OptionPort = global::Test.Resource.Id.OptionPort;
 			global::Xamarin.Android.NUnitLite.Resource.Id.OptionRemoteServer = global::Test.Resource.Id.OptionRemoteServer;
@@ -67,7 +69,13 @@ namespace Test
 		{
 			
 			// aapt resource value: 0x7f020000
-			public const int Icon = 2130837504;
+			public const int enter = 2130837504;
+			
+			// aapt resource value: 0x7f020001
+			public const int exit = 2130837505;
+			
+			// aapt resource value: 0x7f020002
+			public const int Icon = 2130837506;
 			
 			static Drawable()
 			{
