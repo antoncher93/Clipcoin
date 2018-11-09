@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="app_name">Clipcoin.Application</string>
+	<string-array name="entries">
+		<item>2</item>
+		<item>4</item>
+		<item>6</item>
+		<item>8</item>
+		<item>10</item>
+	</string-array>
+	<string name="tel_send_address">http://192.168.0.9:5000</string>
+	<string name="beacon_scan_interval_key">beacon_scan_interval</string>
 </resources>

@@ -67,10 +67,6 @@
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
-    <Reference Include="Trigger, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Trigger\Trigger\bin\Release\netstandard2.0\Trigger.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BroadcastReceivers\Internet\InternetReceiver.cs" />
@@ -91,15 +87,16 @@
     <Compile Include="Services\Beacons\BeaconScanResult.cs" />
     <Compile Include="Services\Beacons\BeaconSignal.cs" />
     <Compile Include="Services\Beacons\RangeNotifier.cs" />
+    <Compile Include="Services\Demonstration\RangerService.cs" />
     <Compile Include="Services\Interfaces\IBeaconSignal.cs" />
     <Compile Include="Services\ServiceEventArgs.cs" />
     <Compile Include="Services\Signals\SignalsCallback.cs" />
     <Compile Include="Services\Signals\SignalScanner.cs" />
-    <Compile Include="Services\TrackerScanner\KeyRequestEventArgs.cs" />
-    <Compile Include="Services\TrackerScanner\TrackerScanInfo.cs" />
-    <Compile Include="Services\TrackerScanner\TrackerScannerService.cs" />
-    <Compile Include="Services\TrackerScanner\APointManager.cs" />
-    <Compile Include="Services\TrackerScanner\APointInfo.cs" />
+    <Compile Include="Services\Main\KeyRequestEventArgs.cs" />
+    <Compile Include="Services\Main\TrackerScanInfo.cs" />
+    <Compile Include="Services\Main\TrackerScannerService.cs" />
+    <Compile Include="Services\Main\APointManager.cs" />
+    <Compile Include="Services\Main\APointInfo.cs" />
     <Compile Include="Services\Beacons\BeaconScannerService.cs" />
     <Compile Include="Services\Trackers\BeaconBody.cs" />
     <Compile Include="Services\Trackers\TrackerEventArgs.cs" />
@@ -130,7 +127,18 @@
     </None>
     <None Include="Resources\AboutResources.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\enter.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\exit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Trigger\Trigger\Trigger.csproj">
+      <Project>{5ac0659b-ab59-44d2-a247-1d2e218f8294}</Project>
+      <Name>Trigger</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

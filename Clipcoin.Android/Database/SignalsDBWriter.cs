@@ -58,10 +58,15 @@ namespace Clipcoin.Phone.Database
             {
                 Helper.ClearTable(BeaconTableName);
             }
+
+            //Helper.DropTable(BeaconTableName);
         }
 
         public void NewBeaconSignal(BeaconSignal beacon, string apointUid, DateTime time)
         {
+            
+
+
             if (!Helper.TableExist(BeaconTableName))
             {
                 Helper.CreateNewTable(BeaconTableName, Headers);
@@ -73,7 +78,7 @@ namespace Clipcoin.Phone.Database
             cv.Put(RssiKey, beacon.Rssi);
             cv.Put(APointKey, apointUid);
             cv.Put(DateTimeKey, Tools.FormateDateTimeToTime(time));
-            //cv.Put(UuidKey, beacon.UUID);
+            cv.Put(UuidKey, beacon.UUID);
 
             try
             {
@@ -135,17 +140,19 @@ namespace Clipcoin.Phone.Database
                 int rssiColIndex = cursor.GetColumnIndex(RssiKey);
                 int dateColIndex = cursor.GetColumnIndex(DateTimeKey);
                 int uidColIndex = cursor.GetColumnIndex(APointKey);
+                int uuidColIndex = cursor.GetColumnIndex(UuidKey);
 
                 int id = cursor.GetInt(idColIndex);
                 string mac = cursor.GetString(macAddressColIndex);
                 int rssi = cursor.GetInt(rssiColIndex);
                 string uid = cursor.GetString(uidColIndex);
+                string uuid = cursor.GetString(uuidColIndex);
                 DateTime time = Newtonsoft.Json.JsonConvert.DeserializeObject<DateTime>($"\"{cursor.GetString(dateColIndex)}\"");
 
                 telemetry.Append(
                     new BeaconData
                     {
-                        Address = mac
+                        Address = uuid
                     }.Add(new BeaconItem[]
                     {
                          new BeaconItem
@@ -163,12 +170,13 @@ namespace Clipcoin.Phone.Database
                     mac = cursor.GetString(macAddressColIndex);
                     rssi = cursor.GetInt(rssiColIndex);
                     uid = cursor.GetString(uidColIndex);
+                    uuid = cursor.GetString(uuidColIndex);
                     time = Newtonsoft.Json.JsonConvert.DeserializeObject<DateTime>($"\"{cursor.GetString(dateColIndex)}\"");
 
                     telemetry.Append(
                     new BeaconData
                     {
-                        Address = mac
+                        Address = uuid
                     }.Add(new BeaconItem[]
                     {
                          new BeaconItem

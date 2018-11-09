@@ -34,10 +34,10 @@ namespace Clipcoin.Phone.Services.Beacons
         private static RangeNotifier _rangeNotifier = new RangeNotifier();
         public static RangeNotifier RangeNotifier => _rangeNotifier;
 
-        private static int fsp = 200;
-        private static int fbsp = 1000;
-        private static int bsp = 2000;
-        private static int bbsp = 2000;
+        private static int fsp = 500;
+        private static int fbsp = 500;
+        private static int bsp = 500;
+        private static int bbsp = 500;
         
         public int ForegroundScanPeriod { get => fsp; set => fsp = value; }
         public int ForegroundBetweenScanPeriod { get => fbsp; set => fbsp = value; }
@@ -69,10 +69,13 @@ namespace Clipcoin.Phone.Services.Beacons
             region = new Region("Common", null, null, null);
             //BeaconManager.SetDebug(true);
             BeaconManager.AndroidLScanningDisabled = true;
+
+            ChangeManagerScanPeriods();
+
             beaconManager.Bind(this);
 
 
-            ChangeManagerScanPeriods();
+            
 
             bleManager = (BluetoothManager)GetSystemService(Context.BluetoothService);
             bleManager.Adapter.Enable();

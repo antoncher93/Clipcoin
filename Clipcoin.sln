@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalTest", "SignalTest\Si
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{3174BC80-150D-46E2-8DFA-48880B1A6565}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trigger", "..\Trigger\Trigger\Trigger.csproj", "{5AC0659B-AB59-44D2-A247-1D2E218F8294}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{3174BC80-150D-46E2-8DFA-48880B1A6565}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3174BC80-150D-46E2-8DFA-48880B1A6565}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3174BC80-150D-46E2-8DFA-48880B1A6565}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{5AC0659B-AB59-44D2-A247-1D2E218F8294}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AC0659B-AB59-44D2-A247-1D2E218F8294}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AC0659B-AB59-44D2-A247-1D2E218F8294}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AC0659B-AB59-44D2-A247-1D2E218F8294}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

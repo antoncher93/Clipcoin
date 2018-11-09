@@ -18,7 +18,8 @@ namespace Clipcoin.Phone.Logging
         public static void Info(string message)
         {
             OnEvent?.Invoke(null, new LogEventArgs { Message = message, Time = DateTime.Now });
-            System.Diagnostics.Debug.WriteLine($"LOGGER [{DateTime.Now}] " + message);
+            var now = DateTime.Now;
+            System.Diagnostics.Debug.WriteLine($"LOGGER [{now}.{now.Millisecond}] " + message);
         }
     }
 }
