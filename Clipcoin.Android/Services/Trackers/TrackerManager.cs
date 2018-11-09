@@ -33,7 +33,8 @@ namespace Clipcoin.Phone.Services.Trackers
 
         public void CheckAccessPoint(IAccessPoint item)
         {
-            if(!CheckList.ContainsKey(item.Bssid))
+            if(!CheckList.ContainsKey(item.Bssid) || 
+                (CheckList.ContainsKey(item.Bssid) && CheckList[item.Bssid].Equals(500)))
             {
                 CheckList.Add(item.Bssid, 0);
                 var task = new RequestKeyTask(item, UserSettings.Token);

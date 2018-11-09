@@ -47,6 +47,8 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
                 }
             }
         }
+        private const int RssiTreshold = -70;
+
 
         private WifiManager _wifiManager;
         private Timer _timer;
@@ -57,10 +59,6 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
         private bool _scanComplete;
 
         static private IList<IObserver<TrackerScanInfo>> _observers = new List<IObserver<TrackerScanInfo>>();
-
-        
-
-       
 
         private BeaconScannerService beaconServ;
         private TelemetrySendService sendService;
@@ -124,8 +122,6 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
             {
                 StartService(beaconServ);
                 StartService(sendService);
-
-                //rangerServ.Subscribe(BeaconScannerService.RangeNotifier);
             };
 
             BeaconScannerService.RangeNotifier.Subscribe(this);
