@@ -64,6 +64,10 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
+    <Reference Include="Trigger, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Trigger\Trigger\bin\Debug\netstandard2.0\Trigger.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\CommonPreferencesActivity.cs" />
@@ -75,6 +79,7 @@
     <Compile Include="Settings\CommonSettings.cs" />
     <Compile Include="Settings\LoginData.cs" />
     <Compile Include="Settings\UserSettings.cs" />
+    <Compile Include="Show\TriggerNotificator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

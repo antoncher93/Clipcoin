@@ -12,6 +12,7 @@ using Android.Text.Method;
 using Android.Views;
 using Android.Widget;
 using Clipcoin.Application.Settings;
+using Clipcoin.Application.Show;
 using Clipcoin.Phone.Help;
 using Clipcoin.Phone.Logging;
 using Clipcoin.Phone.Services.Beacons;
@@ -32,7 +33,7 @@ namespace Clipcoin.Application.Activities
         TextView tvSignalCount;
         TextView tvTrackerValue;
 
-        
+        TriggerNotificator tn;
 
         IDisposable unsubscriber;
         int count;
@@ -84,7 +85,7 @@ namespace Clipcoin.Application.Activities
             tvBeacScanStatus = FindViewById<TextView>(Resource.Id.textView_BeaconScannerStatus);
            
             settings = UserSettings.GetInstanceForApp(this);
-
+            tn = new TriggerNotificator(this);
 
             tvLog = FindViewById<TextView>(Resource.Id.textView_Log);
             tvSignalCount = FindViewById<TextView>(Resource.Id.textView_SignalsCount);
@@ -94,14 +95,26 @@ namespace Clipcoin.Application.Activities
 
             Logger.OnEvent += OnLoggerEvent;
 
+            BeaconScannerService.RangeNotifier.Subscribe(this);
+            BeaconScannerService.RangeNotifier.Subscribe(tn);
+
+           
+
             service = new TrackerScannerService
             {
                 Token = settings.Token
             };
-            
+
             unsubscriber = service.Subscribe(this);
 
-            BeaconScannerService.RangeNotifier.Subscribe(this);
+
+            tn.OnEvent += (s, e) =>
+            {
+                Logger.Info(e.Type.ToString() + " at " + e.Timespan.TimeOfDay.ToString());
+            };
+
+
+
         }
 
         protected override void OnResume()

@@ -99,16 +99,10 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
            
             _wifiManager = (WifiManager)GetSystemService(Context.WifiService);
             ApManager = new APointManager();
-
             beaconServ = new BeaconScannerService();
-            //beaconServ.BackgroundScanPeriod = beacon_scan_interval;
-
             sendService = new TelemetrySendService();
-
             rangerServ = new RangerService(this);
-
             dbWriter = new SignalsDBWriter(this);
-
 
             _timer = new Timer
             {
@@ -131,7 +125,7 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
                 StartService(beaconServ);
                 StartService(sendService);
 
-                rangerServ.Subscribe(BeaconScannerService.RangeNotifier);
+                //rangerServ.Subscribe(BeaconScannerService.RangeNotifier);
             };
 
             BeaconScannerService.RangeNotifier.Subscribe(this);
