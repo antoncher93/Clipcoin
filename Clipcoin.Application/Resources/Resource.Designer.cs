@@ -26,6 +26,8 @@ namespace Clipcoin.Application
 		
 		public static void UpdateIdValues()
 		{
+			global::Clipcoin.Phone.Resource.Drawable.enter = global::Clipcoin.Application.Resource.Drawable.enter;
+			global::Clipcoin.Phone.Resource.Drawable.exit = global::Clipcoin.Application.Resource.Drawable.exit;
 		}
 		
 		public partial class Attribute
@@ -46,6 +48,12 @@ namespace Clipcoin.Application
 			
 			// aapt resource value: 0x7f020000
 			public const int coin = 2130837504;
+			
+			// aapt resource value: 0x7f020001
+			public const int enter = 2130837505;
+			
+			// aapt resource value: 0x7f020002
+			public const int exit = 2130837506;
 			
 			static Drawable()
 			{
