@@ -115,7 +115,7 @@ namespace Clipcoin.Application.Activities
 
             unsubscriber = service.Subscribe(this);
 
-            tn.OnEvent += TriggerEventHandler;
+            tn.Holder.OnEvent += TriggerEventHandler;
 
             ChangeStatus(AppearStatus.Unknown);
         }

@@ -40,7 +40,6 @@ namespace Clipcoin.Phone.Services.Trackers
                 var task = new RequestKeyTask(item, UserSettings.Token);
                 task.OnComplete += (s, e) =>
                 {
-
                     System.Diagnostics.Debug.WriteLine(
                         task.AccessPoint.Ssid + 
                         $" ({task.AccessPoint.Bssid}) " + 
@@ -62,8 +61,6 @@ namespace Clipcoin.Phone.Services.Trackers
                             .Build();
 
                             Add(tracker);
-
-                            
                             break;
 
                         case Enums.KeyResponceStatus.Fail:

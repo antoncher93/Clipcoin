@@ -5,6 +5,7 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Media;
 using Android.OS;
 using Android.Preferences;
 using Android.Runtime;
@@ -32,8 +33,8 @@ namespace Clipcoin.Application.Show
         IDictionary<DateTime, TriggerEventType> events = new Dictionary<DateTime, TriggerEventType>();
         CommonSettings settings;
 
+        public TriggerEventHolder Holder { get; private set; }
 
-        public event EventHandler<TriggerEventArgs> OnEvent;
 
         public TriggerNotificator(Context ctx)
         {
@@ -52,8 +53,14 @@ namespace Clipcoin.Application.Show
                .AddSecondLineBeacon(BeaconBody.FromMac(settings.SecondBeaconAddress))
                .Build();
 
+            Holder = new TriggerEventHolder();
 
             ranger.OnEvent += RangerOnEventHandler;
+
+            Holder.OnEvent += (s, e) =>
+            {
+                SendNotification(e);
+            };
         }
 
         private void  RangerOnEventHandler(object o, TriggerEventArgs e)
@@ -61,7 +68,7 @@ namespace Clipcoin.Application.Show
             if(!events.ContainsKey(e.Timespan))
             {
                 events.Add(e.Timespan, e.Type);
-                OnEvent?.Invoke(this, e);
+                Holder.HoldEvent(e);
             }
         }
 
@@ -94,6 +101,19 @@ namespace Clipcoin.Application.Show
         public void Subscribe(IObservable<BeaconScanResult> provider)
         {
             subscriber = provider?.Subscribe(this);
+        }
+
+        public void SendNotification(TriggerEventArgs args)
+        {
+            Notification notif = new Notification.Builder(_ctx)
+                .SetContentText($"{args.Type.ToString()} at {args.Timespan.ToString()}")
+                .SetContentTitle(args.Type.ToString())
+                .SetSmallIcon(args.Type == TriggerEventType.Enter ? Resource.Drawable.enter : Resource.Drawable.exit)
+                .Build();
+
+            notif.Sound = RingtoneManager.GetDefaultUri(RingtoneType.Notification);
+            notif.Vibrate = new long[] { 500, 1000 };
+            notif_manager.Notify(1, notif);
         }
     }
 }

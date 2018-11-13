@@ -80,6 +80,7 @@
     <Compile Include="Settings\CommonSettings.cs" />
     <Compile Include="Settings\LoginData.cs" />
     <Compile Include="Settings\UserSettings.cs" />
+    <Compile Include="Show\TriggerEventHolder.cs" />
     <Compile Include="Show\TriggerNotificator.cs" />
   </ItemGroup>
   <ItemGroup>
