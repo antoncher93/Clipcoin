@@ -5,12 +5,15 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Content.Res;
+using Android.Graphics;
 using Android.OS;
 using Android.Preferences;
 using Android.Runtime;
 using Android.Text.Method;
 using Android.Views;
 using Android.Widget;
+using Clipcoin.Application.Assets.Enums;
 using Clipcoin.Application.Settings;
 using Clipcoin.Application.Show;
 using Clipcoin.Phone.Help;
@@ -32,11 +35,14 @@ namespace Clipcoin.Application.Activities
         TextView tvBeacScanStatus;
         TextView tvSignalCount;
         TextView tvTrackerValue;
+        TextView tvStatus;
 
         TriggerNotificator tn;
 
         IDisposable unsubscriber;
         int count;
+        AppearStatus _status;
+
 
         int Signal_count
         {
@@ -79,7 +85,7 @@ namespace Clipcoin.Application.Activities
             // Create your application here
 
             count = 0;
-
+      
             Initial();
 
             tvBeacScanStatus = FindViewById<TextView>(Resource.Id.textView_BeaconScannerStatus);
@@ -90,6 +96,8 @@ namespace Clipcoin.Application.Activities
             tvLog = FindViewById<TextView>(Resource.Id.textView_Log);
             tvSignalCount = FindViewById<TextView>(Resource.Id.textView_SignalsCount);
             tvTrackerValue = FindViewById<TextView>(Resource.Id.textView_TrackerScannerValue);
+            tvStatus = FindViewById<TextView>(Resource.Id.textView_status_position);
+
             Signal_count = 0;
             tvLog.MovementMethod = new ScrollingMovementMethod();
 
@@ -107,14 +115,53 @@ namespace Clipcoin.Application.Activities
 
             unsubscriber = service.Subscribe(this);
 
+            tn.OnEvent += TriggerEventHandler;
 
-            tn.OnEvent += (s, e) =>
+            ChangeStatus(AppearStatus.Unknown);
+        }
+
+        private void TriggerEventHandler(object s, Trigger.Signal.TriggerEventArgs e)
+        {
+            if(e.Type == Trigger.Enums.TriggerEventType.Enter)
             {
-                Logger.Info(e.Type.ToString() + " at " + e.Timespan.TimeOfDay.ToString());
-            };
+                ChangeStatus(AppearStatus.Inside);
+            }
+            else if(e.Type == Trigger.Enums.TriggerEventType.Exit)
+            {
+                ChangeStatus(AppearStatus.Outside);
+            }
+        }
 
-
-
+        private void ChangeStatus(AppearStatus value)
+        {
+            if(_status != value)
+            {
+                switch(value)
+                {
+                    case AppearStatus.Inside:
+                        RunOnUiThread(() =>
+                        {
+                            tvStatus.Text = "INSIDE";
+                            tvStatus.SetTextColor(Color.Green);
+                        });
+                        break;
+                    case AppearStatus.Outside:
+                        RunOnUiThread(() =>
+                        {
+                            tvStatus.Text = "OUT";
+                            tvStatus.SetTextColor(Color.Red);
+                        });
+                        break;
+                    case AppearStatus.Unknown:
+                        RunOnUiThread(() =>
+                        {
+                            tvStatus.Text = "UNKNOWN";
+                            tvStatus.SetTextColor(Color.Silver);
+                        });
+                        break;
+                }
+                _status = value;
+            }
         }
 
         protected override void OnResume()
@@ -163,7 +210,7 @@ namespace Clipcoin.Application.Activities
 
         public void OnError(Exception error)
         {
-            
+            Logger.Info(error.Message);
         }
 
         public void OnCompleted()
