@@ -39,12 +39,11 @@ namespace Clipcoin.Phone.Services.TrackerScanner
 
 
             var fresh_networks = networks.Where(t => 
-                AccessPoints.Any(a => !a.Bssid.Equals(t.Bssid, StringComparison.CurrentCultureIgnoreCase)));
+                !AccessPoints.Any(a => a.Bssid.Equals(t.Bssid, StringComparison.CurrentCultureIgnoreCase))).ToList();
 
-            foreach(var n in fresh_networks)
-            {
+            ICollection<IAccessPoint> items = fresh_networks.Select(n => (IAccessPoint)new APointInfo { Bssid = n.Bssid, Ssid = n.Ssid }).ToList();
 
-            }
+            TrackerManager.CheckAccessPoints(items);
         }
 
         public void Add(IAccessPoint item)

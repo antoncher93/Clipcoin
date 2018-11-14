@@ -9,6 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Clipcoin.Phone.Services.Classes.Trackers;
 using Clipcoin.Phone.Services.Interfaces;
 using Clipcoin.Phone.Services.Trackers;
 using Java.IO;
@@ -34,14 +35,19 @@ namespace Clipcoin.Phone.Runnable
         public void Run()
         {
             var points = "";
+
+            System.Diagnostics.Debug.WriteLine("REQUEST POINTS:");
+
             foreach(var ap in _items)
             {
                 points += ap.Bssid + ";";
+                System.Diagnostics.Debug.WriteLine(ap.Bssid + " " + ap.Ssid);
             }
 
             Request request = new Request.Builder()
-               .Url(HostAddress + points)
+               .Url(HostAddress)
                .AddHeader("Authorization", "Bearer " + _token)
+               .Post(RequestBody.Create(MediaType.Parse("application/json; charset=utf-8"), $"\"{points}\""))
                .Build();
 
             client.NewCall(request).Enqueue(this);
@@ -60,18 +66,8 @@ namespace Clipcoin.Phone.Runnable
             {
                 case 200:
                     string body = response.Body().String();
-
-                    var data = new[] 
-                    { new {
-                        macAddressEth = "",
-                        macAddressWlan0 = "",
-                        macAddressWlan1 = "",
-                        password = "",
-                        uid = "",
-                        token = ""
-                    } };
             
-                    data = JsonConvert.DeserializeAnonymousType(body, data);
+                    var data = JsonConvert.DeserializeObject<TrackerData[]>(body);
 
                     var trackers = new List<ITracker>();
 
@@ -79,10 +75,10 @@ namespace Clipcoin.Phone.Runnable
                     {
                         var tracker = new TrackerBuilder()
                             .AccessPoint(_items.FirstOrDefault(
-                                i => i.Bssid.Equals(d.macAddressEth, StringComparison.CurrentCultureIgnoreCase) ||
-                                i.Bssid.Equals(d.macAddressWlan0, StringComparison.CurrentCultureIgnoreCase) ||
-                                i.Bssid.Equals(d.macAddressWlan1, StringComparison.CurrentCultureIgnoreCase)))
-                            .Uid(d.uid)
+                                i => i.Bssid.Equals(d.MacAddressEth, StringComparison.CurrentCultureIgnoreCase) ||
+                                i.Bssid.Equals(d.MacAddressWlan0, StringComparison.CurrentCultureIgnoreCase) ||
+                                i.Bssid.Equals(d.MacAddressWlan1, StringComparison.CurrentCultureIgnoreCase)))
+                            .Uid(d.Uid)
                             .Build();
 
                         trackers.Add(tracker);

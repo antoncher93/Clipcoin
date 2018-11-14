@@ -61,6 +61,8 @@ namespace Clipcoin.Application.Show
             {
                 SendNotification(e);
             };
+
+            
         }
 
         private void  RangerOnEventHandler(object o, TriggerEventArgs e)
@@ -110,10 +112,13 @@ namespace Clipcoin.Application.Show
                 .SetContentTitle(args.Type.ToString())
                 .SetSmallIcon(args.Type == TriggerEventType.Enter ? Resource.Drawable.enter : Resource.Drawable.exit)
                 .Build();
-
-            notif.Sound = RingtoneManager.GetDefaultUri(RingtoneType.Notification);
+            //Android.Net.Uri.Parse($"{ContentResolver.SchemeAndroidResource}{_ctx.PackageName}{}" )
+            notif.Sound = RingtoneManager.GetDefaultUri(args.Type == TriggerEventType.Enter ? 
+                RingtoneType.Ringtone : RingtoneType.Notification);
             notif.Vibrate = new long[] { 500, 1000 };
             notif_manager.Notify(1, notif);
+
+            
         }
     }
 }

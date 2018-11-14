@@ -15,6 +15,6 @@ namespace Clipcoin.Phone.Services.Trackers
 {
     public class TrackerEventArgs : EventArgs
     {
-        public ITracker Tracker { get; set; }
+        public ICollection<ITracker> Trackers { get; set; }
     }
 }

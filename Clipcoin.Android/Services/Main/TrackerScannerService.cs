@@ -118,10 +118,14 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
                 }
             };
 
-            ApManager.TrackerManager.OnNewTracker += (s, e) =>
+            ApManager.TrackerManager.OnStateChanged += (s, e) =>
             {
-                StartService(beaconServ);
-                StartService(sendService);
+                if(e.Trackers.Any())
+                {
+                    StartService(beaconServ);
+                    StartService(sendService);
+                }
+               
             };
 
             BeaconScannerService.RangeNotifier.Subscribe(this);
@@ -165,19 +169,23 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
         {
             _wifiManager.StartScan();
 
+
+            ApManager.Add(_wifiManager.ScanResults);
+
             //OnTrackerScanLoop?.Invoke(this, null);
 
-            foreach(var o in _observers)
-            {
-                o.OnNext(new TrackerScanInfo { Trackers = ApManager.TrackerManager.Trakers });
-            }
+            //foreach(var o in _observers)
+            //{
+            //    o.OnNext(new TrackerScanInfo { Trackers = ApManager.TrackerManager.Trakers });
+            //}
 
-            foreach(var res in _wifiManager.ScanResults)
-            {
-                Thread.Sleep(50);
+            //foreach(var res in _wifiManager.ScanResults)
+            //{
+            //    Thread.Sleep(50);
+            //    ApManager.Add()
+            //    //ApManager.Add(new APointInfo { Bssid = res.Bssid, Ssid = res.Ssid, });
+            //}
 
-                ApManager.Add(new APointInfo { Bssid = res.Bssid, Ssid = res.Ssid, });
-            }
             ApManager.Update();
             _scanComplete = true;
         }

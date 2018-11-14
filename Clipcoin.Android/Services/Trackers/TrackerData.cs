@@ -15,10 +15,22 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
 {
     public class TrackerData
     {
-        [JsonProperty(PropertyName = "beacons")]
-        public ICollection<string> Beacons { get; set; }
+        [JsonProperty(PropertyName = "macAddressEth")]
+        public string MacAddressEth { get; set; }
 
-        [JsonProperty(PropertyName = "ap_uid")]
+        [JsonProperty(PropertyName = "macAddressWlan0")]
+        public string MacAddressWlan0 { get; set; }
+
+        [JsonProperty(PropertyName = "macAddressWlan1")]
+        public string MacAddressWlan1 { get; set; }
+
+        [JsonProperty(PropertyName = "password")]
+        public string Password { get; set; }
+
+        [JsonProperty(PropertyName = "uid")]
         public string Uid { get; set; }
+
+        [JsonProperty(PropertyName = "token")]
+        public string Token { get; set; }
     }
 }

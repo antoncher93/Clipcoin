@@ -91,7 +91,6 @@
     <Compile Include="Services\Demonstration\RangerService.cs" />
     <Compile Include="Services\Interfaces\ISearchTrackerTaskCallback.cs" />
     <Compile Include="Services\Interfaces\IBeaconSignal.cs" />
-    <Compile Include="Services\Main\TrackerData.cs" />
     <Compile Include="Services\ServiceEventArgs.cs" />
     <Compile Include="Services\Signals\SignalsCallback.cs" />
     <Compile Include="Services\Signals\SignalScanner.cs" />

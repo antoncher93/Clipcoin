@@ -26,19 +26,28 @@ namespace Clipcoin.Phone.Services.Trackers
         public IList<ITracker> Trakers { get; private set; } = new List<ITracker>();
         public IDictionary<string, int> CheckList { get; private set; } = new Dictionary<string, int>();
 
-        public event EventHandler<TrackerEventArgs> OnNewTracker;
-        public event EventHandler<TrackerEventArgs> OnTrackerRemove;
+        public event EventHandler<TrackerEventArgs> OnStateChanged;
 
         private Guid Guid = Guid.NewGuid();
 
         public void CheckAccessPoints(ICollection<IAccessPoint> items)
         {
-            var data = items.Where(i => !CheckList.Any(k => k.Key.Equals(i.Bssid)));
+            var data = items.Where(i => !CheckList.Any(k => k.Key.Equals(i.Bssid))).ToList();
 
+            foreach(var item in items)
+            {
+                if(!CheckList.ContainsKey(item.Bssid))
+                {
+                    CheckList.Add(item.Bssid, 0);
+                }
+            }
 
-            var task = new SearchTrackerTask(this, data, UserSettings.Token);
-            Java.Lang.Thread thread = new Thread(task);
-            thread.Start();
+            if(data.Any())
+            {
+                var task = new SearchTrackerTask(this, data, UserSettings.Token);
+                Java.Lang.Thread thread = new Thread(task);
+                thread.Start();
+            }
         }
 
         public void CheckAccessPoint(IAccessPoint item)
@@ -48,42 +57,40 @@ namespace Clipcoin.Phone.Services.Trackers
             {
                 CheckList.Add(item.Bssid, 0);
 
-                
+                var task = new RequestKeyTask(item, UserSettings.Token);
+                task.OnComplete += (s, e) =>
+                {
+                    System.Diagnostics.Debug.WriteLine(
+                        task.AccessPoint.Ssid +
+                        $" ({task.AccessPoint.Bssid}) " +
+                        " Responce: " +
+                        e.Code + " " + e.Status.ToString());
 
-                //var task = new RequestKeyTask(item, UserSettings.Token);
-                //task.OnComplete += (s, e) =>
-                //{
-                //    System.Diagnostics.Debug.WriteLine(
-                //        task.AccessPoint.Ssid + 
-                //        $" ({task.AccessPoint.Bssid}) " + 
-                //        " Responce: " + 
-                //        e.Code + " " + e.Status.ToString());
+                    if (CheckList.ContainsKey(e.AccessPoint.Bssid))
+                    {
+                        CheckList[e.AccessPoint.Bssid] = e.Code;
+                    }
 
-                //    if (CheckList.ContainsKey(e.AccessPoint.Bssid))
-                //    {
-                //        CheckList[e.AccessPoint.Bssid] = e.Code;
-                //    }
+                    switch (e.Status)
+                    {
+                        case Enums.KeyResponceStatus.Ok:
+                            Logger.Info("Found " + task.AccessPoint.Ssid);
+                            ITracker tracker = new TrackerBuilder()
+                            .Uid(e.Uid)
+                            .AccessPoint(e.AccessPoint)
+                            .Build();
 
-                //    switch (e.Status)
-                //    {
-                //        case Enums.KeyResponceStatus.Ok:
-                //            Logger.Info("Found " + task.AccessPoint.Ssid);
-                //            ITracker tracker = new TrackerBuilder()
-                //            .Uid(e.Uid)
-                //            .AccessPoint(e.AccessPoint)
-                //            .Build();
+                            Add(tracker);
+                            break;
 
-                //            Add(tracker);
-                //            break;
+                        case Enums.KeyResponceStatus.Fail:
+                            break;
 
-                //        case Enums.KeyResponceStatus.Fail:
-                //            break;
-
-                //        case Enums.KeyResponceStatus.NotFound:
-                //            break;
-                //    }
-                //};
-                //task.Run();
+                        case Enums.KeyResponceStatus.NotFound:
+                            break;
+                    }
+                };
+                task.Run();
 
 
             }
@@ -98,13 +105,22 @@ namespace Clipcoin.Phone.Services.Trackers
                 Trakers.Add(item);
 
                 // удалить трекер из списка, если он устарел
-                OnNewTracker?.Invoke(this, new TrackerEventArgs { Tracker = item});
+                OnStateChanged?.Invoke(this, new TrackerEventArgs { Trackers = this.Trakers});
             }
         }
 
         public void OnFindTrackers(IEnumerable<ITracker> items)
         {
-            
+            foreach(var tracker in items)
+            {
+                if (!Trakers.Any(t => t.AccessPoint.Bssid.Equals(tracker.AccessPoint.Bssid, 
+                    StringComparison.CurrentCultureIgnoreCase)))
+                {
+                    Trakers.Add(tracker);
+                    Logger.Info("Find " + tracker.AccessPoint.Ssid);
+                    OnStateChanged?.Invoke(this, new TrackerEventArgs { Trackers = this.Trakers });
+                }
+            }
         }
     }
 }
