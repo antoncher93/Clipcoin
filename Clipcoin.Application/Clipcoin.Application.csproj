@@ -73,7 +73,7 @@
     <Compile Include="Activities\CommonPreferencesActivity.cs" />
     <Compile Include="Activities\LoginActivity.cs" />
     <Compile Include="Activities\MainLoopActivity.cs" />
-    <Compile Include="Assets\Enums\AppearStatis.cs" />
+    <Compile Include="Assets\Enums\AppearStatus.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

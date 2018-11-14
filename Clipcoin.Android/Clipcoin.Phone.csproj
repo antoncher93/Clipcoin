@@ -84,11 +84,14 @@
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Runnable\SearchTrackerTask.cs" />
     <Compile Include="Services\Beacons\BeaconScanResult.cs" />
     <Compile Include="Services\Beacons\BeaconSignal.cs" />
     <Compile Include="Services\Beacons\RangeNotifier.cs" />
     <Compile Include="Services\Demonstration\RangerService.cs" />
+    <Compile Include="Services\Interfaces\ISearchTrackerTaskCallback.cs" />
     <Compile Include="Services\Interfaces\IBeaconSignal.cs" />
+    <Compile Include="Services\Main\TrackerData.cs" />
     <Compile Include="Services\ServiceEventArgs.cs" />
     <Compile Include="Services\Signals\SignalsCallback.cs" />
     <Compile Include="Services\Signals\SignalScanner.cs" />

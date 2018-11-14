@@ -2,4 +2,5 @@
 <resources>
     <string name="Hello">Hello World, Click Me!</string>
     <string name="ApplicationName">Test</string>
+	<string name="Token">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjdXN0b21lckBmb28uYmFyIiwianRpIjoiMzAyYmJlYWYtMjc5OC00NjM4LTgzNTEtZmQ4MTkyM2M5MGQ1IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxOTM3N2ZjYS0yZDVmLTRkOGEtODVmNi04YWRiMGExZThlMTIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwiZXhwIjoxNTQ0NjE2ODAzLCJpc3MiOiJodHRwOi8vc2hvcHBlcmNvaW4ub3JnIiwiYXVkIjoiaHR0cDovL3Nob3BwZXJjb2luLm9yZyJ9.TAZ463fmYbUYqZ-ajJuMjiH2_rbW1Du54tL-ItNJmQY</string>
 </resources>
