@@ -20,7 +20,7 @@ using Java.Lang;
 
 namespace Clipcoin.Phone.Services.Trackers
 {
-    public class TrackerManager
+    public class TrackerManager : ISearchTrackerTaskCallback
     {
         
         public IList<ITracker> Trakers { get; private set; } = new List<ITracker>();
@@ -31,48 +31,60 @@ namespace Clipcoin.Phone.Services.Trackers
 
         private Guid Guid = Guid.NewGuid();
 
+        public void CheckAccessPoints(ICollection<IAccessPoint> items)
+        {
+            var data = items.Where(i => !CheckList.Any(k => k.Key.Equals(i.Bssid)));
+
+
+            var task = new SearchTrackerTask(this, data, UserSettings.Token);
+            Java.Lang.Thread thread = new Thread(task);
+            thread.Start();
+        }
+
         public void CheckAccessPoint(IAccessPoint item)
         {
-            if(!CheckList.ContainsKey(item.Bssid))
+            if(!CheckList.ContainsKey(item.Bssid) || 
+                (CheckList.ContainsKey(item.Bssid) && CheckList[item.Bssid].Equals(500)))
             {
                 CheckList.Add(item.Bssid, 0);
-                var task = new RequestKeyTask(item, UserSettings.Token);
-                task.OnComplete += (s, e) =>
-                {
 
-                    System.Diagnostics.Debug.WriteLine(
-                        task.AccessPoint.Ssid + 
-                        $" ({task.AccessPoint.Bssid}) " + 
-                        " Responce: " + 
-                        e.Code + " " + e.Status.ToString());
+                
 
-                    if (CheckList.ContainsKey(e.AccessPoint.Bssid))
-                    {
-                        CheckList[e.AccessPoint.Bssid] = e.Code;
-                    }
+                //var task = new RequestKeyTask(item, UserSettings.Token);
+                //task.OnComplete += (s, e) =>
+                //{
+                //    System.Diagnostics.Debug.WriteLine(
+                //        task.AccessPoint.Ssid + 
+                //        $" ({task.AccessPoint.Bssid}) " + 
+                //        " Responce: " + 
+                //        e.Code + " " + e.Status.ToString());
 
-                    switch (e.Status)
-                    {
-                        case Enums.KeyResponceStatus.Ok:
-                            Logger.Info("Found " + task.AccessPoint.Ssid);
-                            ITracker tracker = new TrackerBuilder()
-                            .Uid(e.Uid)
-                            .AccessPoint(e.AccessPoint)
-                            .Build();
+                //    if (CheckList.ContainsKey(e.AccessPoint.Bssid))
+                //    {
+                //        CheckList[e.AccessPoint.Bssid] = e.Code;
+                //    }
 
-                            Add(tracker);
+                //    switch (e.Status)
+                //    {
+                //        case Enums.KeyResponceStatus.Ok:
+                //            Logger.Info("Found " + task.AccessPoint.Ssid);
+                //            ITracker tracker = new TrackerBuilder()
+                //            .Uid(e.Uid)
+                //            .AccessPoint(e.AccessPoint)
+                //            .Build();
 
-                            
-                            break;
+                //            Add(tracker);
+                //            break;
 
-                        case Enums.KeyResponceStatus.Fail:
-                            break;
+                //        case Enums.KeyResponceStatus.Fail:
+                //            break;
 
-                        case Enums.KeyResponceStatus.NotFound:
-                            break;
-                    }
-                };
-                task.Run();
+                //        case Enums.KeyResponceStatus.NotFound:
+                //            break;
+                //    }
+                //};
+                //task.Run();
+
 
             }
           
@@ -88,6 +100,11 @@ namespace Clipcoin.Phone.Services.Trackers
                 // удалить трекер из списка, если он устарел
                 OnNewTracker?.Invoke(this, new TrackerEventArgs { Tracker = item});
             }
+        }
+
+        public void OnFindTrackers(IEnumerable<ITracker> items)
+        {
+            
         }
     }
 }

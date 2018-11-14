@@ -87,8 +87,8 @@ namespace Clipcoin.Application
 			// aapt resource value: 0x7f070005
 			public const int button_login = 2131165189;
 			
-			// aapt resource value: 0x7f070010
-			public const int button_try_again = 2131165200;
+			// aapt resource value: 0x7f070011
+			public const int button_try_again = 2131165201;
 			
 			// aapt resource value: 0x7f070004
 			public const int checkBox_showPassword = 2131165188;
@@ -117,8 +117,8 @@ namespace Clipcoin.Application
 			// aapt resource value: 0x7f07000e
 			public const int textView_BeaconScannerStatus = 2131165198;
 			
-			// aapt resource value: 0x7f07000f
-			public const int textView_Log = 2131165199;
+			// aapt resource value: 0x7f070010
+			public const int textView_Log = 2131165200;
 			
 			// aapt resource value: 0x7f07000b
 			public const int textView_SignalsCount = 2131165195;
@@ -131,6 +131,9 @@ namespace Clipcoin.Application
 			
 			// aapt resource value: 0x7f070002
 			public const int textView_password = 2131165186;
+			
+			// aapt resource value: 0x7f07000f
+			public const int textView_status_position = 2131165199;
 			
 			// aapt resource value: 0x7f070007
 			public const int textView_ts = 2131165191;
@@ -176,8 +179,26 @@ namespace Clipcoin.Application
 			// aapt resource value: 0x7f050002
 			public const int beacon_scan_interval_key = 2131034114;
 			
+			// aapt resource value: 0x7f050004
+			public const int first_beacon_address_default_value = 2131034116;
+			
+			// aapt resource value: 0x7f050003
+			public const int first_beacon_address_key = 2131034115;
+			
+			// aapt resource value: 0x7f050007
+			public const int rssi_treshold_default_value = 2131034119;
+			
+			// aapt resource value: 0x7f050008
+			public const int rssi_treshold_key = 2131034120;
+			
+			// aapt resource value: 0x7f050006
+			public const int second_beacon_address_default_value = 2131034118;
+			
+			// aapt resource value: 0x7f050005
+			public const int second_beacon_address_key = 2131034117;
+			
 			// aapt resource value: 0x7f050001
-			public const int tel_send_address = 2131034113;
+			public const int tel_send_address_default_value = 2131034113;
 			
 			static String()
 			{

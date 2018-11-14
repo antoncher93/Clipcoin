@@ -9,22 +9,13 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Clipcoin.Phone.Services.Interfaces;
 using Newtonsoft.Json;
 
 namespace Clipcoin.Phone.Services.Classes.Trackers
 {
-    public class BeaconBody
+    public class BeaconBody 
     {
-        [JsonProperty(PropertyName = "uid")]
-        public string Uid { get; set; }
-
-        [JsonProperty(PropertyName = "serial")]
-        public string Serial { get; set; }
-
-        [JsonProperty(PropertyName = "lineType")]
-        public string LineType { get; set; }
-
-        [JsonProperty(PropertyName = "macAddress")]
-        public string Mac { get; set; }
+        
     }
 }

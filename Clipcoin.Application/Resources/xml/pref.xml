@@ -2,16 +2,31 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
 	<EditTextPreference
-		android:value ="@string/tel_send_address"
         android:key="telemetry_address"
-        android:summary="Address for sending telemetry"
+		android:defaultValue ="@string/tel_send_address_default_value"
         android:title="Address">
 	</EditTextPreference>
+	
 	<ListPreference
 	   android:entries="@array/entries"
 	   android:entryValues="@array/entries"
-	   android:key="beacon_scan_interval"
-	   android:summary="Interval of Beacon Scanning"
-	   android:title="Scan Interval">
+	   android:key="@string/rssi_treshold_key"
+	   android:defaultValue="@string/rssi_treshold_default_value"
+	   android:summary="%s"
+	   android:title="RSSI Treshold">
 	</ListPreference>
+	
+	<EditTextPreference
+        android:key="@string/first_beacon_address_key"
+		android:value="@string/first_beacon_address_default_value"
+		android:defaultValue ="@string/first_beacon_address_default_value"
+        android:title="1st Beacon">
+	</EditTextPreference>
+
+	<EditTextPreference
+        android:key="@string/second_beacon_address_key"
+		android:value="@string/second_beacon_address_default_value"
+		android:defaultValue="@string/second_beacon_address_default_value"
+        android:title="2nd Beacon">
+	</EditTextPreference>
 </PreferenceScreen>
