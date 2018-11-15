@@ -114,7 +114,7 @@ namespace Clipcoin.Application.Show
                 .Build();
             //Android.Net.Uri.Parse($"{ContentResolver.SchemeAndroidResource}{_ctx.PackageName}{}" )
             notif.Sound = RingtoneManager.GetDefaultUri(args.Type == TriggerEventType.Enter ? 
-                RingtoneType.Ringtone : RingtoneType.Notification);
+                RingtoneType.Notification : RingtoneType.Notification);
             notif.Vibrate = new long[] { 500, 1000 };
             notif_manager.Notify(1, notif);
 
