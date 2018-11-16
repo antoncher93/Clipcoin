@@ -47,7 +47,8 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
                 }
             }
         }
-        private const int RssiTreshold = -70;
+        
+        private static int _rssiTreshold = -100;
 
 
         private WifiManager _wifiManager;
@@ -67,6 +68,8 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
         public APointManager ApManager { get; private set; } // список активных сетей
 
         private SignalsDBWriter dbWriter;
+
+        public int RssiTreshold { get => _rssiTreshold; set => _rssiTreshold = value; }
 
         public string Token
         {
@@ -201,7 +204,7 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
 
         public void OnNext(BeaconScanResult value)
         {
-            foreach (var beacon in value.Signals)
+            foreach (var beacon in value.Signals.Where(s => s.Rssi>=_rssiTreshold))
             {
                 if (ApManager.TrackerManager.Trakers.Any())
                 {

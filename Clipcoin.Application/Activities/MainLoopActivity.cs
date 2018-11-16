@@ -106,11 +106,12 @@ namespace Clipcoin.Application.Activities
             BeaconScannerService.RangeNotifier.Subscribe(this);
             BeaconScannerService.RangeNotifier.Subscribe(tn);
 
-           
+
 
             service = new TrackerScannerService
             {
-                Token = settings.Token
+                Token = settings.Token,
+                RssiTreshold = new CommonSettings(this).RssiTreshold
             };
 
             unsubscriber = service.Subscribe(this);

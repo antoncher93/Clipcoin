@@ -2,6 +2,9 @@
 <resources>
   <string name="app_name">Clipcoin.Application</string>
 	<string-array name="entries">
+		<item>-55</item>
+		<item>-60</item>
+		<item>-65</item>
 		<item>-70</item>
 		<item>-75</item>
 		<item>-80</item>
@@ -11,9 +14,9 @@
 	<string name="tel_send_address_default_value">http://192.168.0.9:5000</string>
 	<string name="beacon_scan_interval_key">beacon_scan_interval</string>
 	<string name="first_beacon_address_key">first_beacon_address</string>
-	<string name="first_beacon_address_default_value">F4:B8:5E:DE:A5:63</string>
+	<string name="first_beacon_address_default_value">F4:B8:5E:DE:B4:C1</string>
 	<string name="second_beacon_address_key">"second_beacon_address"</string>
-	<string name="second_beacon_address_default_value">F4:B8:5E:DE:B4:C1</string>
+	<string name="second_beacon_address_default_value">F4:B8:5E:DE:A5:63</string>
 
 	<string name="rssi_treshold_default_value">-70</string>
 	<string name="rssi_treshold_key">rssi_treshold</string>
