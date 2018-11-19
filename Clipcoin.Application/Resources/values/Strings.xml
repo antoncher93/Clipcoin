@@ -10,6 +10,8 @@
 		<item>-80</item>
 		<item>-85</item>
 		<item>-90</item>
+		<item>-95</item>
+		<item>-100</item>
 	</string-array>
 	<string name="tel_send_address_default_value">http://192.168.0.9:5000</string>
 	<string name="beacon_scan_interval_key">beacon_scan_interval</string>

@@ -29,8 +29,8 @@ namespace Clipcoin.Application.Show
             {
                 OnEvent?.Invoke(this, lastEvent);
                 StopTimer();
+                lastEvent = null;
             };
-            timer.Disposed += (s, e) => Console.WriteLine("timer disposed");
         }
 
         public void HoldEvent(TriggerEventArgs args)

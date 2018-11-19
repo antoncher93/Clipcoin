@@ -35,9 +35,9 @@ namespace Clipcoin.Phone.Services.Beacons
         public static RangeNotifier RangeNotifier => _rangeNotifier;
 
         private static int fsp = 500;
-        private static int fbsp = 500;
+        private static int fbsp = 1000;
         private static int bsp = 500;
-        private static int bbsp = 500;
+        private static int bbsp = 2000;
         
         public int ForegroundScanPeriod { get => fsp; set => fsp = value; }
         public int ForegroundBetweenScanPeriod { get => fbsp; set => fbsp = value; }

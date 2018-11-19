@@ -104,8 +104,8 @@ namespace Clipcoin.Application.Activities
             Logger.OnEvent += OnLoggerEvent;
 
             BeaconScannerService.RangeNotifier.Subscribe(this);
-            BeaconScannerService.RangeNotifier.Subscribe(tn);
-
+            //BeaconScannerService.RangeNotifier.Subscribe(tn);
+            tn.Subscribe(BeaconScannerService.RangeNotifier);
 
 
             service = new TrackerScannerService

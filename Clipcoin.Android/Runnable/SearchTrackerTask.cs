@@ -55,7 +55,13 @@ namespace Clipcoin.Phone.Runnable
 
         public void OnFailure(Request request, IOException iOException)
         {
-            
+            Dispose();
+        }
+
+        public new void Dispose()
+        {
+            _callback = null;
+            base.Dispose();
         }
 
         public void OnResponse(Response response)
@@ -89,6 +95,8 @@ namespace Clipcoin.Phone.Runnable
 
                     break;
             }
+
+            Dispose();
             
         }
     }
