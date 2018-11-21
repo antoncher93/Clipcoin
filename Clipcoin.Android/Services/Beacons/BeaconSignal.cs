@@ -18,5 +18,6 @@ namespace Clipcoin.Phone.Services.Beacons
         public string Mac { get; set; }
         public string UUID { get; set; }
         public int Rssi { get; set; }
+        public double Distance { get; set; }
     }
 }

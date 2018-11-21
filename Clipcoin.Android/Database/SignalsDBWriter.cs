@@ -25,10 +25,10 @@ namespace Clipcoin.Phone.Database
         public const string RssiKey = "rssi";
         public const string APointKey = "apoint";
         public const string DateTimeKey = "datetime";
-
-
+        public const string DistanceKey = "distance";
 
         public const string BeaconTableName = "beacon_signals";
+
         private Context context;
         public DBHelper Helper { get; private set; }
         public IDictionary<string, string> Headers
@@ -41,7 +41,8 @@ namespace Clipcoin.Phone.Database
                     {UuidKey, "text" },
                     {RssiKey, "int" },
                     {APointKey, "text" },
-                    {DateTimeKey, "text" }
+                    {DateTimeKey, "text" },
+                    { DistanceKey, "rear"}
                 };
             }
         }
@@ -59,7 +60,7 @@ namespace Clipcoin.Phone.Database
                 Helper.ClearTable(BeaconTableName);
             }
 
-            //Helper.DropTable(BeaconTableName);
+            Helper.DropTable(BeaconTableName);
         }
 
         public void NewBeaconSignal(BeaconSignal beacon, string apointUid, DateTime time)
@@ -79,6 +80,7 @@ namespace Clipcoin.Phone.Database
             cv.Put(APointKey, apointUid);
             cv.Put(DateTimeKey, Tools.FormateDateTimeToTime(time));
             cv.Put(UuidKey, beacon.UUID);
+            cv.Put(DistanceKey, beacon.Distance);
 
             try
             {

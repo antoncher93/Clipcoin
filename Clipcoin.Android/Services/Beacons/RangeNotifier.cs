@@ -15,7 +15,7 @@ namespace Clipcoin.Phone.Services.Beacons
 {
     public class RangeNotifier : Java.Lang.Object, IRangeNotifier, IObservable<BeaconScanResult>
     {
-        private static IList<IObserver<BeaconScanResult>> _observers = new List<IObserver<BeaconScanResult>>();
+        private IList<IObserver<BeaconScanResult>> _observers = new List<IObserver<BeaconScanResult>>();
 
         public void DidRangeBeaconsInRegion(ICollection<Beacon> beacons, Region region)
         {
@@ -26,7 +26,7 @@ namespace Clipcoin.Phone.Services.Beacons
                 obs.OnNext(new BeaconScanResult
                 {
                     Signals = beacons
-                    .Select(b => new BeaconSignal { Mac = b.BluetoothAddress, Rssi = b.Rssi, UUID = b.Id1.ToString() })
+                    .Select(b => new BeaconSignal { Mac = b.BluetoothAddress, Rssi = b.Rssi, UUID = b.Id1.ToString(), Distance = b.Distance })
                     .ToList(),
                     Time = DateTime.Now
                 });
@@ -41,6 +41,13 @@ namespace Clipcoin.Phone.Services.Beacons
                 _observers.Add(observer);
             }
             return new Subscriber(_observers, observer);
+
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+
 
         }
 

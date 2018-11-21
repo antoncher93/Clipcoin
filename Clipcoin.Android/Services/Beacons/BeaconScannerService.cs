@@ -31,13 +31,13 @@ namespace Clipcoin.Phone.Services.Beacons
 
         private static Region region; //=  new Region("Common", null, null, null);
         
-        private static RangeNotifier _rangeNotifier = new RangeNotifier();
-        public static RangeNotifier RangeNotifier => _rangeNotifier;
+        private static RangeNotifier _rangeNotifier;
+        
 
         private static int fsp = 500;
-        private static int fbsp = 1000;
-        private static int bsp = 500;
-        private static int bbsp = 2000;
+        private static int fbsp = 0;
+        private static int bsp = 1000;
+        private static int bbsp = 0;
         
         public int ForegroundScanPeriod { get => fsp; set => fsp = value; }
         public int ForegroundBetweenScanPeriod { get => fbsp; set => fbsp = value; }
@@ -52,9 +52,22 @@ namespace Clipcoin.Phone.Services.Beacons
             return new Binder();
         }
 
+        public static RangeNotifier RangeNotifier
+        {
+            get
+            {
+                if(_rangeNotifier == null)
+                {
+                    _rangeNotifier = new RangeNotifier();
+                }
+                return _rangeNotifier;
+            }
+        }
+
         public override void OnCreate()
         {
             base.OnCreate();
+
             beaconManager = BeaconManager.GetInstanceForApplication(this);
          
             beaconManager.BeaconParsers.Add(new BeaconParser().SetBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:25-25"));
@@ -112,7 +125,7 @@ namespace Clipcoin.Phone.Services.Beacons
                 beaconManager.UpdateScanPeriods();
             }
             
-            beaconManager.RangingNotifiers.Add(_rangeNotifier);
+            beaconManager.RangingNotifiers.Add(RangeNotifier);
             beaconManager.StartRangingBeaconsInRegion(region);
 
             Toast.MakeText(this.ApplicationContext, "Beacon Scanner started.", ToastLength.Short).Show();
@@ -123,6 +136,7 @@ namespace Clipcoin.Phone.Services.Beacons
         public override void OnDestroy()
         {
             base.OnDestroy();
+            _rangeNotifier = null;
             beaconManager.StopRangingBeaconsInRegion(region);
             beaconManager.Unbind(this);
             bleManager?.Adapter.Disable();

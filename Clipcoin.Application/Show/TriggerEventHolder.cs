@@ -23,8 +23,9 @@ namespace Clipcoin.Application.Show
         TriggerEventArgs lastEvent;
         bool timer_started = false;
 
-        public TriggerEventHolder()
+        public TriggerEventHolder(int interval)
         {
+            timer.Interval = interval;
             timer.Elapsed += (s, e) =>
             {
                 OnEvent?.Invoke(this, lastEvent);
@@ -35,35 +36,30 @@ namespace Clipcoin.Application.Show
 
         public void HoldEvent(TriggerEventArgs args)
         {
-            if(lastEvent!=null && args.Type != lastEvent.Type)
+            if(lastEvent == null)
             {
-                if(timer_started)
-                {
-                    StopTimer();
-                }
-                else
-                {
-                    lastEvent = args;
-                    StartTimer();
-                }
-                
-                
+                lastEvent = args;
+                timer.Start();
             }
             else
             {
-                if(lastEvent == null)
+                if(lastEvent.Type == args.Type)
                 {
-                    lastEvent = args;
-                    timer.Start();
-                    
+
+                }
+                else
+                {
+                    lastEvent = null;
+                    timer.Stop();
                 }
             }
         }
 
-        private void StartTimer()
+        private void RestartTimer()
         {
-            timer_started = true;
+            timer.Stop();
             timer.Start();
+            timer_started = true;
         }
 
         private void StopTimer()

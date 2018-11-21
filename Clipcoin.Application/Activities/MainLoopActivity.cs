@@ -92,6 +92,7 @@ namespace Clipcoin.Application.Activities
            
             settings = UserSettings.GetInstanceForApp(this);
             tn = new TriggerNotificator(this);
+            tn.Interval = 3000;
 
             tvLog = FindViewById<TextView>(Resource.Id.textView_Log);
             tvSignalCount = FindViewById<TextView>(Resource.Id.textView_SignalsCount);

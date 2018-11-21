@@ -34,7 +34,7 @@ namespace Clipcoin.Application.Show
         CommonSettings settings;
 
         public TriggerEventHolder Holder { get; private set; }
-
+        public int Interval { get; set; } = 2000;
 
         public TriggerNotificator(Context ctx)
         {
@@ -53,7 +53,7 @@ namespace Clipcoin.Application.Show
                .AddSecondLineBeacon(BeaconBody.FromMac(settings.SecondBeaconAddress))
                .Build();
 
-            Holder = new TriggerEventHolder();
+            Holder = new TriggerEventHolder(Interval);
 
             ranger.OnEvent += RangerOnEventHandler;
 
