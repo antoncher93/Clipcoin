@@ -35,8 +35,8 @@ namespace Clipcoin.Phone.Services.Beacons
         
 
         private static int fsp = 500;
-        private static int fbsp = 0;
-        private static int bsp = 1000;
+        private static int fbsp = 1000;
+        private static int bsp = 0;
         private static int bbsp = 0;
         
         public int ForegroundScanPeriod { get => fsp; set => fsp = value; }

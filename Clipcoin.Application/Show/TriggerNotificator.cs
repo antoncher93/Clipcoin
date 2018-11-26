@@ -5,6 +5,7 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Hardware;
 using Android.Media;
 using Android.OS;
 using Android.Preferences;
@@ -24,7 +25,7 @@ namespace Clipcoin.Application.Show
 {
     public class TriggerNotificator : IObserver<BeaconScanResult>
     {
-        private int RssiTreshold = -70;
+        public int RssiTreshold { get; set; } = -70;
         Context _ctx;
         IDisposable subscriber;
         Telemetry telemetry;
@@ -41,8 +42,6 @@ namespace Clipcoin.Application.Show
             _ctx = ctx;
 
             settings = new CommonSettings(ctx);
-
-            RssiTreshold = settings.RssiTreshold;
 
             telemetry = Telemetry.EmptyForUser("123");
 

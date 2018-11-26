@@ -7,6 +7,7 @@ using Android.App;
 using Android.Content;
 using Android.Content.Res;
 using Android.Graphics;
+using Android.Hardware;
 using Android.OS;
 using Android.Preferences;
 using Android.Runtime;
@@ -22,14 +23,22 @@ using Clipcoin.Phone.Services.Beacons;
 using Clipcoin.Phone.Services.Classes.Trackers;
 using Clipcoin.Phone.Services.Enums;
 using Clipcoin.Phone.Services.TrackerScanner;
+using Android.Hardware;
 
 namespace Clipcoin.Application.Activities
 {
     [Activity(Label = "MainLoopActivity", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-    public class MainLoopActivity : Activity, IObserver<TrackerScanInfo>, IObserver<BeaconScanResult>
+    public class MainLoopActivity : 
+        Activity, 
+        IObserver<TrackerScanInfo>, 
+        IObserver<BeaconScanResult>,
+        ISensorEventListener
+        
     {
+        private const int RssiBoost = 5;
         TextView tvLog;
         UserSettings settings;
+        CommonSettings commonSettings;
         TrackerScannerService service;
 
         TextView tvBeacScanStatus;
@@ -42,6 +51,8 @@ namespace Clipcoin.Application.Activities
         IDisposable unsubscriber;
         int count;
         AppearStatus _status;
+
+        SensorManager sManager;
 
 
         int Signal_count
@@ -85,14 +96,23 @@ namespace Clipcoin.Application.Activities
             // Create your application here
 
             count = 0;
-      
+
+            sManager = (SensorManager)GetSystemService(Context.SensorService);
+            var sensor = sManager.GetDefaultSensor(SensorType.Proximity);
+            sManager.RegisterListener(this, sensor, SensorDelay.Game);
+
             Initial();
 
             tvBeacScanStatus = FindViewById<TextView>(Resource.Id.textView_BeaconScannerStatus);
            
             settings = UserSettings.GetInstanceForApp(this);
-            tn = new TriggerNotificator(this);
-            tn.Interval = 3000;
+            commonSettings = new CommonSettings(this);
+
+            tn = new TriggerNotificator(this)
+            {
+                Interval = 3000,
+                RssiTreshold = commonSettings.RssiTreshold
+            };
 
             tvLog = FindViewById<TextView>(Resource.Id.textView_Log);
             tvSignalCount = FindViewById<TextView>(Resource.Id.textView_SignalsCount);
@@ -180,16 +200,17 @@ namespace Clipcoin.Application.Activities
         {
             base.OnBackPressed();
 
+            if (Tools.IsServiceRunning(this, service.Class))
+            {
+                StopService(new Intent(this, service.Class));
+            }
+
             settings.Token = "";
             Finish();
         }
 
         protected override void OnDestroy()
         {
-            if (Tools.IsServiceRunning(this, service.Class))
-            {
-                StopService(new Intent(this, service.Class));
-            }
 
             base.OnDestroy();
         }
@@ -223,6 +244,24 @@ namespace Clipcoin.Application.Activities
         public void OnNext(BeaconScanResult value)
         {
             Signal_count = Signal_count + value.Signals.Count;
+        }
+
+        public void OnAccuracyChanged(Sensor sensor, [GeneratedEnum] SensorStatus accuracy)
+        {
+            
+        }
+
+        public void OnSensorChanged(SensorEvent e)
+        {
+            if(e.Values[0].Equals(0))
+            {
+                tn.RssiTreshold = commonSettings.RssiTreshold - RssiBoost;
+            }
+            else
+            {
+                tn.RssiTreshold = commonSettings.RssiTreshold;
+            }
+            
         }
     }
 }

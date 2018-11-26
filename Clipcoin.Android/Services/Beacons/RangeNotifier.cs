@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using AltBeaconOrg.BoundBeacon;
 using Android.App;
 using Android.Content;
@@ -23,13 +24,17 @@ namespace Clipcoin.Phone.Services.Beacons
             System.Diagnostics.Debug.WriteLine($"[{now}.{now.Millisecond}] Beacons: {beacons.Count}");
             foreach (var obs in _observers)
             {
-                obs.OnNext(new BeaconScanResult
+                Task.Factory.StartNew(() =>
                 {
-                    Signals = beacons
+                    obs.OnNext(new BeaconScanResult
+                    {
+                        Signals = beacons
                     .Select(b => new BeaconSignal { Mac = b.BluetoothAddress, Rssi = b.Rssi, UUID = b.Id1.ToString(), Distance = b.Distance })
                     .ToList(),
-                    Time = DateTime.Now
+                        Time = DateTime.Now
+                    });
                 });
+                
             }
         }
 
