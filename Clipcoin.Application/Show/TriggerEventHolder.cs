@@ -19,7 +19,7 @@ namespace Clipcoin.Application.Show
     {
         public event EventHandler<TriggerEventArgs> OnEvent;
 
-        Timer timer = new Timer { Interval = 2000, Enabled = true };
+        Timer timer = new Timer { Interval = 2000, Enabled = false };
         TriggerEventArgs lastEvent;
         bool timer_started = false;
 

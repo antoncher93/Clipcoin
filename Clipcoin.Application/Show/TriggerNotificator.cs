@@ -26,6 +26,7 @@ namespace Clipcoin.Application.Show
     public class TriggerNotificator : IObserver<BeaconScanResult>
     {
         public int RssiTreshold { get; set; } = -70;
+        private string _userName = "user";
         Context _ctx;
         IDisposable subscriber;
         Telemetry telemetry;
@@ -43,13 +44,17 @@ namespace Clipcoin.Application.Show
 
             settings = new CommonSettings(ctx);
 
-            telemetry = Telemetry.EmptyForUser("123");
+            telemetry = Telemetry.EmptyForUser(_userName);
 
             notif_manager = (NotificationManager)ctx.GetSystemService(Context.NotificationService);
 
             ranger = new RangerBuilder()
-               .AddFirstLineBeacon(BeaconBody.FromMac(settings.FirstBeaconAddress))
-               .AddSecondLineBeacon(BeaconBody.FromMac(settings.SecondBeaconAddress))
+               //.AddFirstLineBeacon(BeaconBody.FromMac(settings.FirstBeaconAddress))
+               //.AddSecondLineBeacon(BeaconBody.FromMac(settings.SecondBeaconAddress))
+               .AddFirstLineBeacon(BeaconBody.FromMac("DF:20:C6:5A:62:5F"))
+               .AddFirstLineBeacon(BeaconBody.FromMac("C4:7B:88:EE:69:EE"))
+               .AddSecondLineBeacon(BeaconBody.FromMac("DE:A6:78:08:52:A2"))
+               .AddSecondLineBeacon(BeaconBody.FromMac("C9:18:B1:CF:9B:50"))
                .Build();
 
             Holder = new TriggerEventHolder(Interval);
@@ -59,6 +64,8 @@ namespace Clipcoin.Application.Show
             Holder.OnEvent += (s, e) =>
             {
                 SendNotification(e);
+
+                telemetry = Telemetry.EmptyForUser(_userName);
             };
 
             

@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SensorsTest", "SensorsTest\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLETest", "BLETest\BLETest.csproj", "{CAEB9D98-8994-42A3-B419-ECC1B7658AC9}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warriors", "Warriors\Warriors.csproj", "{84DF5099-E665-4062-9163-F7411086572E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{CAEB9D98-8994-42A3-B419-ECC1B7658AC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CAEB9D98-8994-42A3-B419-ECC1B7658AC9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CAEB9D98-8994-42A3-B419-ECC1B7658AC9}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{84DF5099-E665-4062-9163-F7411086572E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84DF5099-E665-4062-9163-F7411086572E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84DF5099-E665-4062-9163-F7411086572E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84DF5099-E665-4062-9163-F7411086572E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

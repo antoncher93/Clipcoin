@@ -63,13 +63,16 @@ namespace Clipcoin.Application
 		{
 			
 			// aapt resource value: 0x7f020000
-			public const int coin = 2130837504;
+			public const int button_normal = 2130837504;
 			
 			// aapt resource value: 0x7f020001
-			public const int enter = 2130837505;
+			public const int coin = 2130837505;
 			
 			// aapt resource value: 0x7f020002
-			public const int exit = 2130837506;
+			public const int enter = 2130837506;
+			
+			// aapt resource value: 0x7f020003
+			public const int exit = 2130837507;
 			
 			static Drawable()
 			{
@@ -84,59 +87,65 @@ namespace Clipcoin.Application
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f070005
-			public const int button_login = 2131165189;
+			// aapt resource value: 0x7f080010
+			public const int button_IENTER = 2131230736;
 			
-			// aapt resource value: 0x7f070011
-			public const int button_try_again = 2131165201;
+			// aapt resource value: 0x7f080011
+			public const int button_IExit = 2131230737;
 			
-			// aapt resource value: 0x7f070004
-			public const int checkBox_showPassword = 2131165188;
+			// aapt resource value: 0x7f080005
+			public const int button_login = 2131230725;
 			
-			// aapt resource value: 0x7f070001
-			public const int editText_login = 2131165185;
+			// aapt resource value: 0x7f080013
+			public const int button_try_again = 2131230739;
 			
-			// aapt resource value: 0x7f070003
-			public const int editText_password = 2131165187;
+			// aapt resource value: 0x7f080004
+			public const int checkBox_showPassword = 2131230724;
 			
-			// aapt resource value: 0x7f070006
-			public const int linearLayout1 = 2131165190;
+			// aapt resource value: 0x7f080001
+			public const int editText_login = 2131230721;
 			
-			// aapt resource value: 0x7f070009
-			public const int linearLayout2 = 2131165193;
+			// aapt resource value: 0x7f080003
+			public const int editText_password = 2131230723;
 			
-			// aapt resource value: 0x7f07000c
-			public const int linearLayout3 = 2131165196;
+			// aapt resource value: 0x7f080006
+			public const int linearLayout1 = 2131230726;
 			
-			// aapt resource value: 0x7f07000a
-			public const int textView1 = 2131165194;
+			// aapt resource value: 0x7f080009
+			public const int linearLayout2 = 2131230729;
 			
-			// aapt resource value: 0x7f07000d
-			public const int textView2 = 2131165197;
+			// aapt resource value: 0x7f08000c
+			public const int linearLayout3 = 2131230732;
 			
-			// aapt resource value: 0x7f07000e
-			public const int textView_BeaconScannerStatus = 2131165198;
+			// aapt resource value: 0x7f08000a
+			public const int textView1 = 2131230730;
 			
-			// aapt resource value: 0x7f070010
-			public const int textView_Log = 2131165200;
+			// aapt resource value: 0x7f08000d
+			public const int textView2 = 2131230733;
 			
-			// aapt resource value: 0x7f07000b
-			public const int textView_SignalsCount = 2131165195;
+			// aapt resource value: 0x7f08000e
+			public const int textView_BeaconScannerStatus = 2131230734;
 			
-			// aapt resource value: 0x7f070008
-			public const int textView_TrackerScannerValue = 2131165192;
+			// aapt resource value: 0x7f080012
+			public const int textView_Log = 2131230738;
 			
-			// aapt resource value: 0x7f070000
-			public const int textView_login = 2131165184;
+			// aapt resource value: 0x7f08000b
+			public const int textView_SignalsCount = 2131230731;
 			
-			// aapt resource value: 0x7f070002
-			public const int textView_password = 2131165186;
+			// aapt resource value: 0x7f080008
+			public const int textView_TrackerScannerValue = 2131230728;
 			
-			// aapt resource value: 0x7f07000f
-			public const int textView_status_position = 2131165199;
+			// aapt resource value: 0x7f080000
+			public const int textView_login = 2131230720;
 			
-			// aapt resource value: 0x7f070007
-			public const int textView_ts = 2131165191;
+			// aapt resource value: 0x7f080002
+			public const int textView_password = 2131230722;
+			
+			// aapt resource value: 0x7f08000f
+			public const int textView_status_position = 2131230735;
+			
+			// aapt resource value: 0x7f080007
+			public const int textView_ts = 2131230727;
 			
 			static Id()
 			{
@@ -206,6 +215,22 @@ namespace Clipcoin.Application
 			}
 			
 			private String()
+			{
+			}
+		}
+		
+		public partial class Style
+		{
+			
+			// aapt resource value: 0x7f070000
+			public const int MyTextStyle = 2131165184;
+			
+			static Style()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Style()
 			{
 			}
 		}

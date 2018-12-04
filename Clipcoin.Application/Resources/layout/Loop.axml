@@ -57,9 +57,29 @@
         android:text="INSIDE"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-		android:textSize="30dp"
-		android:gravity="center"
+        android:textSize="30dp"
+        android:gravity="center"
         android:id="@+id/textView_status_position" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:id="@+id/linearLayout2">
+        <Button
+            android:text="Вошёл"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:layout_marginBottom="30dp"
+            android:id="@+id/button_IENTER" />
+        <Button
+            android:text="ВЫШЕЛ"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:id="@+id/button_IExit" />
+    </LinearLayout>
     <TextView
         android:text="Log"
         android:layout_width="match_parent"

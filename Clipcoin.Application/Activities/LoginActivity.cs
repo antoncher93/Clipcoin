@@ -28,6 +28,7 @@ namespace Clipcoin.Application.Activities
         CheckBox chbxShowPassword;
         OkHttpClient client;
         Handler handler;
+        ProgressDialog dialog;
 
         int _backPressedCount;
 
@@ -43,6 +44,12 @@ namespace Clipcoin.Application.Activities
             etLogin = FindViewById<EditText>(Resource.Id.editText_login);
             etPassword = FindViewById<EditText>(Resource.Id.editText_password);
             chbxShowPassword = FindViewById<CheckBox>(Resource.Id.checkBox_showPassword);
+
+            dialog = new ProgressDialog(this);
+            dialog.SetMessage("Please wait");
+            dialog.Indeterminate = true;
+            dialog.SetCancelable(true);
+
             client = new OkHttpClient();
 
             btLogin.Click += (s, e) => { Login(); };
@@ -63,6 +70,8 @@ namespace Clipcoin.Application.Activities
 
         private void Login()
         {
+            dialog.Show();
+
             settings.Login = etLogin.Text;
             settings.Password = etPassword.Text;
 
@@ -81,6 +90,7 @@ namespace Clipcoin.Application.Activities
 
         public void OnFailure(Request request, IOException iOException)
         {
+            dialog.Cancel();
             handler.Post(() =>
             {
                 Toast.MakeText(this, "Fail Connection. Try again.", ToastLength.Short).Show();
@@ -89,6 +99,7 @@ namespace Clipcoin.Application.Activities
 
         public void OnResponse(Response response)
         {
+            dialog.Cancel();
             switch(response.Code())
             {
                 case 200:

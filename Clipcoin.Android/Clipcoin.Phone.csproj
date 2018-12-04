@@ -84,6 +84,7 @@
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Runnable\ConfirmTask.cs" />
     <Compile Include="Runnable\SearchTrackerTask.cs" />
     <Compile Include="Services\Beacons\BeaconScanResult.cs" />
     <Compile Include="Services\Beacons\BeaconSignal.cs" />
