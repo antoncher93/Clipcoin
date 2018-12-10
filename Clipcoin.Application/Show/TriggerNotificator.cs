@@ -35,6 +35,8 @@ namespace Clipcoin.Application.Show
         IDictionary<DateTime, TriggerEventType> events = new Dictionary<DateTime, TriggerEventType>();
         CommonSettings settings;
 
+       
+
         public TriggerEventHolder Holder { get; private set; }
         public int Interval { get; set; } = 2000;
 
@@ -51,10 +53,10 @@ namespace Clipcoin.Application.Show
             ranger = new RangerBuilder()
                //.AddFirstLineBeacon(BeaconBody.FromMac(settings.FirstBeaconAddress))
                //.AddSecondLineBeacon(BeaconBody.FromMac(settings.SecondBeaconAddress))
-               .AddFirstLineBeacon(BeaconBody.FromMac("DF:20:C6:5A:62:5F"))
+               //.AddFirstLineBeacon(BeaconBody.FromMac("DE:A6:78:08:52:A2"))
                .AddFirstLineBeacon(BeaconBody.FromMac("C4:7B:88:EE:69:EE"))
-               .AddSecondLineBeacon(BeaconBody.FromMac("DE:A6:78:08:52:A2"))
                .AddSecondLineBeacon(BeaconBody.FromMac("C9:18:B1:CF:9B:50"))
+               //.AddSecondLineBeacon(BeaconBody.FromMac("DF:20:C6:5A:62:5F"))
                .Build();
 
             Holder = new TriggerEventHolder(Interval);
@@ -92,9 +94,11 @@ namespace Clipcoin.Application.Show
             
         }
 
+     
+
         public void OnNext(BeaconScanResult value)
         {
-            var list = value.Signals.Where(s => s.Rssi>=RssiTreshold)
+            var list = value.Signals.Where(s => (s.Rssi >= RssiTreshold))
                 .Select(b => BeaconData.FromAddress(b.Mac)
               .Add(new BeaconItem[] { new BeaconItem { Rssi = b.Rssi, Time = value.Time } }));
 

@@ -33,6 +33,9 @@ namespace Clipcoin.Application
 		public partial class Array
 		{
 			
+			// aapt resource value: 0x7f060001
+			public const int actualSignalCount_Values = 2131099649;
+			
 			// aapt resource value: 0x7f060000
 			public const int entries = 2131099648;
 			
@@ -181,6 +184,12 @@ namespace Clipcoin.Application
 		
 		public partial class String
 		{
+			
+			// aapt resource value: 0x7f05000a
+			public const int actualSignalCount_defaultValue = 2131034122;
+			
+			// aapt resource value: 0x7f050009
+			public const int actualSignalsCount_key = 2131034121;
 			
 			// aapt resource value: 0x7f050000
 			public const int app_name = 2131034112;

@@ -30,17 +30,17 @@ using Java.IO;
 
 namespace Clipcoin.Application.Activities
 {
-    [Activity(Label = "MainLoopActivity", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-    public class MainLoopActivity : 
-        Activity, 
-        IObserver<TrackerScanInfo>, 
+    [Activity(Label = "MainLoopActivity", LaunchMode = Android.Content.PM.LaunchMode.SingleInstance, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+    public class MainLoopActivity :
+        Activity,
+        IObserver<TrackerScanInfo>,
         IObserver<BeaconScanResult>,
         ISensorEventListener,
         ICallback
-        
+
     {
         private const int RssiBoost = 5;
-        
+
         TextView tvLog;
         UserSettings settings;
         CommonSettings commonSettings;
@@ -94,7 +94,7 @@ namespace Clipcoin.Application.Activities
 
 
 
-           
+
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -113,7 +113,7 @@ namespace Clipcoin.Application.Activities
             Initial();
 
             tvBeacScanStatus = FindViewById<TextView>(Resource.Id.textView_BeaconScannerStatus);
-           
+
             settings = UserSettings.GetInstanceForApp(this);
             commonSettings = new CommonSettings(this);
             tn = new TriggerNotificator(this)
@@ -137,7 +137,7 @@ namespace Clipcoin.Application.Activities
             {
                 prBar.Visibility = ViewStates.Visible;
                 new Thread(new ConfirmTask("EnterStore", settings.Token, this)).Start();
-                
+
             };
 
             btIExit.Click += (s, e) =>
@@ -156,10 +156,11 @@ namespace Clipcoin.Application.Activities
             tn.Subscribe(BeaconScannerService.RangeNotifier);
 
 
-            service = new TrackerScannerService
+            service = new TrackerScannerService()
             {
                 Token = settings.Token,
-                RssiTreshold = new CommonSettings(this).RssiTreshold
+                RssiTreshold = new CommonSettings(this).RssiTreshold,
+                Activity = this
             };
 
             unsubscriber = service.Subscribe(this);
@@ -171,11 +172,11 @@ namespace Clipcoin.Application.Activities
 
         private void TriggerEventHandler(object s, Trigger.Signal.TriggerEventArgs e)
         {
-            if(e.Type == Trigger.Enums.TriggerEventType.Enter)
+            if (e.Type == Trigger.Enums.TriggerEventType.Enter)
             {
                 ChangeStatus(AppearStatus.Inside);
             }
-            else if(e.Type == Trigger.Enums.TriggerEventType.Exit)
+            else if (e.Type == Trigger.Enums.TriggerEventType.Exit)
             {
                 ChangeStatus(AppearStatus.Outside);
             }
@@ -183,9 +184,9 @@ namespace Clipcoin.Application.Activities
 
         private void ChangeStatus(AppearStatus value)
         {
-            if(_status != value)
+            if (_status != value)
             {
-                switch(value)
+                switch (value)
                 {
                     case AppearStatus.Inside:
                         RunOnUiThread(() =>
@@ -213,11 +214,26 @@ namespace Clipcoin.Application.Activities
             }
         }
 
+        protected override void OnPause()
+        {
+            base.OnPause();
+
+            //Finish();
+        }
+
         protected override void OnResume()
         {
-            if(!Tools.IsServiceRunning(this, service.Class))
+            if (!Tools.IsServiceRunning(this, service.Class))
             {
-                StartService(new Intent(this, service.Class));
+                //RegisterReceiver(new ServiceStartedReceiver() { Service = service}, new IntentFilter(TrackerScannerService.ActionStarted));
+                StartForegroundService(new Intent(this, service.Class));
+
+
+                //if(Tools.IsServiceRunning(this, service.Class))
+                //{
+                //    ServiceNotifier.CreateNotification(service);
+                //}
+                //StartService();
             }
 
             base.OnResume();
@@ -233,6 +249,8 @@ namespace Clipcoin.Application.Activities
             }
 
             settings.Token = "";
+
+            StartActivity(new Intent(this, new LoginActivity().Class));
             Finish();
         }
 
@@ -275,12 +293,12 @@ namespace Clipcoin.Application.Activities
 
         public void OnAccuracyChanged(Sensor sensor, [GeneratedEnum] SensorStatus accuracy)
         {
-            
+
         }
 
         public void OnSensorChanged(SensorEvent e)
         {
-            if(e.Values[0].Equals(0))
+            if (e.Values[0].Equals(0))
             {
                 tn.RssiTreshold = commonSettings.RssiTreshold - RssiBoost;
             }
@@ -288,7 +306,7 @@ namespace Clipcoin.Application.Activities
             {
                 tn.RssiTreshold = commonSettings.RssiTreshold;
             }
-            
+
         }
 
         public void OnFailure(Request request, IOException iOException)
@@ -309,8 +327,6 @@ namespace Clipcoin.Application.Activities
                 prBar.Visibility = ViewStates.Invisible;
                 Toast.MakeText(this, response.Message(), ToastLength.Short).Show();
             });
-            
-
         }
     }
 }

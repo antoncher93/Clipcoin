@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+	<string name="ConfirmationType">ConfirmType</string>
+	<string name="ConfirmEnter">EnterStore</string>
+	<string name="ConfirmExit">ExitStore</string>
+</resources>

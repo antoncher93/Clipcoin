@@ -65,12 +65,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
-    <Reference Include="Trigger, Version=1.0.0.4, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Trigger\Trigger\bin\Debug\netstandard2.0\Trigger.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions.cs" />
     <Compile Include="Activities\CommonPreferencesActivity.cs" />
     <Compile Include="Activities\LoginActivity.cs" />
     <Compile Include="Activities\MainLoopActivity.cs" />
@@ -81,9 +78,6 @@
     <Compile Include="Settings\CommonSettings.cs" />
     <Compile Include="Settings\LoginData.cs" />
     <Compile Include="Settings\UserSettings.cs" />
-    <Compile Include="Show\OnEventListener.cs" />
-    <Compile Include="Show\PeakNotifier.cs" />
-    <Compile Include="Show\Ranger\EventType.cs" />
     <Compile Include="Show\TriggerEventHolder.cs" />
     <Compile Include="Show\TriggerNotificator.cs" />
   </ItemGroup>
@@ -105,7 +99,9 @@
     <AndroidResource Include="Resources\layout\Main.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\values\Strings.xml" />
+    <AndroidResource Include="Resources\values\Strings.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\mipmap-hdpi\" />
@@ -116,6 +112,10 @@
     <Folder Include="Resources\raw\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Trigger\Trigger\Trigger.csproj">
+      <Project>{4fe913fa-b93e-4200-b27e-20f77e377221}</Project>
+      <Name>Trigger</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Clipcoin.Android\Clipcoin.Phone.csproj">
       <Project>{02D884B8-024D-4A8B-9BA1-1E27A9D5BBB6}</Project>
       <Name>Clipcoin.Phone</Name>

@@ -139,8 +139,6 @@ namespace Clipcoin.Phone.Services.Beacons
             _rangeNotifier = null;
             beaconManager.StopRangingBeaconsInRegion(region);
             beaconManager.Unbind(this);
-            bleManager?.Adapter.Disable();
-            bleManager.Adapter.Disable();
             OnStateChanged?.Invoke(this, new ServiceEventArgs { State = Enums.ServiceState.Destroyed });
             Toast.MakeText(this.ApplicationContext, "Beacon Service done.", ToastLength.Short).Show();
         }
@@ -148,24 +146,5 @@ namespace Clipcoin.Phone.Services.Beacons
         {
             this.ApplicationContext.UnbindService(serviceConnection);
         }
-
-        //public void DidRangeBeaconsInRegion(ICollection<Beacon> beacons, Region region)
-        //{
-
-        //    if(beacons.Count > 0)
-        //    {
-
-        //    }
-
-        //    System.Diagnostics.Debug.WriteLine("BEACONS COUNT: " + beacons.Count);
-
-        //    OnStaticRanginBeacons?.Invoke(this, new BeaconScannerEventArgs {Beacons = beacons, Time = DateTime.Now });
-           
-        //}
-
-        
-
-       
-
     }
 }

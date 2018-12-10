@@ -67,8 +67,15 @@
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
+    <Reference Include="Trigger, Version=1.0.0.4, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Trigger\Trigger\bin\Debug\netstandard2.0\Trigger.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions.cs" />
+    <Compile Include="ApiUrlMethods.cs" />
+    <Compile Include="BroadcastReceivers\ConfirmReceiver.cs" />
     <Compile Include="BroadcastReceivers\Internet\InternetReceiver.cs" />
     <Compile Include="BroadcastReceivers\Wifi\WifiConnectionReceiver.cs" />
     <Compile Include="BroadcastReceivers\Wifi\WifiStateEventArgs.cs" />
@@ -89,6 +96,8 @@
     <Compile Include="Services\Beacons\BeaconScanResult.cs" />
     <Compile Include="Services\Beacons\BeaconSignal.cs" />
     <Compile Include="Services\Beacons\RangeNotifier.cs" />
+    <Compile Include="Services\Confirnation\ConfirmationService.cs" />
+    <Compile Include="Services\ConstNotificator.cs" />
     <Compile Include="Services\Demonstration\RangerService.cs" />
     <Compile Include="Services\Interfaces\ISearchTrackerTaskCallback.cs" />
     <Compile Include="Services\Interfaces\IBeaconSignal.cs" />
@@ -137,10 +146,10 @@
     <AndroidResource Include="Resources\Drawable\exit.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Trigger\Trigger\Trigger.csproj">
-      <Project>{5ac0659b-ab59-44d2-a247-1d2e218f8294}</Project>
-      <Name>Trigger</Name>
-    </ProjectReference>
+    <AndroidResource Include="Resources\Drawable\main_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\values\Strings.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

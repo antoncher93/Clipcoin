@@ -80,7 +80,7 @@ namespace Clipcoin.Phone.Services.Signals
             {
                 Logger.Info("trying to sent telemetry...");
 
-                dbWriter.Helper.CopyDatabase(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath);
+                //dbWriter.Helper.CopyDatabase(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath);
 
                 var type = MediaType.Parse("application/json; charset=utf-8");
                 var telemetry = dbWriter.ReadTelemetry(userId, out ids);

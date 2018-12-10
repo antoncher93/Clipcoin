@@ -48,6 +48,9 @@ namespace Clipcoin.Application.Settings
             }
         }
 
+        public int ActualSignalsCount
+            => Convert.ToInt32( GetValue(_ctx.GetString(Res), string.Empty));
+
         public int RssiTreshold
         {
             get

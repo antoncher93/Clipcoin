@@ -49,6 +49,7 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
         }
         
         private static int _rssiTreshold = -100;
+        public const string ActionStarted = "TrackerScannerServiceStarted";
 
 
         private WifiManager _wifiManager;
@@ -80,6 +81,10 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
                 token = value;
             }
         }
+
+        private static Activity _activity;
+
+        public Activity Activity { get => _activity; set => _activity = value; }
 
         public int BeaconScanInterval
         {
@@ -154,6 +159,11 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
         {
             _timer.Start();
             Logger.Info("Main Service Started");
+            
+            //PendingIntent.GetActivity()
+            PendingIntent.GetBroadcast(this, 0, new Intent(ActionStarted), PendingIntentFlags.UpdateCurrent).Send();
+            var ActivityIntent = new Intent(this, _activity.Class);
+            ConstNotificator.CreateNotification(this, ActivityIntent);
             return base.OnStartCommand(intent, flags, startId);
         }
 

@@ -22,4 +22,16 @@
 
 	<string name="rssi_treshold_default_value">-70</string>
 	<string name="rssi_treshold_key">rssi_treshold</string>
+
+	<string name="actualSignalsCount_key">SignalsCount</string>
+	<string name="actualSignalCount_defaultValue">1</string>
+	<string-array name="actualSignalCount_Values">
+		<item>1</item>
+		<item>2</item>
+		<item>3</item>
+		<item>4</item>
+		<item>5</item>
+	</string-array>
+	
+	
 </resources>

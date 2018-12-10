@@ -54,7 +54,7 @@ namespace Clipcoin.Application.Activities
 
             btLogin.Click += (s, e) => { Login(); };
 
-
+            
             chbxShowPassword.CheckedChange += (s, e) =>
             {
                 if (e.IsChecked)
