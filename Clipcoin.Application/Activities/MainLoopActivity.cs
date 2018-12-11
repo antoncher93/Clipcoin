@@ -27,6 +27,7 @@ using Square.OkHttp;
 using Clipcoin.Phone.Runnable;
 using Java.Lang;
 using Java.IO;
+using Clipcoin.Phone.Services.Main;
 
 namespace Clipcoin.Application.Activities
 {
@@ -44,7 +45,7 @@ namespace Clipcoin.Application.Activities
         TextView tvLog;
         UserSettings settings;
         CommonSettings commonSettings;
-        TrackerScannerService service;
+        MainService service;
 
         TextView tvBeacScanStatus;
         TextView tvSignalCount;
@@ -151,19 +152,7 @@ namespace Clipcoin.Application.Activities
 
             Logger.OnEvent += OnLoggerEvent;
 
-            BeaconScannerService.RangeNotifier.Subscribe(this);
-            //BeaconScannerService.RangeNotifier.Subscribe(tn);
-            tn.Subscribe(BeaconScannerService.RangeNotifier);
-
-
-            service = new TrackerScannerService()
-            {
-                Token = settings.Token,
-                RssiTreshold = new CommonSettings(this).RssiTreshold,
-                Activity = this
-            };
-
-            unsubscriber = service.Subscribe(this);
+            service = new MainService();
 
             tn.Holder.OnEvent += TriggerEventHandler;
 
@@ -225,15 +214,7 @@ namespace Clipcoin.Application.Activities
         {
             if (!Tools.IsServiceRunning(this, service.Class))
             {
-                //RegisterReceiver(new ServiceStartedReceiver() { Service = service}, new IntentFilter(TrackerScannerService.ActionStarted));
                 StartForegroundService(new Intent(this, service.Class));
-
-
-                //if(Tools.IsServiceRunning(this, service.Class))
-                //{
-                //    ServiceNotifier.CreateNotification(service);
-                //}
-                //StartService();
             }
 
             base.OnResume();

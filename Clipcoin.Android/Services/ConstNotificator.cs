@@ -44,7 +44,7 @@ namespace Clipcoin.Phone.Services
                 .SetStyle(new Notification.BigTextStyle())
                 .AddAction(enterAct)
                 .AddAction(exitAct)
-                .SetContentIntent(PendingIntent.GetActivity(ctx, 0, activityIntent, PendingIntentFlags.UpdateCurrent))
+                //.SetContentIntent(PendingIntent.GetActivity(ctx, 0, activityIntent, PendingIntentFlags.UpdateCurrent))
                 .Build();
         }
 

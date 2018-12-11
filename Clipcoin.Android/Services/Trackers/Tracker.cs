@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Clipcoin.Phone.Services.Interfaces;
+using Clipcoin.Smartphone.SignalManagement.Interfaces;
 using Newtonsoft.Json;
 
 namespace Clipcoin.Phone.Services.Trackers
@@ -31,7 +32,7 @@ namespace Clipcoin.Phone.Services.Trackers
             }
         }
 
-        
+        public string UUID => throw new NotImplementedException();
 
         private Timer timer1 = new Timer { Interval = 3600000, Enabled = true };
 

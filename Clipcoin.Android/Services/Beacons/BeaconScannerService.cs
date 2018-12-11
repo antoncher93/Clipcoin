@@ -26,7 +26,6 @@ namespace Clipcoin.Phone.Services.Beacons
     {
         Context IBeaconConsumer.ApplicationContext => this;
         BeaconManager beaconManager;
-        public static event EventHandler<BeaconScannerEventArgs> OnStaticRanginBeacons;
         public static event EventHandler<ServiceEventArgs> OnStateChanged;
 
         private static Region region; //=  new Region("Common", null, null, null);
@@ -52,7 +51,7 @@ namespace Clipcoin.Phone.Services.Beacons
             return new Binder();
         }
 
-        public static RangeNotifier RangeNotifier
+        public RangeNotifier RangeNotifier
         {
             get
             {

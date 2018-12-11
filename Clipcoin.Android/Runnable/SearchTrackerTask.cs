@@ -12,6 +12,8 @@ using Android.Widget;
 using Clipcoin.Phone.Services.Classes.Trackers;
 using Clipcoin.Phone.Services.Interfaces;
 using Clipcoin.Phone.Services.Trackers;
+using Clipcoin.Phone.Settings;
+using Clipcoin.Smartphone.SignalManagement.Interfaces;
 using Java.IO;
 using Java.Lang;
 using Newtonsoft.Json;
@@ -22,21 +24,25 @@ namespace Clipcoin.Phone.Runnable
     public class SearchTrackerTask : Java.Lang.Object, IRunnable, ICallback
     {
         public string HostAddress { get; private set; } = "http://technobee.elementstore.ru/api/Customer/points/";
-        private string _token;
+        private string _token = UserSettings.Token;
         private OkHttpClient client = new OkHttpClient();
         private IEnumerable<IAccessPoint> _items;
         private ISearchTrackerTaskCallback _callback;
-        public SearchTrackerTask(ISearchTrackerTaskCallback callback, IEnumerable<IAccessPoint> items, string token)
+        public SearchTrackerTask(ISearchTrackerTaskCallback callback, IEnumerable<IAccessPoint> items)
         {
             _callback = callback;
             _items = items;
-            _token = token;
         }
         public void Run()
         {
             var points = "";
 
+            if (!_items.Any())
+                return;
+
             System.Diagnostics.Debug.WriteLine("REQUEST POINTS:");
+
+
 
             foreach(var ap in _items)
             {
@@ -72,7 +78,6 @@ namespace Clipcoin.Phone.Runnable
             {
                 case 200:
                     string body = response.Body().String();
-            
                     var data = JsonConvert.DeserializeObject<TrackerData[]>(body);
 
                     var trackers = new List<ITracker>();

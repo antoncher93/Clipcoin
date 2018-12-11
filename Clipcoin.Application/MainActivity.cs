@@ -75,6 +75,9 @@ namespace Clipcoin.Application
             switch (response.Code())
             {
                 case 200:
+
+                    Clipcoin.Phone.Settings.UserSettings.Token = settings.Token;
+
                     handler.Post(() =>
                     {
                         StartActivity(new Android.Content.Intent(this, new MainLoopActivity().Class));

@@ -1,73 +1,56 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
 using Android.Net.Wifi;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Clipcoin.Phone.Logging;
+using Clipcoin.Phone.Runnable;
 using Clipcoin.Phone.Services.Classes;
-using Clipcoin.Phone.Services.Classes.Trackers;
-using Clipcoin.Phone.Services.Interfaces;
-using Clipcoin.Phone.Services.Trackers;
-using Clipcoin.Phone.Settings;
+using Clipcoin.Smartphone.SignalManagement.Interfaces;
+using Clipcoin.Smartphone.SignalManagement.Trackers;
+using Java.Lang;
 
 namespace Clipcoin.Phone.Services.TrackerScanner
 {
-    public class APointManager// : ICollection<IAccessPoint>
+    public class APointManager : ISearchTrackerTaskCallback
     {
         public const int MAX_AP_INVISIBLE_TIME_SEC = 5;
-        public ICollection<IAccessPoint> AccessPoints { get; private set; } = new List<IAccessPoint>();
+        private readonly IDictionary<string, IAccessPoint> _accessPoints = new Dictionary<string, IAccessPoint>();
 
-        public TrackerManager TrackerManager { get; private set; } = new TrackerManager();
+        public TrackerManager TrackerManager { get; } = new TrackerManager();
 
         public void Add(ICollection<ScanResult> networks)
         {
-            var old_networks = AccessPoints.Where(
-                a => networks.Any(n => n.Bssid.Equals(a.Bssid, StringComparison.CurrentCultureIgnoreCase)));
+            var freshNetworks = new List<IAccessPoint>();
 
-            foreach(var ap in old_networks)
+            foreach (var network in networks)
             {
-                ap.LastTime = DateTime.Now;
+                var macAddress = network.Bssid;
+                if (_accessPoints.ContainsKey(macAddress))
+                    _accessPoints[macAddress].LastTime = DateTime.Now;
+                else
+                    freshNetworks.Add(new APointInfo { Bssid = network.Bssid, Ssid = network.Ssid });
+            }
+            
+            foreach (var fN in freshNetworks)
+            {                
+                _accessPoints.Add(fN.Bssid, fN);
             }
 
-
-            var fresh_networks = networks.Where(t => 
-                !AccessPoints.Any(a => a.Bssid.Equals(t.Bssid, StringComparison.CurrentCultureIgnoreCase))).ToList();
-
-            ICollection<IAccessPoint> items = fresh_networks.Select(n => (IAccessPoint)new APointInfo { Bssid = n.Bssid, Ssid = n.Ssid }).ToList();
-
-            TrackerManager.CheckAccessPoints(items);
+            new Thread(new SearchTrackerTask(this, freshNetworks)).Start();
         }
 
-        public void Add(IAccessPoint item)
+        public void OnFindTrackers(IEnumerable<ITracker> items)
         {
-            var ap = AccessPoints.FirstOrDefault(p => string.Equals(p.Bssid, item.Bssid, StringComparison.CurrentCultureIgnoreCase));
-
-            if(ap == null)
-            {
-                AccessPoints.Add(item);
-
-                TrackerManager.CheckAccessPoint(item);
-            }
-            else
-            {
-                ap.LastTime = item.LastTime;
-            }
+            TrackerManager.OnFindTrackers(items);
         }
 
         public void Update()
         {
-            AccessPoints = AccessPoints.Where(
-                ap => (ap.LastTime != null) && ((DateTime.Now - ap.LastTime) < TimeSpan.FromSeconds(MAX_AP_INVISIBLE_TIME_SEC))).ToList();
+            _accessPoints
+                .Where(ap => (ap.Value.LastTime != null)
+                        && ((DateTime.Now - ap.Value.LastTime) > TimeSpan.FromSeconds(MAX_AP_INVISIBLE_TIME_SEC)))
+                        .Select(oAp => _accessPoints.Remove(oAp.Key));
         }
 
-     
+
     }
 }

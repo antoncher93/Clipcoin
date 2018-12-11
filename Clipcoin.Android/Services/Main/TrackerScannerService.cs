@@ -21,6 +21,7 @@ using Clipcoin.Phone.Services.Interfaces;
 using Clipcoin.Phone.Services.Signals;
 using Clipcoin.Phone.Services.TrackerScanner;
 using Clipcoin.Phone.Settings;
+using Clipcoin.Smartphone.SignalManagement.Trackers;
 using Java.Lang;
 using Newtonsoft.Json;
 using Square.OkHttp;
@@ -28,7 +29,12 @@ using Square.OkHttp;
 namespace Clipcoin.Phone.Services.Classes.Trackers
 {
     [Service]
-    public class TrackerScannerService : Service, IObservable<TrackerScanInfo>, IObserver<BeaconScanResult>
+    public class TrackerScannerService : 
+        Service, 
+        //IObservable<TrackerScanInfo>, 
+        //IObserver<BeaconScanResult>, 
+        IObserver<TrackerEventArgs>,
+        ITrackerScanner
     {
         private class Unsubscriber : IDisposable
         {
@@ -60,7 +66,7 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
 
         private bool _scanComplete;
 
-        static private IList<IObserver<TrackerScanInfo>> _observers = new List<IObserver<TrackerScanInfo>>();
+        //static private IList<IObserver<TrackerScanInfo>> _observers = new List<IObserver<TrackerScanInfo>>();
 
         private BeaconScannerService beaconServ;
         private TelemetrySendService sendService;
@@ -126,17 +132,8 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
                 }
             };
 
-            ApManager.TrackerManager.OnStateChanged += (s, e) =>
-            {
-                if(e.Trackers.Any())
-                {
-                    StartService(beaconServ);
-                    StartService(sendService);
-                }
-               
-            };
-
-            BeaconScannerService.RangeNotifier.Subscribe(this);
+            ApManager.TrackerManager.Subscribe(this);
+            //BeaconScannerService.RangeNotifier.Subscribe(this);
         }
 
         private void StartService(Service service)
@@ -161,9 +158,9 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
             Logger.Info("Main Service Started");
             
             //PendingIntent.GetActivity()
-            PendingIntent.GetBroadcast(this, 0, new Intent(ActionStarted), PendingIntentFlags.UpdateCurrent).Send();
-            var ActivityIntent = new Intent(this, _activity.Class);
-            ConstNotificator.CreateNotification(this, ActivityIntent);
+            //PendingIntent.GetBroadcast(this, 0, new Intent(ActionStarted), PendingIntentFlags.UpdateCurrent).Send();
+            //var ActivityIntent = new Intent(this, _activity.Class);
+            //ConstNotificator.CreateNotification(this, ActivityIntent);
             return base.OnStartCommand(intent, flags, startId);
         }
 
@@ -185,43 +182,29 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
 
             ApManager.Add(_wifiManager.ScanResults);
 
-            //OnTrackerScanLoop?.Invoke(this, null);
-
-            //foreach(var o in _observers)
-            //{
-            //    o.OnNext(new TrackerScanInfo { Trackers = ApManager.TrackerManager.Trakers });
-            //}
-
-            //foreach(var res in _wifiManager.ScanResults)
-            //{
-            //    Thread.Sleep(50);
-            //    ApManager.Add()
-            //    //ApManager.Add(new APointInfo { Bssid = res.Bssid, Ssid = res.Ssid, });
-            //}
-
             ApManager.Update();
             _scanComplete = true;
         }
 
-        public IDisposable Subscribe(IObserver<TrackerScanInfo> observer)
-        {
-            if(!_observers.Contains(observer))
-            {
-                _observers.Add(observer);
-            }
-            return new Unsubscriber(observer, _observers);
-        }
+        //public IDisposable Subscribe(IObserver<TrackerScanInfo> observer)
+        //{
+        //    if(!_observers.Contains(observer))
+        //    {
+        //        _observers.Add(observer);
+        //    }
+        //    return new Unsubscriber(observer, _observers);
+        //}
 
-        public void OnNext(BeaconScanResult value)
-        {
-            foreach (var beacon in value.Signals.Where(s => s.Rssi>=_rssiTreshold))
-            {
-                if (ApManager.TrackerManager.Trakers.Any())
-                {
-                    dbWriter.NewBeaconSignal(beacon, ApManager.TrackerManager.Trakers.FirstOrDefault().Uid, value.Time);
-                }
-            }
-        }
+        //public void OnNext(BeaconScanResult value)
+        //{
+        //    foreach (var beacon in value.Signals.Where(s => s.Rssi>=_rssiTreshold))
+        //    {
+        //        if (ApManager.TrackerManager..Any())
+        //        {
+        //            dbWriter.NewBeaconSignal(beacon, ApManager.TrackerManager.Trakers.FirstOrDefault().Uid, value.Time);
+        //        }
+        //    }
+        //}
 
         public void OnError(System.Exception error)
         {
@@ -231,6 +214,18 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
         public void OnCompleted()
         {
             
+        }
+
+        public void OnNext(TrackerEventArgs eventArgs)
+        {
+            if (eventArgs.Trackers.Any())
+            {
+                StartService(beaconServ);
+                StartService(sendService);
+            }
+            //TODO: else stop Service
+
+
         }
     }
 }

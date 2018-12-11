@@ -99,8 +99,9 @@
     <Compile Include="Services\Confirnation\ConfirmationService.cs" />
     <Compile Include="Services\ConstNotificator.cs" />
     <Compile Include="Services\Demonstration\RangerService.cs" />
-    <Compile Include="Services\Interfaces\ISearchTrackerTaskCallback.cs" />
     <Compile Include="Services\Interfaces\IBeaconSignal.cs" />
+    <Compile Include="Services\Interfaces\ITrackerScanner.cs" />
+    <Compile Include="Services\Main\MainService.cs" />
     <Compile Include="Services\ServiceEventArgs.cs" />
     <Compile Include="Services\Signals\SignalsCallback.cs" />
     <Compile Include="Services\Signals\SignalScanner.cs" />
@@ -111,10 +112,8 @@
     <Compile Include="Services\Main\APointInfo.cs" />
     <Compile Include="Services\Beacons\BeaconScannerService.cs" />
     <Compile Include="Services\Trackers\BeaconBody.cs" />
-    <Compile Include="Services\Trackers\TrackerEventArgs.cs" />
     <Compile Include="Services\Trackers\Tracker.cs" />
     <Compile Include="Services\Trackers\TrackerBuilder.cs" />
-    <Compile Include="Services\Trackers\TrackerManager.cs" />
     <Compile Include="Services\Trackers\TrackerData.cs" />
     <Compile Include="Runnable\ConnectionTask.cs" />
     <Compile Include="Runnable\CallTrackerTask.cs" />
@@ -124,11 +123,9 @@
     <Compile Include="Services\Enums\ServiceState.cs" />
     <Compile Include="Services\Enums\TaskCompleteStatus.cs" />
     <Compile Include="Services\Interfaces\IBeaconScannerListrener.cs" />
-    <Compile Include="Services\Interfaces\IAccessPoint.cs" />
     <Compile Include="Services\Interfaces\IBeaconBody.cs" />
     <Compile Include="Services\Interfaces\IConnectTask.cs" />
     <Compile Include="Services\Interfaces\IServiceListener.cs" />
-    <Compile Include="Services\Interfaces\ITracker.cs" />
     <Compile Include="Services\Signals\TelemetrySendService.cs" />
     <Compile Include="Settings\UserSettings.cs" />
   </ItemGroup>
@@ -150,6 +147,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\Strings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Clipcoin.Smartphone.SignalManagerment\Clipcoin.Smartphone.SignalManagement.csproj">
+      <Project>{98c67735-0edc-46ab-84a9-3131654fbd7d}</Project>
+      <Name>Clipcoin.Smartphone.SignalManagement</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

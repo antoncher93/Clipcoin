@@ -9,16 +9,11 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Clipcoin.Phone.Services.Classes.Trackers;
 
 namespace Clipcoin.Phone.Services.Interfaces
 {
-    public interface ITracker
+    public interface ITrackerScanner : IJavaObject
     {
-        IAccessPoint AccessPoint { get; set; }
 
-        string Uid { get; }
-        string Key { get; set; }
-        bool IsObsolete { get; }
     }
 }

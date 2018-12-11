@@ -12,6 +12,7 @@ using Android.Widget;
 using Clipcoin.Phone.Services.Enums;
 using Clipcoin.Phone.Services.Interfaces;
 using Clipcoin.Phone.Services.TrackerScanner;
+using Clipcoin.Smartphone.SignalManagement.Interfaces;
 using Java.IO;
 using Square.OkHttp;
 

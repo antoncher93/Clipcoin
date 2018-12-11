@@ -120,6 +120,10 @@
       <Project>{02D884B8-024D-4A8B-9BA1-1E27A9D5BBB6}</Project>
       <Name>Clipcoin.Phone</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Clipcoin.Smartphone.SignalManagerment\Clipcoin.Smartphone.SignalManagement.csproj">
+      <Project>{98C67735-0EDC-46AB-84A9-3131654FBD7D}</Project>
+      <Name>Clipcoin.Smartphone.SignalManagement</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\coin.png" />

@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Clipcoin.Phone.Services.Enums;
 using Clipcoin.Phone.Services.Interfaces;
+using Clipcoin.Smartphone.SignalManagement.Interfaces;
 
 namespace Clipcoin.Phone.Services.TrackerScanner
 {
