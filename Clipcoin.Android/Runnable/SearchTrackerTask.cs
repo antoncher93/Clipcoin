@@ -10,10 +10,9 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Clipcoin.Phone.Services.Classes.Trackers;
-using Clipcoin.Phone.Services.Interfaces;
-using Clipcoin.Phone.Services.Trackers;
 using Clipcoin.Phone.Settings;
 using Clipcoin.Smartphone.SignalManagement.Interfaces;
+using Clipcoin.Smartphone.SignalManagement.Trackers;
 using Java.IO;
 using Java.Lang;
 using Newtonsoft.Json;
@@ -79,7 +78,6 @@ namespace Clipcoin.Phone.Runnable
                 case 200:
                     string body = response.Body().String();
                     var data = JsonConvert.DeserializeObject<TrackerData[]>(body);
-
                     var trackers = new List<ITracker>();
 
                     foreach(var d in data)
@@ -90,6 +88,7 @@ namespace Clipcoin.Phone.Runnable
                                 i.Bssid.Equals(d.MacAddressWlan0, StringComparison.CurrentCultureIgnoreCase) ||
                                 i.Bssid.Equals(d.MacAddressWlan1, StringComparison.CurrentCultureIgnoreCase)))
                             .Uid(d.Uid)
+                            .BeaconsUUID(Guid.Parse(d.UUID))
                             .Build();
 
                         trackers.Add(tracker);

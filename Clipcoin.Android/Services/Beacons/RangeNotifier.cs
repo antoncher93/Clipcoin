@@ -11,6 +11,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Clipcoin.Phone.Database;
+using Clipcoin.Smartphone.SignalManagement.Signals;
 
 namespace Clipcoin.Phone.Services.Beacons
 {
@@ -51,9 +52,13 @@ namespace Clipcoin.Phone.Services.Beacons
 
         protected override void Dispose(bool disposing)
         {
+            
             base.Dispose(disposing);
+        }
 
-
+        public void Flush()
+        {
+            _observers.Clear();
         }
 
         private class Subscriber : IDisposable

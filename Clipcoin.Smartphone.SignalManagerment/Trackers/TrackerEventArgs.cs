@@ -8,6 +8,7 @@ namespace Clipcoin.Smartphone.SignalManagement.Trackers
 {
     public class TrackerEventArgs : EventArgs
     {
-        public ICollection<ITracker> Trackers { get; set; }
+        public ITracker NewTracker { get; set; }
+        public int Count { get; set; }
     }
 }

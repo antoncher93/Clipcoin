@@ -104,6 +104,7 @@ namespace Clipcoin.Application.Activities
             {
                 case 200:
                     settings.Token = response.Body().String();
+                    Clipcoin.Phone.Settings.UserSettings.Token = settings.Token;
                     handler.Post(() => StartActivity(new Intent(this, new MainLoopActivity().Class)));
                     break;
                 default:

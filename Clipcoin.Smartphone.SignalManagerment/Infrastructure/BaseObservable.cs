@@ -24,6 +24,14 @@ namespace Clipcoin.Smartphone.SignalManagement.Infrastructure
             }
         }
 
+        public void Unsubscribe(IObserver<T> observer)
+        {
+            if(_observers.Contains(observer))
+            {
+                _observers.Remove(observer);
+            }
+        }
+
         private class Subscriber : IDisposable
         {
             private ICollection<IObserver<T>> _observers;

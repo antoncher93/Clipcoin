@@ -32,5 +32,8 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
 
         [JsonProperty(PropertyName = "token")]
         public string Token { get; set; }
+
+        [JsonProperty(PropertyName = "uuid")]
+        public string UUID { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace Clipcoin.Smartphone.SignalManagement.Trackers
         private readonly IDictionary<string, ITracker> _trackers = new Dictionary<string, ITracker>();
         public IEnumerable<ITracker> Trackers => _trackers.Values;
 
-        //public event EventHandler<TrackerEventArgs> OnStateChanged;
+        public string guid = Guid.NewGuid().ToString();
 
         private Guid Guid = Guid.NewGuid();
 
@@ -23,8 +23,13 @@ namespace Clipcoin.Smartphone.SignalManagement.Trackers
             {
                 _trackers.Add(tracker.UUID, tracker);
 
-                NotifyAll(new TrackerEventArgs { Trackers = _trackers.Values });
+                NotifyAll(new TrackerEventArgs { NewTracker = tracker, Count = _trackers.Count });
             }
+        }
+
+        public void Dispose()
+        {
+            _trackers.Clear();
         }
 
         

@@ -10,7 +10,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Clipcoin.Phone.Logging;
+using Clipcoin.Smartphone.SignalManagement.Logging;
 using Java.Util;
 
 namespace Clipcoin.Phone.Services.Beacons
@@ -33,7 +33,7 @@ namespace Clipcoin.Phone.Services.Beacons
         private static RangeNotifier _rangeNotifier;
         
 
-        private static int fsp = 500;
+        private static int fsp = 300;
         private static int fbsp = 1000;
         private static int bsp = 0;
         private static int bbsp = 0;
@@ -135,6 +135,7 @@ namespace Clipcoin.Phone.Services.Beacons
         public override void OnDestroy()
         {
             base.OnDestroy();
+            _rangeNotifier.Flush();
             _rangeNotifier = null;
             beaconManager.StopRangingBeaconsInRegion(region);
             beaconManager.Unbind(this);

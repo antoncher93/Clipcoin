@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Timers;
 using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Clipcoin.Phone.Database;
 using Clipcoin.Phone.Help;
-using Clipcoin.Phone.Logging;
 using Clipcoin.Phone.Settings;
+using Clipcoin.Smartphone.SignalManagement.Logging;
 using Java.IO;
 using Square.OkHttp;
 

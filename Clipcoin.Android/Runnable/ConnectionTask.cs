@@ -12,11 +12,9 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Java.Lang;
-using Android.Net;
-using Clipcoin.Phone.Services.Interfaces;
 using Clipcoin.Phone.BroadcastReceivers.Wifi;
-using Clipcoin.Phone.Logging;
 using Clipcoin.Smartphone.SignalManagement.Interfaces;
+using Clipcoin.Smartphone.SignalManagement.Logging;
 
 namespace Clipcoin.Phone.Runnable
 {

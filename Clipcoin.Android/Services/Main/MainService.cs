@@ -11,7 +11,10 @@ using Android.Views;
 using Android.Widget;
 using Clipcoin.Phone.Services.Beacons;
 using Clipcoin.Phone.Services.Classes.Trackers;
+using Clipcoin.Phone.Services.Http;
 using Clipcoin.Phone.Services.Interfaces;
+using Clipcoin.Phone.Services.Signals;
+using Clipcoin.Smartphone.SignalManagement.Signals;
 using Clipcoin.Smartphone.SignalManagement.Trackers;
 
 namespace Clipcoin.Phone.Services.Main
@@ -23,20 +26,44 @@ namespace Clipcoin.Phone.Services.Main
         TrackerScannerService trackerScanner;
         BeaconScannerService beaconScanner;
 
+        IEnumerable<Service> serviceList;
+
         public override IBinder OnBind(Intent intent) => new Binder();
 
         public void OnCompleted()
         {
-            throw new NotImplementedException();
+            
         }
 
         public override void OnCreate()
         {
             base.OnCreate();
-
             beaconScanner = new BeaconScannerService();
-
             trackerScanner = new TrackerScannerService();
+            serviceList = new List<Service>()
+            {
+                beaconScanner,
+                trackerScanner
+            };
+
+            
+
+            GroupObserverFactory.SetPackager(Packager.Instance);
+            Packager.Instance.AddExecutor(new SignalSender(new ApiClient()));
+
+        }
+
+        public override void OnDestroy()
+        {
+            foreach (var serv in serviceList)
+            {
+                ServiceTools.StopFinally(this, serv.Class);
+            }
+
+            trackerScanner.AccessPointManager.TrackerManager.Unsubscribe(this);
+            Packager.Instance.Flush();
+
+            base.OnDestroy();
         }
 
         public void OnError(Exception error)
@@ -46,26 +73,21 @@ namespace Clipcoin.Phone.Services.Main
 
         public void OnNext(TrackerEventArgs value)
         {
-            if(value.Trackers.Any())
+            if(value.Count > 0)
             {
-                StartService(new Intent(this, beaconScanner.Class));
+                value.NewTracker.ObserveManager.Subscribe(beaconScanner.RangeNotifier);
+                ServiceTools.StartFinally(this, beaconScanner.Class);
             }
-
-            //beaconScanner.RangeNotifier.Subscribe()
-            //value.Tracker.Observer.Subscibe(RangeNotifier);
         }
 
         [return: GeneratedEnum]
         public override StartCommandResult OnStartCommand(Intent intent, [GeneratedEnum] StartCommandFlags flags, int startId)
         {
-            StartService(new Intent(this, trackerScanner.Class));
             ConstNotificator.CreateNotification(this, null);
+            StartService(new Intent(this, trackerScanner.Class));
 
             // subscribe to new tracker
-            trackerScanner.ApManager.TrackerManager.Subscribe(this);
-
-
-
+            trackerScanner.AccessPointManager.TrackerManager.Subscribe(this);
             return base.OnStartCommand(intent, flags, startId);
         }
     }

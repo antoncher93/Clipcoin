@@ -4,6 +4,8 @@ using System.Linq;
 using Android.Net.Wifi;
 using Clipcoin.Phone.Runnable;
 using Clipcoin.Phone.Services.Classes;
+using Clipcoin.Phone.Services.Http;
+using Clipcoin.Phone.Settings;
 using Clipcoin.Smartphone.SignalManagement.Interfaces;
 using Clipcoin.Smartphone.SignalManagement.Trackers;
 using Java.Lang;
@@ -35,7 +37,12 @@ namespace Clipcoin.Phone.Services.TrackerScanner
                 _accessPoints.Add(fN.Bssid, fN);
             }
 
-            new Thread(new SearchTrackerTask(this, freshNetworks)).Start();
+            //new Thread(new SearchTrackerTask(this, freshNetworks)).Start();
+            if (freshNetworks.Any())
+            {
+                new ApiClient().FindTrackers(UserSettings.Token, freshNetworks, this);
+            }
+
         }
 
         public void OnFindTrackers(IEnumerable<ITracker> items)
@@ -49,6 +56,12 @@ namespace Clipcoin.Phone.Services.TrackerScanner
                 .Where(ap => (ap.Value.LastTime != null)
                         && ((DateTime.Now - ap.Value.LastTime) > TimeSpan.FromSeconds(MAX_AP_INVISIBLE_TIME_SEC)))
                         .Select(oAp => _accessPoints.Remove(oAp.Key));
+        }
+
+        public void Dispose()
+        {
+            _accessPoints.Clear();
+            TrackerManager.Dispose();
         }
 
 

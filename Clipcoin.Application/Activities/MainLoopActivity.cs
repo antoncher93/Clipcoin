@@ -18,7 +18,6 @@ using Clipcoin.Application.Assets.Enums;
 using Clipcoin.Application.Settings;
 using Clipcoin.Application.Show;
 using Clipcoin.Phone.Help;
-using Clipcoin.Phone.Logging;
 using Clipcoin.Phone.Services.Beacons;
 using Clipcoin.Phone.Services.Classes.Trackers;
 using Clipcoin.Phone.Services.Enums;
@@ -28,6 +27,8 @@ using Clipcoin.Phone.Runnable;
 using Java.Lang;
 using Java.IO;
 using Clipcoin.Phone.Services.Main;
+using Clipcoin.Smartphone.SignalManagement.Signals;
+using Clipcoin.Smartphone.SignalManagement.Logging;
 
 namespace Clipcoin.Application.Activities
 {
