@@ -9,9 +9,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("SignalScanner.Resource", IsApplication=true)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("SignalBLE.Resource", IsApplication=true)]
 
-namespace SignalScanner
+namespace SignalBLE
 {
 	
 	
@@ -26,8 +26,12 @@ namespace SignalScanner
 		
 		public static void UpdateIdValues()
 		{
-			global::Clipcoin.Phone.Resource.Drawable.enter = global::SignalScanner.Resource.Drawable.enter;
-			global::Clipcoin.Phone.Resource.Drawable.exit = global::SignalScanner.Resource.Drawable.exit;
+			global::Clipcoin.Phone.Resource.Drawable.enter = global::SignalBLE.Resource.Drawable.enter;
+			global::Clipcoin.Phone.Resource.Drawable.exit = global::SignalBLE.Resource.Drawable.exit;
+			global::Clipcoin.Phone.Resource.Drawable.main_icon = global::SignalBLE.Resource.Drawable.main_icon;
+			global::Clipcoin.Phone.Resource.String.ConfirmEnter = global::SignalBLE.Resource.String.ConfirmEnter;
+			global::Clipcoin.Phone.Resource.String.ConfirmExit = global::SignalBLE.Resource.String.ConfirmExit;
+			global::Clipcoin.Phone.Resource.String.ConfirmationType = global::SignalBLE.Resource.String.ConfirmationType;
 		}
 		
 		public partial class Attribute
@@ -52,6 +56,9 @@ namespace SignalScanner
 			// aapt resource value: 0x7f020001
 			public const int exit = 2130837505;
 			
+			// aapt resource value: 0x7f020002
+			public const int main_icon = 2130837506;
+			
 			static Drawable()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -62,39 +69,11 @@ namespace SignalScanner
 			}
 		}
 		
-		public partial class Id
-		{
-			
-			// aapt resource value: 0x7f050000
-			public const int linearLayout1 = 2131034112;
-			
-			// aapt resource value: 0x7f050003
-			public const int listView_beacons = 2131034115;
-			
-			// aapt resource value: 0x7f050001
-			public const int textView_beaconMac = 2131034113;
-			
-			// aapt resource value: 0x7f050002
-			public const int textView_beaconRssi = 2131034114;
-			
-			static Id()
-			{
-				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
-			}
-			
-			private Id()
-			{
-			}
-		}
-		
 		public partial class Layout
 		{
 			
 			// aapt resource value: 0x7f030000
-			public const int beacon = 2130903040;
-			
-			// aapt resource value: 0x7f030001
-			public const int Main = 2130903041;
+			public const int Main = 2130903040;
 			
 			static Layout()
 			{
@@ -109,8 +88,17 @@ namespace SignalScanner
 		public partial class String
 		{
 			
+			// aapt resource value: 0x7f040001
+			public const int ConfirmEnter = 2130968577;
+			
+			// aapt resource value: 0x7f040002
+			public const int ConfirmExit = 2130968578;
+			
 			// aapt resource value: 0x7f040000
-			public const int app_name = 2130968576;
+			public const int ConfirmationType = 2130968576;
+			
+			// aapt resource value: 0x7f040003
+			public const int app_name = 2130968579;
 			
 			static String()
 			{

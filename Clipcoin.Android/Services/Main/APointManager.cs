@@ -7,6 +7,7 @@ using Clipcoin.Phone.Services.Classes;
 using Clipcoin.Phone.Services.Http;
 using Clipcoin.Phone.Settings;
 using Clipcoin.Smartphone.SignalManagement.Interfaces;
+using Clipcoin.Smartphone.SignalManagement.Logging;
 using Clipcoin.Smartphone.SignalManagement.Trackers;
 using Java.Lang;
 
@@ -47,6 +48,11 @@ namespace Clipcoin.Phone.Services.TrackerScanner
 
         public void OnFindTrackers(IEnumerable<ITracker> items)
         {
+            foreach(var item in items)
+            {
+                Logger.Info($"Tracker {item.AccessPoint.Ssid}");
+            }
+
             TrackerManager.OnFindTrackers(items);
         }
 

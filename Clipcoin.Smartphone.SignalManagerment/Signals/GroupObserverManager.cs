@@ -10,7 +10,7 @@ namespace Clipcoin.Smartphone.SignalManagement.Signals
 {
     public class GroupObserverManager : BaseObserver<BeaconScanResult>
     {
-        private const int treshold = -65;
+        private const int treshold = -70;
         private string _uuid;
 
         private readonly string _guid = Guid.NewGuid().ToString();

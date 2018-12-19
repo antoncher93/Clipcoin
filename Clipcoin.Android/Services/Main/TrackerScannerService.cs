@@ -31,23 +31,7 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
     [Service]
     public class TrackerScannerService : Service, ITrackerScanner
     {
-        private class Unsubscriber : IDisposable
-        {
-            private IObserver<TrackerScanInfo> _observer;
-            private IList<IObserver<TrackerScanInfo>> _observers;
-            public Unsubscriber(IObserver<TrackerScanInfo> observer, IList<IObserver<TrackerScanInfo>> observers)
-            {
-                _observer = observer;
-                _observers = observers;
-            }
-            public void Dispose()
-            {
-                if (_observer != null && _observers.Contains(_observer))
-                {
-                    _observers.Remove(_observer);
-                }
-            }
-        }
+       
         
         private static int _rssiTreshold = -100;
 

@@ -24,7 +24,7 @@ namespace Clipcoin.Phone.Services.Main
         IObserver<TrackerEventArgs>
     {
         TrackerScannerService trackerScanner;
-        BeaconScannerService beaconScanner;
+        SignalScanner signalScanner;
 
         IEnumerable<Service> serviceList;
 
@@ -38,11 +38,11 @@ namespace Clipcoin.Phone.Services.Main
         public override void OnCreate()
         {
             base.OnCreate();
-            beaconScanner = new BeaconScannerService();
+            signalScanner = new SignalScanner();
             trackerScanner = new TrackerScannerService();
             serviceList = new List<Service>()
             {
-                beaconScanner,
+                signalScanner,
                 trackerScanner
             };
 
@@ -75,8 +75,8 @@ namespace Clipcoin.Phone.Services.Main
         {
             if(value.Count > 0)
             {
-                value.NewTracker.ObserveManager.Subscribe(beaconScanner.RangeNotifier);
-                ServiceTools.StartFinally(this, beaconScanner.Class);
+                value.NewTracker.ObserveManager.Subscribe(signalScanner.RangeNotifier);
+                ServiceTools.StartFinally(this, signalScanner.Class);
             }
         }
 

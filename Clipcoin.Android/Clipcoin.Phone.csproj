@@ -107,7 +107,8 @@
     <Compile Include="Services\Main\APointManager.cs" />
     <Compile Include="Services\Main\APointInfo.cs" />
     <Compile Include="Services\Beacons\BeaconScannerService.cs" />
-    <Compile Include="Services\Signals\LeScanCallback.cs" />
+    <Compile Include="Services\Signals\BleSignal.cs" />
+    <Compile Include="Services\Signals\SignalNotifier.cs" />
     <Compile Include="Services\Signals\SignalScanner.cs" />
     <Compile Include="Services\Signals\SignalsSender.cs" />
     <Compile Include="Services\Trackers\BeaconBody.cs" />

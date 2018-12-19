@@ -29,6 +29,7 @@ using Java.IO;
 using Clipcoin.Phone.Services.Main;
 using Clipcoin.Smartphone.SignalManagement.Signals;
 using Clipcoin.Smartphone.SignalManagement.Logging;
+using Clipcoin.Phone.Services.Signals;
 
 namespace Clipcoin.Application.Activities
 {
@@ -213,10 +214,12 @@ namespace Clipcoin.Application.Activities
 
         protected override void OnResume()
         {
-            if (!Tools.IsServiceRunning(this, service.Class))
-            {
-                StartForegroundService(new Intent(this, service.Class));
-            }
+            StartService(new Intent(this, service.Class));
+
+            //if (!Tools.IsServiceRunning(this, service.Class))
+            //{
+            //    StartForegroundService(new Intent(this, service.Class));
+            //}
 
             base.OnResume();
         }
