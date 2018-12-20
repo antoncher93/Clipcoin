@@ -4,6 +4,7 @@ using System.Linq;
 using Clipcoin.Phone.Services.Classes.Trackers;
 using Clipcoin.Smartphone.SignalManagement.Interfaces;
 using Clipcoin.Smartphone.SignalManagement.Logging;
+using Clipcoin.Smartphone.SignalManagement.Signals;
 using Clipcoin.Smartphone.SignalManagement.Trackers;
 using Java.IO;
 using Newtonsoft.Json;
@@ -58,7 +59,7 @@ namespace Clipcoin.Phone.Services.Http
             client.NewCall(request).Enqueue(callback);
         }
 
-        public void SendTelemetry(string userID, IEnumerable<(IBeaconSignal, DateTime)> signals, ISignalSendingCallback callback = null)
+        public void SendTelemetry(string userID, IEnumerable<BeaconSignal> signals, ISignalSendingCallback callback = null)
         {
             Logger.Info("Trying to send telemetry..");
 
@@ -66,18 +67,9 @@ namespace Clipcoin.Phone.Services.Http
 
             foreach(var s in signals)
             {
-                telemetry.Append(
-                new BeaconData()
-                {
-                    Address = s.Item1.Mac
-                }.Add(new BeaconItem[]
-                {
-                    new BeaconItem
-                    {
-                        Rssi = s.Item1.Rssi,
-                        Time = s.Item2
-                    }
-                }));
+                var data = new BeaconData { Address = s.Mac };
+                data.Add(new BeaconItem { Rssi = s.Rssi, Time = s.Time });
+                telemetry.Append(data);
             }
 
             if(telemetry.Count > 0)

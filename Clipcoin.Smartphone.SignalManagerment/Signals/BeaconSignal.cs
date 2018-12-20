@@ -13,7 +13,8 @@ namespace Clipcoin.Smartphone.SignalManagement.Signals
         public int Rssi { get; set; }
         public double Distance { get; set; }
         public int Minor { get; set; }
-        public int Major { get; set; }        
+        public int Major { get; set; }      
+        public DateTime Time { get; set; }
     }
 
     

@@ -11,7 +11,7 @@ namespace Clipcoin.Smartphone.SignalManagement.Signals
     {
         public readonly string _guid = Guid.NewGuid().ToString();
         private readonly IPackager _packager;
-        private ICollection<(IBeaconSignal, DateTime)> _signals = new List<(IBeaconSignal, DateTime)>();
+        private ICollection<BeaconSignal> _signals = new List<BeaconSignal>();
         public GroupID GroupID { get; private set;}
         public Timer Timer { get; private set; } = new Timer() { Interval = 5000, Enabled = false };
 
@@ -30,11 +30,11 @@ namespace Clipcoin.Smartphone.SignalManagement.Signals
         }
 
 
-        public void SetSignal(IBeaconSignal signal, DateTime time)
+        public void SetSignal(BeaconSignal signal)
         {
             Timer.Stop();
             Timer.Start();
-            _signals.Add((signal, time));
+            _signals.Add(signal);
         }
     }
 }

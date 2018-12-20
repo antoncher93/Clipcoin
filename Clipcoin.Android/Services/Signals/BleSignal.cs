@@ -14,15 +14,17 @@ namespace Clipcoin.Phone.Services.Signals
 {
     public struct BleSignal
     {
-        public BleSignal(string address, int rssi, byte[] record)
+        public BleSignal(string address, int rssi, byte[] record, DateTime time)
         {
             Address = address;
             Rssi = rssi;
             Record = record;
+            Time = time;
         }
 
         public byte[] Record { get; private set; }
         public string Address { get; private set; }
         public int Rssi { get; private set; }
+        public DateTime Time { get; private set; }
     }
 }

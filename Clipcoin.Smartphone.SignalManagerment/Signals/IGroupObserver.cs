@@ -11,6 +11,6 @@ namespace Clipcoin.Smartphone.SignalManagement.Signals
         GroupID GroupID { get; }
         Timer Timer { get; }
 
-        void SetSignal(IBeaconSignal signal, DateTime time);
+        void SetSignal(BeaconSignal signal);
     }
 }

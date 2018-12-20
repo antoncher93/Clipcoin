@@ -24,7 +24,7 @@ namespace Clipcoin.Smartphone.SignalManagement.Signals
             }
         }
 
-        public void PushPackage(IEnumerable<(IBeaconSignal signal, DateTime dateTime)> package)
+        public void PushPackage(IEnumerable<BeaconSignal> package)
         {
             foreach(var ex in _executors)
             {

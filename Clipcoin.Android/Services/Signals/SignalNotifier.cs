@@ -57,7 +57,8 @@ namespace Clipcoin.Phone.Services.Signals
                         Rssi = signal.Rssi,
                         Minor = minor,
                         UUID = uuid,
-                        Major = major
+                        Major = major,
+                        Time = signal.Time
                     };
                 }
             }
@@ -136,15 +137,20 @@ namespace Clipcoin.Phone.Services.Signals
 
             _timer.Start();
 
-            if (!_signalStack.Any(s => s.Address.Equals(result.Device.Address)))
-            {
-                _signalStack.Push(
-                    new BleSignal(
-                        result.Device.Address, 
-                        result.Rssi, 
-                        result.ScanRecord.GetBytes()
-                        ));
-            }
+            var time = DateTime.Now;
+
+            _signalStack.Push(
+                   new BleSignal(
+                       result.Device.Address,
+                       result.Rssi,
+                       result.ScanRecord.GetBytes(),
+                       time
+                       ));
+
+            //if (!_signalStack.Any(s => s.Address.Equals(result.Device.Address)))
+            //{
+               
+            //}
         }
 
 

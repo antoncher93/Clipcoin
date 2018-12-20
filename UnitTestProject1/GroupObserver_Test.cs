@@ -23,7 +23,7 @@ namespace UnitTestProject1
                 count++;
             };
 
-            go.SetSignal(new BeaconSignal { Minor = 1, Major = 1 }, DateTime.Now);
+            go.SetSignal(new BeaconSignal { Minor = 1, Major = 1, Time = DateTime.Now});
             await Task.Delay(7000);
 
             Assert.AreEqual(1, count);

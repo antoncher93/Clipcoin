@@ -22,7 +22,7 @@ namespace Clipcoin.Smartphone.SignalManagement.Signals
         private class BasePackager : IPackager
         {
 
-            public void PushPackage(IEnumerable<(IBeaconSignal signal, DateTime dateTime)> package)
+            public void PushPackage(IEnumerable<BeaconSignal> package)
             {
                 
             }

@@ -13,6 +13,7 @@ using Clipcoin.Phone.Help;
 using Clipcoin.Phone.Services.Http;
 using Clipcoin.Phone.Settings;
 using Clipcoin.Smartphone.SignalManagement.Interfaces;
+using Clipcoin.Smartphone.SignalManagement.Signals;
 
 namespace Clipcoin.Phone.Services.Signals
 {
@@ -27,7 +28,7 @@ namespace Clipcoin.Phone.Services.Signals
             _userID = JwtHelper.GetAspNetUserId(UserSettings.Token);
         }
 
-        public void Execute(IEnumerable<(IBeaconSignal, DateTime)> package)
+        public void Execute(IEnumerable<BeaconSignal> package)
         {
             _client.SendTelemetry(_userID, package);
         }
