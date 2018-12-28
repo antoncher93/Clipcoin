@@ -78,6 +78,7 @@
     <Compile Include="Settings\CommonSettings.cs" />
     <Compile Include="Settings\LoginData.cs" />
     <Compile Include="Settings\UserSettings.cs" />
+    <Compile Include="Show\TimeTriggerNotificator.cs" />
     <Compile Include="Show\TriggerEventHolder.cs" />
     <Compile Include="Show\TriggerNotificator.cs" />
   </ItemGroup>
@@ -113,7 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Trigger\Trigger\Trigger.csproj">
-      <Project>{4fe913fa-b93e-4200-b27e-20f77e377221}</Project>
+      <Project>{95aa9095-7eb7-47a5-922b-f2d4c2c6c34b}</Project>
       <Name>Trigger</Name>
     </ProjectReference>
     <ProjectReference Include="..\Clipcoin.Android\Clipcoin.Phone.csproj">
@@ -129,7 +130,9 @@
     <AndroidResource Include="Resources\drawable\coin.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\xml\pref.xml" />
+    <AndroidResource Include="Resources\xml\pref.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\enter.png" />

@@ -10,10 +10,11 @@ namespace Clipcoin.Smartphone.SignalManagement.Interfaces
     public interface ITracker
     {
         IAccessPoint AccessPoint { get;}
-        BaseObserver<BeaconScanResult> ObserveManager { get; }
+        BaseObserver<BeaconSignal> ObserveManager { get; }
         string Uid { get; }
         string Key { get; set; }
         string UUID { get; }
+        string SpaceUid { get; }
         bool IsObsolete { get; }
     }
 }

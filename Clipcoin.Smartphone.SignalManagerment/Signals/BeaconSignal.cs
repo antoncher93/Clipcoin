@@ -15,6 +15,20 @@ namespace Clipcoin.Smartphone.SignalManagement.Signals
         public int Minor { get; set; }
         public int Major { get; set; }      
         public DateTime Time { get; set; }
+
+        public static BeaconSignal Default
+        {
+            get
+            {
+                return new BeaconSignal
+                {
+                    Mac = string.Empty,
+                    UUID = string.Empty,
+                    Rssi = int.MinValue
+
+                };
+            }
+        }
     }
 
     

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Clipcoin.Phone.Services.Classes.Trackers;
+using Clipcoin.Phone.Services.Interfaces;
+using Clipcoin.Phone.Services.Stores;
 using Clipcoin.Smartphone.SignalManagement.Interfaces;
 using Clipcoin.Smartphone.SignalManagement.Logging;
 using Clipcoin.Smartphone.SignalManagement.Signals;
@@ -20,6 +22,7 @@ namespace Clipcoin.Phone.Services.Http
     {
         private const string apiUrl = "http://technobee.elementstore.ru";
         private const string apiCustomerPoints = "/api/Customer/points/";
+        private const string apiStore = "/api/Contract/store/";
         private const string apiSeparator = ";";
         private const string apiTelemetryReceivePort = ":5000";
 
@@ -34,6 +37,37 @@ namespace Clipcoin.Phone.Services.Http
                 {"Authorization", "Bearer " + token }
             };
             Post(apiUrl + apiCustomerPoints, $"\"{body}\"", headers, new SearchTrackerCallback(callback, networks));
+        }
+
+        public void RequestStore(string storeUid, string token, IStoreRequestCallback callback)
+        {
+            var headers = new Dictionary<string, string>
+            {
+                {"Authorization", "Bearer " + token }
+            };
+
+            Get(apiUrl + apiStore + storeUid, headers, new StoreCallback(callback));
+        }
+
+        private void Get(string uri, IDictionary<string, string> headers = null, ICallback callback = null)
+        {
+            OkHttpClient client = new OkHttpClient();
+            var requestBuilder = new Request.Builder()
+            .Url(uri);
+
+            if (headers != null)
+                foreach (var key in headers.Keys)
+                {
+                    requestBuilder.AddHeader(key, headers[key]);
+                }
+
+            Request request = requestBuilder
+                .Build();
+
+            if (callback == null)
+                callback = new EmptyCallback();
+
+            client.NewCall(request).Enqueue(callback);
         }
 
         public void Post(string uri, string body, IDictionary<string, string> headers = null, ICallback callback = null)
@@ -117,6 +151,7 @@ namespace Clipcoin.Phone.Services.Http
                                 i.Bssid.Equals(d.MacAddressWlan1, StringComparison.CurrentCultureIgnoreCase)))
                             .Uid(d.Uid)
                             .BeaconsUUID(Guid.Parse(d.UUID))
+                            .SpaceUid(d.SpaceUid)
                             .Build();
 
                         trackers.Add(tracker);
@@ -167,6 +202,30 @@ namespace Clipcoin.Phone.Services.Http
                 {
                     Logger.Info("Fail");
                     _callback?.OnFail(response.Message());
+                }
+            }
+        }
+
+        private class StoreCallback : Java.Lang.Object, ICallback
+        {
+            private readonly IStoreRequestCallback _callback;
+
+            public StoreCallback(IStoreRequestCallback callback)
+            {
+                _callback = callback;
+            }
+
+            public void OnFailure(Request request, IOException iOException)
+            {
+                
+            }
+
+            public void OnResponse(Response response)
+            {
+                if(response.Code() == 200)
+                {
+                    StoreData storeData = JsonConvert.DeserializeObject<StoreData>(response.Body().String());
+                    _callback?.OnResponce(storeData);
                 }
             }
         }

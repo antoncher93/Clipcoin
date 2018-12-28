@@ -5,12 +5,13 @@ using System.Text;
 using Clipcoin.Smartphone.SignalManagement.Infrastructure;
 using System.Timers;
 using Clipcoin.Smartphone.SignalManagement.Logging;
+using Clipcoin.Smartphone.SignalManagement.Preferences;
 
 namespace Clipcoin.Smartphone.SignalManagement.Signals
 {
-    public class GroupObserverManager : BaseObserver<BeaconScanResult>
+    public class GroupObserverManager : BaseObserver<BeaconSignal>
     {
-        private const int treshold = -65;
+        private int treshold = SetvicePreferences.RssiTreshold;
         private string _uuid;
 
         private readonly string _guid = Guid.NewGuid().ToString();
@@ -24,17 +25,18 @@ namespace Clipcoin.Smartphone.SignalManagement.Signals
 
         private IDictionary<GroupID, IGroupObserver> _groupObservers = new Dictionary<GroupID, IGroupObserver>();
 
-        public override void OnNext(BeaconScanResult value)
+        public override void OnNext(BeaconSignal value)
         {
             base.OnNext(value);
-
-            PushToObservers(
-                value.Signals.SetTreshold(treshold), value.Time);
+            if(value.Rssi >= treshold)
+            {
+                PushToObservers(value);
+            }
         }        
 
-        private void PushToObservers(IEnumerable<BeaconSignal> signals, DateTime time)
+        private void PushToObservers(BeaconSignal signal)
         {
-            foreach (var signal in signals.Where(s => s.UUID.Equals(_uuid, StringComparison.CurrentCultureIgnoreCase)))
+            if(signal.UUID.Equals(_uuid, StringComparison.CurrentCultureIgnoreCase))
             {
                 IGroupObserver observer;
                 GroupID id = GroupID.FromValues(signal.Minor, signal.Major);
@@ -51,7 +53,7 @@ namespace Clipcoin.Smartphone.SignalManagement.Signals
                     };
                     _groupObservers.Add(observer.GroupID, observer);
                     Logger.Info($"GOM {_guid} add new GO {observer.GroupID.ToString()}");
-                    
+
                 }
                 observer.SetSignal(signal);
             }

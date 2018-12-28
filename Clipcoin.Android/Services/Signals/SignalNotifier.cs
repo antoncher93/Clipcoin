@@ -16,61 +16,74 @@ using Clipcoin.Smartphone.SignalManagement.Signals;
 
 namespace Clipcoin.Phone.Services.Signals
 {
-    public class SignalNotifier : ScanCallback, IObservable<BeaconScanResult>
+    public class SignalNotifier : ScanCallback, IObservable<BeaconSignal>
     {
         private ConcurrentStack<BleSignal> _signalStack = new ConcurrentStack<BleSignal>();
 
-        private Timer _timer = new Timer { Enabled = false, Interval = 500 };
+        private BluetoothLeScanner _scanner;
 
-        ICollection<IObserver<BeaconScanResult>> _observers = new List<IObserver<BeaconScanResult>>();
+        private Timer _timer = new Timer { Enabled = false, Interval = 2000 };
+
+        ICollection<IObserver<BeaconSignal>> _observers = new List<IObserver<BeaconSignal>>();
+
+
 
         public SignalNotifier()
         {
             _timer.Elapsed += (s, e) =>
             {
-                System.Diagnostics.Debug.WriteLine("=====================");
-
-                var signals = PopAll();
-
-                IList<BeaconSignal> beacons = GetBeaconsFromSignals(signals).ToList();
-
-                NotifyAllAsync(new BeaconScanResult { Signals = beacons, Time = DateTime.Now });
+                _scanner.StopScan(this);
+                _scanner.StartScan(this);
+                _timer.Stop();
             };
         }
 
-        private IEnumerable<BeaconSignal> GetBeaconsFromSignals(IEnumerable<BleSignal> signals)
+        public void SetBleScanner(BluetoothLeScanner scanner)
         {
-            foreach(var signal in signals)
-            {
-                int startByte = 2;
-                if(IsBeaconRecord(signal.Record, ref startByte))
-                {
-                    string uuid = GetUuidFromRecord(signal.Record, startByte);
-                    int minor = GetMinorFromRecord(signal.Record, startByte);
-                    int major = GetMajorFromRecord(signal.Record, startByte);
-
-                    System.Diagnostics.Debug.WriteLine($"{signal.Address} {signal.Rssi} {uuid} {minor} {major}");
-
-                    yield return new BeaconSignal
-                    {
-                        Mac = signal.Address,
-                        Rssi = signal.Rssi,
-                        Minor = minor,
-                        UUID = uuid,
-                        Major = major,
-                        Time = signal.Time
-                    };
-                }
-            }
+            _scanner = scanner;
         }
 
-        private void NotifyAllAsync(BeaconScanResult signals)
+        internal void Complete()
         {
-            foreach(var obs in _observers)
+            _observers.Clear();
+        }
+
+        private BeaconSignal GetBeaconsFromSignals(BleSignal signal)
+        {
+            int startByte = 2;
+            if (IsBeaconRecord(signal.Record, ref startByte))
+            {
+                string uuid = GetUuidFromRecord(signal.Record, startByte);
+                int minor = GetMinorFromRecord(signal.Record, startByte);
+                int major = GetMajorFromRecord(signal.Record, startByte);
+
+                System.Diagnostics.Debug.WriteLine($"{signal.Address} {signal.Rssi} {uuid} {minor} {major}");
+
+                return new BeaconSignal
+                {
+                    Mac = signal.Address,
+                    Rssi = signal.Rssi,
+                    Minor = minor,
+                    UUID = uuid,
+                    Major = major,
+                    Time = signal.Time
+                };
+            }
+            else return BeaconSignal.Default;
+
+
+        }
+
+        private void NotifyAllAsync(BeaconSignal signal)
+        {
+            System.Diagnostics.Debug.WriteLine($"{signal.Time.TimeOfDay} {signal.Mac}  {DateTime.Now.TimeOfDay}");
+
+            foreach (var obs in _observers)
             {
                 Task.Factory.StartNew(() =>
                 {
-                    obs.OnNext(signals);
+                    obs.OnNext(signal);
+                    
                 });
             }
         }
@@ -94,8 +107,6 @@ namespace Clipcoin.Phone.Services.Signals
         {
             return (int)(record[startByte + 22] * 0x100 + record[startByte + 23]);
         }
-
-
 
         private bool IsBeaconRecord(byte[] record, ref int startByte)
         {
@@ -133,29 +144,30 @@ namespace Clipcoin.Phone.Services.Signals
 
         public override void OnScanResult([GeneratedEnum] ScanCallbackType callbackType, ScanResult result)
         {
+
             base.OnScanResult(callbackType, result);
 
-            _timer.Start();
+            System.Diagnostics.Debug.WriteLine($"*** {DateTime.Now.TimeOfDay} {result.Device.Address}");
 
             var time = DateTime.Now;
 
-            _signalStack.Push(
-                   new BleSignal(
+            var bleSignal = new BleSignal(
                        result.Device.Address,
                        result.Rssi,
                        result.ScanRecord.GetBytes(),
                        time
-                       ));
+                       );
 
-            //if (!_signalStack.Any(s => s.Address.Equals(result.Device.Address)))
-            //{
-               
-            //}
+            var beaconSignal = GetBeaconsFromSignals(bleSignal);
+            if(!beaconSignal.Equals(BeaconSignal.Default))
+            {
+                NotifyAllAsync(beaconSignal);
+            }
         }
 
 
 
-        public IDisposable Subscribe(IObserver<BeaconScanResult> observer)
+        public IDisposable Subscribe(IObserver<BeaconSignal> observer)
         {
             if(!_observers.Contains(observer))
             {
@@ -166,10 +178,10 @@ namespace Clipcoin.Phone.Services.Signals
 
         private class Subscriber : IDisposable
         {
-            ICollection<IObserver<BeaconScanResult>> _observers;
-            IObserver<BeaconScanResult> _observer;
+            ICollection<IObserver<BeaconSignal>> _observers;
+            IObserver<BeaconSignal> _observer;
 
-            public Subscriber(ICollection<IObserver<BeaconScanResult>> observers, IObserver<BeaconScanResult> observer)
+            public Subscriber(ICollection<IObserver<BeaconSignal>> observers, IObserver<BeaconSignal> observer)
             {
                 _observers = observers;
                 _observer = observer;

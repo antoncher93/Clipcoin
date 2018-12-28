@@ -9,13 +9,11 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Clipcoin.Phone.Services.Interfaces;
-using Newtonsoft.Json;
 
-namespace Clipcoin.Phone.Services.Classes.Trackers
+namespace Clipcoin.Phone.Services.Main
 {
-    public class BeaconBody 
+    public interface IMainServiceSettings
     {
-        
+        bool NotifyAboutNewTracker { get; set; }
     }
 }

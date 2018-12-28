@@ -18,7 +18,8 @@ namespace Clipcoin.Smartphone.SignalManagement.Trackers
         public bool IsObsolete { get; private set; } = false;
         public IAccessPoint AccessPoint { get; internal set; }
         public string UUID { get; internal set; } = "";
-        public BaseObserver<BeaconScanResult> ObserveManager { get; internal set; }
+        public string SpaceUid { get; internal set; }
+        public BaseObserver<BeaconSignal> ObserveManager { get; internal set; }
 
         private Timer timer1 = new Timer { Interval = 3600000, Enabled = true };
 

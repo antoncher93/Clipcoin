@@ -49,6 +49,9 @@ namespace Clipcoin.Phone
 			// aapt resource value: 0x7f020002
 			public static int main_icon = 2130837506;
 			
+			// aapt resource value: 0x7f020003
+			public static int sun = 2130837507;
+			
 			static Drawable()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();

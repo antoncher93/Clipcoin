@@ -89,6 +89,7 @@ namespace Clipcoin.Phone.Runnable
                                 i.Bssid.Equals(d.MacAddressWlan1, StringComparison.CurrentCultureIgnoreCase)))
                             .Uid(d.Uid)
                             .BeaconsUUID(Guid.Parse(d.UUID))
+                            .SpaceUid(d.SpaceUid)
                             .Build();
 
                         trackers.Add(tracker);

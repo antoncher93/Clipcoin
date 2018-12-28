@@ -12,7 +12,6 @@ using Android.Views;
 using Android.Widget;
 using Clipcoin.Phone.Database.Sqlite;
 using Clipcoin.Phone.Help;
-using Clipcoin.Phone.Services.Beacons;
 using Clipcoin.Smartphone.SignalManagement.Signals;
 using Trigger.Beacons;
 using Trigger.Classes.Beacons;

@@ -36,15 +36,12 @@ namespace Clipcoin.Phone.Services.Signals
             }
         }
 
-        public IObservable<BeaconScanResult> RangeNotifier
+        public IObservable<BeaconSignal> RangeNotifier
         {
             get
             {
-                if (_rangeNotifier == null)
-                    _rangeNotifier = new SignalNotifier();
-                return _rangeNotifier;
+                return SignalNotifier;
             }
-            
         }
 
         public override IBinder OnBind(Intent intent) => new Binder();
@@ -52,24 +49,32 @@ namespace Clipcoin.Phone.Services.Signals
         public override void OnCreate()
         {
             base.OnCreate();
-
+            
             bManager = (BluetoothManager)GetSystemService(Context.BluetoothService);
             bAdapter = bManager.Adapter;
-
-
+            bAdapter.Enable();
         }
 
         [return: GeneratedEnum]
         public override StartCommandResult OnStartCommand(Intent intent, [GeneratedEnum] StartCommandFlags flags, int startId)
         {
             Logger.Info("Signal scanner started");
+            var scanner = bAdapter.BluetoothLeScanner;
 
-            bAdapter.BluetoothLeScanner.StartScan(SignalNotifier);
+            SignalNotifier.SetBleScanner(scanner);
+
+            var settings = new ScanSettings.Builder()
+                //.SetReportDelay(1000)
+                .SetScanMode(Android.Bluetooth.LE.ScanMode.LowLatency)
+                .Build();
+
+            scanner.StartScan(new List<ScanFilter>() , settings,  SignalNotifier);
             return base.OnStartCommand(intent, flags, startId);
         }
 
         public override void OnDestroy()
         {
+            //SignalNotifier.Dispose();
             bAdapter.BluetoothLeScanner.StopScan(SignalNotifier);
             base.OnDestroy();
         }

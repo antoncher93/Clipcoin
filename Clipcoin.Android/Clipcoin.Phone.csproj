@@ -69,7 +69,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="Trigger, Version=1.0.0.4, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Trigger\Trigger\bin\Debug\netstandard2.0\Trigger.dll</HintPath>
+      <HintPath>..\..\Trigger\Trigger\obj\Debug\netstandard2.0\Trigger.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -97,8 +97,12 @@
     <Compile Include="Services\Demonstration\RangerService.cs" />
     <Compile Include="Services\Http\ApiClient.cs" />
     <Compile Include="Services\Http\IApiClient.cs" />
+    <Compile Include="Services\Interfaces\IStoreRequestCallback.cs" />
     <Compile Include="Services\Interfaces\ITrackerScanner.cs" />
+    <Compile Include="Services\Main\IMainServiceSettings.cs" />
     <Compile Include="Services\Main\MainService.cs" />
+    <Compile Include="Services\Main\StoreNotifier.cs" />
+    <Compile Include="Services\Main\TrackersObserver.cs" />
     <Compile Include="Services\ServiceEventArgs.cs" />
     <Compile Include="Services\ServiceTools.cs" />
     <Compile Include="Services\Main\KeyRequestEventArgs.cs" />
@@ -111,7 +115,9 @@
     <Compile Include="Services\Signals\SignalNotifier.cs" />
     <Compile Include="Services\Signals\SignalScanner.cs" />
     <Compile Include="Services\Signals\SignalsSender.cs" />
-    <Compile Include="Services\Trackers\BeaconBody.cs" />
+    <Compile Include="Services\Stores\Brand.cs" />
+    <Compile Include="Services\Stores\ProductCategory.cs" />
+    <Compile Include="Services\Stores\StoreData.cs" />
     <Compile Include="Services\Trackers\TrackerData.cs" />
     <Compile Include="Runnable\ConnectionTask.cs" />
     <Compile Include="Runnable\CallTrackerTask.cs" />
@@ -124,6 +130,7 @@
     <Compile Include="Services\Interfaces\IConnectTask.cs" />
     <Compile Include="Services\Interfaces\IServiceListener.cs" />
     <Compile Include="Services\Signals\TelemetrySendService.cs" />
+    <Compile Include="Settings\BaseSettings.cs" />
     <Compile Include="Settings\UserSettings.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -151,7 +158,9 @@
       <Name>Clipcoin.Smartphone.SignalManagement</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\sun.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

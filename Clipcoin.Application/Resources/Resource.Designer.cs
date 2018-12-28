@@ -29,6 +29,7 @@ namespace Clipcoin.Application
 			global::Clipcoin.Phone.Resource.Drawable.enter = global::Clipcoin.Application.Resource.Drawable.enter;
 			global::Clipcoin.Phone.Resource.Drawable.exit = global::Clipcoin.Application.Resource.Drawable.exit;
 			global::Clipcoin.Phone.Resource.Drawable.main_icon = global::Clipcoin.Application.Resource.Drawable.main_icon;
+			global::Clipcoin.Phone.Resource.Drawable.sun = global::Clipcoin.Application.Resource.Drawable.sun;
 			global::Clipcoin.Phone.Resource.String.ConfirmEnter = global::Clipcoin.Application.Resource.String.ConfirmEnter;
 			global::Clipcoin.Phone.Resource.String.ConfirmExit = global::Clipcoin.Application.Resource.String.ConfirmExit;
 			global::Clipcoin.Phone.Resource.String.ConfirmationType = global::Clipcoin.Application.Resource.String.ConfirmationType;
@@ -83,6 +84,9 @@ namespace Clipcoin.Application
 			
 			// aapt resource value: 0x7f020004
 			public const int main_icon = 2130837508;
+			
+			// aapt resource value: 0x7f020005
+			public const int sun = 2130837509;
 			
 			static Drawable()
 			{

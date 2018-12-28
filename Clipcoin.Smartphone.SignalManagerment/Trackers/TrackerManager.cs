@@ -29,6 +29,10 @@ namespace Clipcoin.Smartphone.SignalManagement.Trackers
 
         public void Dispose()
         {
+            foreach(var t in _trackers.Values)
+            {
+                t.ObserveManager.OnCompleted();
+            }
             _trackers.Clear();
         }
 

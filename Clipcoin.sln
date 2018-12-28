@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clipcoin.Application", "Cli
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{1F8A1FBD-D4D4-4018-BDA8-40C9FEB526C7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trigger", "..\Trigger\Trigger\Trigger.csproj", "{4FE913FA-B93E-4200-B27E-20F77E377221}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clipcoin.Smartphone.SignalManagement", "Clipcoin.Smartphone.SignalManagerment\Clipcoin.Smartphone.SignalManagement.csproj", "{98C67735-0EDC-46AB-84A9-3131654FBD7D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqTest", "LinqTest\LinqTest.csproj", "{0D88264C-91ED-4650-A317-87254DF94FF6}"
@@ -18,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClipCoin.Test", "UnitTestProject1\ClipCoin.Test.csproj", "{35E60EE4-DC3D-4D79-88E0-69A15A25E65A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalBLE", "SignalBLE\SignalBLE.csproj", "{F989FA0A-9BE2-4916-924E-810948D8FD39}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trigger", "..\Trigger\Trigger\Trigger.csproj", "{95AA9095-7EB7-47A5-922B-F2D4C2C6C34B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,14 +47,6 @@ Global
 		{8425BEF5-1D6C-474A-9513-66C5CDCC56D2}.Release|x86.ActiveCfg = Release|Any CPU
 		{8425BEF5-1D6C-474A-9513-66C5CDCC56D2}.Release|x86.Build.0 = Release|Any CPU
 		{8425BEF5-1D6C-474A-9513-66C5CDCC56D2}.Release|x86.Deploy.0 = Release|Any CPU
-		{4FE913FA-B93E-4200-B27E-20F77E377221}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4FE913FA-B93E-4200-B27E-20F77E377221}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4FE913FA-B93E-4200-B27E-20F77E377221}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{4FE913FA-B93E-4200-B27E-20F77E377221}.Debug|x86.Build.0 = Debug|Any CPU
-		{4FE913FA-B93E-4200-B27E-20F77E377221}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4FE913FA-B93E-4200-B27E-20F77E377221}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4FE913FA-B93E-4200-B27E-20F77E377221}.Release|x86.ActiveCfg = Release|Any CPU
-		{4FE913FA-B93E-4200-B27E-20F77E377221}.Release|x86.Build.0 = Release|Any CPU
 		{98C67735-0EDC-46AB-84A9-3131654FBD7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{98C67735-0EDC-46AB-84A9-3131654FBD7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98C67735-0EDC-46AB-84A9-3131654FBD7D}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -91,6 +83,14 @@ Global
 		{F989FA0A-9BE2-4916-924E-810948D8FD39}.Release|x86.ActiveCfg = Release|Any CPU
 		{F989FA0A-9BE2-4916-924E-810948D8FD39}.Release|x86.Build.0 = Release|Any CPU
 		{F989FA0A-9BE2-4916-924E-810948D8FD39}.Release|x86.Deploy.0 = Release|Any CPU
+		{95AA9095-7EB7-47A5-922B-F2D4C2C6C34B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95AA9095-7EB7-47A5-922B-F2D4C2C6C34B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95AA9095-7EB7-47A5-922B-F2D4C2C6C34B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{95AA9095-7EB7-47A5-922B-F2D4C2C6C34B}.Debug|x86.Build.0 = Debug|Any CPU
+		{95AA9095-7EB7-47A5-922B-F2D4C2C6C34B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95AA9095-7EB7-47A5-922B-F2D4C2C6C34B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95AA9095-7EB7-47A5-922B-F2D4C2C6C34B}.Release|x86.ActiveCfg = Release|Any CPU
+		{95AA9095-7EB7-47A5-922B-F2D4C2C6C34B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

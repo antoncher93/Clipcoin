@@ -15,14 +15,28 @@ namespace Clipcoin.Application.Settings
 {
     public class CommonSettings
     {
-        private Context _ctx;
-        ISharedPreferences pm;
+        public const string NotifyNearStorePrefKey = "NotifyNearStore";
 
+        private Context _ctx;
+        private ISharedPreferences pm;
 
         public CommonSettings(Context ctx)
         {
             _ctx = ctx;
             pm = PreferenceManager.GetDefaultSharedPreferences(ctx);
+        }
+
+        public bool NotifyAboutNewTrackers
+        {
+            get
+            {
+                var res = false;
+                if(pm.Contains(NotifyNearStorePrefKey))
+                {
+                    res = pm.GetBoolean(NotifyNearStorePrefKey, false);
+                }
+                return res;
+            }
         }
 
         public string FirstBeaconAddress
@@ -47,9 +61,6 @@ namespace Clipcoin.Application.Settings
                     _ctx.GetString(Resource.String.second_beacon_address_default_value));
             }
         }
-
-        //public int ActualSignalsCount
-        //    => Convert.ToInt32( GetValue(_ctx.GetString(Res), string.Empty));
 
         public int RssiTreshold
         {

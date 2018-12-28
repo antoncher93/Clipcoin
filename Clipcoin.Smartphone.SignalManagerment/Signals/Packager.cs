@@ -43,6 +43,14 @@ namespace Clipcoin.Smartphone.SignalManagement.Signals
             return result;
         }
 
+        public void RemoveExecutor(IPackageExecutor executor)
+        {
+            if(_executors.Contains(executor))
+            {
+                _executors.Remove(executor);
+            }
+        }
+
         public void Flush()
         {
             _executors.Clear();

@@ -81,8 +81,5 @@ namespace Clipcoin.Application.Settings
                 mSettings.Edit().PutString(userToken, value).Apply();
             }
         }
-
-
-
     }
 }

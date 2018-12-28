@@ -29,6 +29,7 @@ namespace SignalBLE
 			global::Clipcoin.Phone.Resource.Drawable.enter = global::SignalBLE.Resource.Drawable.enter;
 			global::Clipcoin.Phone.Resource.Drawable.exit = global::SignalBLE.Resource.Drawable.exit;
 			global::Clipcoin.Phone.Resource.Drawable.main_icon = global::SignalBLE.Resource.Drawable.main_icon;
+			global::Clipcoin.Phone.Resource.Drawable.sun = global::SignalBLE.Resource.Drawable.sun;
 			global::Clipcoin.Phone.Resource.String.ConfirmEnter = global::SignalBLE.Resource.String.ConfirmEnter;
 			global::Clipcoin.Phone.Resource.String.ConfirmExit = global::SignalBLE.Resource.String.ConfirmExit;
 			global::Clipcoin.Phone.Resource.String.ConfirmationType = global::SignalBLE.Resource.String.ConfirmationType;
@@ -58,6 +59,9 @@ namespace SignalBLE
 			
 			// aapt resource value: 0x7f020002
 			public const int main_icon = 2130837506;
+			
+			// aapt resource value: 0x7f020003
+			public const int sun = 2130837507;
 			
 			static Drawable()
 			{

@@ -22,6 +22,9 @@
 		android:defaultValue ="@string/first_beacon_address_default_value"
         android:title="1st Beacon">
 	</EditTextPreference>
+	
+
+	
 
 	<EditTextPreference
         android:key="@string/second_beacon_address_key"
@@ -29,4 +32,11 @@
 		android:defaultValue="@string/second_beacon_address_default_value"
         android:title="2nd Beacon">
 	</EditTextPreference>
+
+	<CheckBoxPreference
+		android:key="NotifyNearStore"
+		android:value="true"
+		android:defaultValue ="true"
+		android:title="Notify about new trackers">
+	</CheckBoxPreference>
 </PreferenceScreen>

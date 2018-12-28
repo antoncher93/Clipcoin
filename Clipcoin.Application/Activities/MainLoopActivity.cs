@@ -30,6 +30,8 @@ using Clipcoin.Phone.Services.Main;
 using Clipcoin.Smartphone.SignalManagement.Signals;
 using Clipcoin.Smartphone.SignalManagement.Logging;
 using Clipcoin.Phone.Services.Signals;
+using Clipcoin.Phone.Services;
+using Clipcoin.Smartphone.SignalManagement.Preferences;
 
 namespace Clipcoin.Application.Activities
 {
@@ -57,9 +59,9 @@ namespace Clipcoin.Application.Activities
         Button btIEnter;
         Button btIExit;
 
-        TriggerNotificator tn;
 
-        IDisposable unsubscriber;
+        TimeTriggerNotificator ttn;
+
         int count;
         AppearStatus _status;
 
@@ -94,10 +96,50 @@ namespace Clipcoin.Application.Activities
                         break;
                 }
             };
+        }
+
+        private void InitializeComponents()
+        {
+            tvBeacScanStatus = FindViewById<TextView>(Resource.Id.textView_BeaconScannerStatus);
+
+            tvLog = FindViewById<TextView>(Resource.Id.textView_Log);
+            tvLog.MovementMethod = new ScrollingMovementMethod();
+
+            tvSignalCount = FindViewById<TextView>(Resource.Id.textView_SignalsCount);
+
+            tvTrackerValue = FindViewById<TextView>(Resource.Id.textView_TrackerScannerValue);
+
+            tvStatus = FindViewById<TextView>(Resource.Id.textView_status_position);
+
+            btIEnter = FindViewById<Button>(Resource.Id.button_IENTER);
+            btIEnter.Click += (s, e) =>
+            {
+                prBar.Visibility = ViewStates.Visible;
+                new Thread(new ConfirmTask("EnterStore", settings.Token, this)).Start();
+            };
 
 
+            btIExit = FindViewById<Button>(Resource.Id.button_IExit);
+            btIExit.Click += (s, e) =>
+            {
+                prBar.Visibility = ViewStates.Visible;
+                new Thread(new ConfirmTask("ExitStore", settings.Token, this)).Start();
+            };
 
+            prBar = new ProgressBar(this);
+            prBar.Visibility = ViewStates.Invisible;
 
+            _handler = new Handler();
+        }
+
+        private void TuneService()
+        {
+            service.Settings.NotifyAboutNewTracker = commonSettings.NotifyAboutNewTrackers;
+        }
+
+        private void TuneInfrastructure()
+        {
+            SetvicePreferences.RssiTreshold = commonSettings.RssiTreshold;
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -114,51 +156,25 @@ namespace Clipcoin.Application.Activities
             sManager.RegisterListener(this, sensor, SensorDelay.Game);
 
             Initial();
-
-            tvBeacScanStatus = FindViewById<TextView>(Resource.Id.textView_BeaconScannerStatus);
+            InitializeComponents();
 
             settings = UserSettings.GetInstanceForApp(this);
             commonSettings = new CommonSettings(this);
-            tn = new TriggerNotificator(this)
-            {
-                Interval = 3000,
-                RssiTreshold = commonSettings.RssiTreshold
-            };
-
-            tvLog = FindViewById<TextView>(Resource.Id.textView_Log);
-            tvSignalCount = FindViewById<TextView>(Resource.Id.textView_SignalsCount);
-            tvTrackerValue = FindViewById<TextView>(Resource.Id.textView_TrackerScannerValue);
-            tvStatus = FindViewById<TextView>(Resource.Id.textView_status_position);
-
-            btIEnter = FindViewById<Button>(Resource.Id.button_IENTER);
-            btIExit = FindViewById<Button>(Resource.Id.button_IExit);
-            prBar = new ProgressBar(this);
-            prBar.Visibility = ViewStates.Invisible;
-            _handler = new Handler();
-
-            btIEnter.Click += (s, e) =>
-            {
-                prBar.Visibility = ViewStates.Visible;
-                new Thread(new ConfirmTask("EnterStore", settings.Token, this)).Start();
-
-            };
-
-            btIExit.Click += (s, e) =>
-            {
-                prBar.Visibility = ViewStates.Visible;
-                new Thread(new ConfirmTask("ExitStore", settings.Token, this)).Start();
-            };
-
+            
             Signal_count = 0;
-            tvLog.MovementMethod = new ScrollingMovementMethod();
 
             Logger.OnEvent += OnLoggerEvent;
 
             service = new MainService();
 
-            tn.Holder.OnEvent += TriggerEventHandler;
+            ttn = new TimeTriggerNotificator(this);
+
+            Packager.Instance.AddExecutor(ttn);
 
             ChangeStatus(AppearStatus.Unknown);
+
+            TuneService();
+            TuneInfrastructure();
         }
 
         private void TriggerEventHandler(object s, Trigger.Signal.TriggerEventArgs e)
@@ -216,11 +232,6 @@ namespace Clipcoin.Application.Activities
         {
             StartService(new Intent(this, service.Class));
 
-            //if (!Tools.IsServiceRunning(this, service.Class))
-            //{
-            //    StartForegroundService(new Intent(this, service.Class));
-            //}
-
             base.OnResume();
         }
 
@@ -268,7 +279,7 @@ namespace Clipcoin.Application.Activities
 
         public void OnCompleted()
         {
-            unsubscriber.Dispose();
+            
         }
 
         public void OnNext(BeaconScanResult value)
@@ -283,15 +294,7 @@ namespace Clipcoin.Application.Activities
 
         public void OnSensorChanged(SensorEvent e)
         {
-            if (e.Values[0].Equals(0))
-            {
-                tn.RssiTreshold = commonSettings.RssiTreshold - RssiBoost;
-            }
-            else
-            {
-                tn.RssiTreshold = commonSettings.RssiTreshold;
-            }
-
+           
         }
 
         public void OnFailure(Request request, IOException iOException)

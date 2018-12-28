@@ -7,6 +7,6 @@ namespace Clipcoin.Smartphone.SignalManagement.Interfaces
 {
     public interface ISignalScanner
     {
-        IObservable<BeaconScanResult> RangeNotifier { get; }
+        IObservable<BeaconSignal> RangeNotifier { get; }
     }
 }

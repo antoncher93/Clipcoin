@@ -24,6 +24,9 @@ namespace Clipcoin.Smartphone.SignalManagement.Trackers
                 tracker.ObserveManager = new GroupObserverManager(guid.ToString());
             });
 
+        public TrackerBuilder SpaceUid(string uid)
+            => Modify(() => tracker.SpaceUid = uid);
+
         public TrackerBuilder AccessPoint(IAccessPoint apoint)
             => Modify(() => tracker.AccessPoint = apoint);
 

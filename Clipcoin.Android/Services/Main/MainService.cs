@@ -20,20 +20,19 @@ using Clipcoin.Smartphone.SignalManagement.Trackers;
 namespace Clipcoin.Phone.Services.Main
 {
     [Service]
-    public class MainService : Service,
-        IObserver<TrackerEventArgs>
+    public class MainService : Service
     {
-        TrackerScannerService trackerScanner;
-        SignalScanner signalScanner;
+        private TrackerScannerService trackerScanner;
+        private SignalScanner signalScanner;
+        private IEnumerable<Service> serviceList;
+        private TrackersObserver trackerObserver;
+        private StoreNotifier storeNotifier;
 
-        IEnumerable<Service> serviceList;
+        private static IMainServiceSettings _settings = new ServiceSettings();
 
         public override IBinder OnBind(Intent intent) => new Binder();
 
-        public void OnCompleted()
-        {
-            
-        }
+        public IMainServiceSettings Settings => _settings;
 
         public override void OnCreate()
         {
@@ -46,10 +45,21 @@ namespace Clipcoin.Phone.Services.Main
                 trackerScanner
             };
 
-            
+
+            trackerObserver = new TrackersObserver(this);
+            trackerObserver.Subscribe(trackerScanner.AccessPointManager.TrackerManager);
 
             GroupObserverFactory.SetPackager(Packager.Instance);
             Packager.Instance.AddExecutor(new SignalSender(new ApiClient()));
+
+
+            if(_settings.NotifyAboutNewTracker)
+            {
+                storeNotifier = new StoreNotifier(this, new ApiClient());
+                storeNotifier.Subscribe(trackerScanner.AccessPointManager.TrackerManager);
+            }
+            
+
 
         }
 
@@ -60,35 +70,25 @@ namespace Clipcoin.Phone.Services.Main
                 ServiceTools.StopFinally(this, serv.Class);
             }
 
-            trackerScanner.AccessPointManager.TrackerManager.Unsubscribe(this);
+            trackerObserver.OnCompleted();
+            storeNotifier?.OnCompleted();
             Packager.Instance.Flush();
 
             base.OnDestroy();
         }
-
-        public void OnError(Exception error)
-        {
-            
-        }
-
-        public void OnNext(TrackerEventArgs value)
-        {
-            if(value.Count > 0)
-            {
-                value.NewTracker.ObserveManager.Subscribe(signalScanner.RangeNotifier);
-                ServiceTools.StartFinally(this, signalScanner.Class);
-            }
-        }
+      
 
         [return: GeneratedEnum]
         public override StartCommandResult OnStartCommand(Intent intent, [GeneratedEnum] StartCommandFlags flags, int startId)
         {
             ConstNotificator.CreateNotification(this, null);
             StartService(new Intent(this, trackerScanner.Class));
-
-            // subscribe to new tracker
-            trackerScanner.AccessPointManager.TrackerManager.Subscribe(this);
             return base.OnStartCommand(intent, flags, startId);
+        }
+
+        private class ServiceSettings : IMainServiceSettings
+        {
+            public bool NotifyAboutNewTracker { get; set; }
         }
     }
 }
