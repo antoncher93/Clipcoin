@@ -35,8 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AndroidAltBeaconLibrary, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="AndroidAltBeaconLibrary">
       <HintPath>Libs\AndroidAltBeaconLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -97,6 +96,7 @@
     <Compile Include="Services\Demonstration\RangerService.cs" />
     <Compile Include="Services\Http\ApiClient.cs" />
     <Compile Include="Services\Http\IApiClient.cs" />
+    <Compile Include="Services\Interfaces\ISignalProvider.cs" />
     <Compile Include="Services\Interfaces\IStoreRequestCallback.cs" />
     <Compile Include="Services\Interfaces\ITrackerScanner.cs" />
     <Compile Include="Services\Main\IMainServiceSettings.cs" />
@@ -112,6 +112,7 @@
     <Compile Include="Services\Main\APointInfo.cs" />
     <Compile Include="Services\Beacons\BeaconScannerService.cs" />
     <Compile Include="Services\Signals\BleSignal.cs" />
+    <Compile Include="Services\Signals\BleSignalHolder.cs" />
     <Compile Include="Services\Signals\SignalNotifier.cs" />
     <Compile Include="Services\Signals\SignalScanner.cs" />
     <Compile Include="Services\Signals\SignalsSender.cs" />

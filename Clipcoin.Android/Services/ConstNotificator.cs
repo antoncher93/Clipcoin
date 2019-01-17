@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Clipcoin.Phone.Services.Confirnation;
 using Clipcoin.Phone.Settings;
+using Java.Lang;
 
 namespace Clipcoin.Phone.Services
 {
@@ -18,9 +19,14 @@ namespace Clipcoin.Phone.Services
     {
         public static void CreateNotification(Service context, Intent activityIntent)
         {
-            string channelId = CreateChannel(context);
-            Notification n = BuildNotification(context, channelId, activityIntent);
-            context.StartForeground(new Random().Next(1, 10), n);
+            try
+            {
+                string channelId = CreateChannel(context);
+                Notification n = BuildNotification(context, channelId, activityIntent);
+                context.StartForeground(new Random().Next(1, 10), n);
+            }
+            catch { }
+          
         }
 
         private static Notification BuildNotification(Service ctx, string id, Intent activityIntent)
@@ -51,9 +57,16 @@ namespace Clipcoin.Phone.Services
         private static string CreateChannel(Service ctx)
         {
             string id = Guid.NewGuid().ToString();
+
             NotificationManager m = (NotificationManager)ctx.GetSystemService(Context.NotificationService);
-            NotificationChannel channel = new NotificationChannel(id, "Tracker Channel", NotificationImportance.Default);
-            m.CreateNotificationChannel(channel);
+            try
+            {
+                NotificationChannel channel = new NotificationChannel(id, "Tracker Channel", NotificationImportance.Default);
+                m.CreateNotificationChannel(channel);
+            }
+            catch (ClassNotFoundException exp) { }
+
+           
             return id;
         }
     }

@@ -15,6 +15,9 @@ namespace Clipcoin.Application.Settings
 {
     public class CommonSettings
     {
+        private const string DefaultRssiTreshholdKey = "rssi_treshold";
+        private const string DefaultRssiTreshholdValue = "-70";
+
         public const string NotifyNearStorePrefKey = "NotifyNearStore";
 
         private Context _ctx;
@@ -66,8 +69,10 @@ namespace Clipcoin.Application.Settings
         {
             get
             {
-                var res = _ctx.GetString(Resource.String.rssi_treshold_default_value);
-                var key = _ctx.GetString(Resource.String.rssi_treshold_key);
+                //var res = _ctx.GetString(Resource.String.rssi_treshold_default_value);
+                //var key = _ctx.GetString(Resource.String.rssi_treshold_key);
+                var res = DefaultRssiTreshholdValue;
+                var key = DefaultRssiTreshholdKey;
                 return Convert.ToInt32(GetValue(key, res));
             }
         }

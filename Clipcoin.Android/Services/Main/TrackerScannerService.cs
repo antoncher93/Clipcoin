@@ -31,10 +31,6 @@ namespace Clipcoin.Phone.Services.Classes.Trackers
     [Service]
     public class TrackerScannerService : Service, ITrackerScanner
     {
-       
-        
-        private static int _rssiTreshold = -100;
-
         private WifiManager _wifiManager;
         private Timer _timer;
         private static int _interval = 500;

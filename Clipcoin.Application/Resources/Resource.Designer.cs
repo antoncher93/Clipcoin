@@ -28,11 +28,6 @@ namespace Clipcoin.Application
 		{
 			global::Clipcoin.Phone.Resource.Drawable.enter = global::Clipcoin.Application.Resource.Drawable.enter;
 			global::Clipcoin.Phone.Resource.Drawable.exit = global::Clipcoin.Application.Resource.Drawable.exit;
-			global::Clipcoin.Phone.Resource.Drawable.main_icon = global::Clipcoin.Application.Resource.Drawable.main_icon;
-			global::Clipcoin.Phone.Resource.Drawable.sun = global::Clipcoin.Application.Resource.Drawable.sun;
-			global::Clipcoin.Phone.Resource.String.ConfirmEnter = global::Clipcoin.Application.Resource.String.ConfirmEnter;
-			global::Clipcoin.Phone.Resource.String.ConfirmExit = global::Clipcoin.Application.Resource.String.ConfirmExit;
-			global::Clipcoin.Phone.Resource.String.ConfirmationType = global::Clipcoin.Application.Resource.String.ConfirmationType;
 		}
 		
 		public partial class Array
@@ -81,12 +76,6 @@ namespace Clipcoin.Application
 			
 			// aapt resource value: 0x7f020003
 			public const int exit = 2130837507;
-			
-			// aapt resource value: 0x7f020004
-			public const int main_icon = 2130837508;
-			
-			// aapt resource value: 0x7f020005
-			public const int sun = 2130837509;
 			
 			static Drawable()
 			{
@@ -196,47 +185,38 @@ namespace Clipcoin.Application
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f050001
-			public const int ConfirmEnter = 2131034113;
-			
-			// aapt resource value: 0x7f050002
-			public const int ConfirmExit = 2131034114;
-			
-			// aapt resource value: 0x7f050000
-			public const int ConfirmationType = 2131034112;
-			
-			// aapt resource value: 0x7f05000d
-			public const int actualSignalCount_defaultValue = 2131034125;
-			
-			// aapt resource value: 0x7f05000c
-			public const int actualSignalsCount_key = 2131034124;
-			
-			// aapt resource value: 0x7f050003
-			public const int app_name = 2131034115;
-			
-			// aapt resource value: 0x7f050005
-			public const int beacon_scan_interval_key = 2131034117;
-			
-			// aapt resource value: 0x7f050007
-			public const int first_beacon_address_default_value = 2131034119;
-			
-			// aapt resource value: 0x7f050006
-			public const int first_beacon_address_key = 2131034118;
-			
 			// aapt resource value: 0x7f05000a
-			public const int rssi_treshold_default_value = 2131034122;
-			
-			// aapt resource value: 0x7f05000b
-			public const int rssi_treshold_key = 2131034123;
+			public const int actualSignalCount_defaultValue = 2131034122;
 			
 			// aapt resource value: 0x7f050009
-			public const int second_beacon_address_default_value = 2131034121;
+			public const int actualSignalsCount_key = 2131034121;
 			
-			// aapt resource value: 0x7f050008
-			public const int second_beacon_address_key = 2131034120;
+			// aapt resource value: 0x7f050000
+			public const int app_name = 2131034112;
+			
+			// aapt resource value: 0x7f050002
+			public const int beacon_scan_interval_key = 2131034114;
 			
 			// aapt resource value: 0x7f050004
-			public const int tel_send_address_default_value = 2131034116;
+			public const int first_beacon_address_default_value = 2131034116;
+			
+			// aapt resource value: 0x7f050003
+			public const int first_beacon_address_key = 2131034115;
+			
+			// aapt resource value: 0x7f050007
+			public const int rssi_treshold_default_value = 2131034119;
+			
+			// aapt resource value: 0x7f050008
+			public const int rssi_treshold_key = 2131034120;
+			
+			// aapt resource value: 0x7f050006
+			public const int second_beacon_address_default_value = 2131034118;
+			
+			// aapt resource value: 0x7f050005
+			public const int second_beacon_address_key = 2131034117;
+			
+			// aapt resource value: 0x7f050001
+			public const int tel_send_address_default_value = 2131034113;
 			
 			static String()
 			{

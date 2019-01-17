@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+
+using Clipcoin.Phone.Services.Signals;
 using LinqTest.Classes;
 using LinqTest.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,13 +19,7 @@ namespace LinqTest
         static void Main(string[] args)
         {
 
-            IServiceCollection _serviceCollection = new ServiceCollection();
-            ConfigureService(_serviceCollection);
-
-            Worker worker = new Worker(_serviceCollection);
-
-            Console.WriteLine(worker.DoOne());
-            Console.WriteLine(worker.DoTwo());
+            SignalNotifier n = new SignalNotifier();
 
             Console.ReadKey();
         }

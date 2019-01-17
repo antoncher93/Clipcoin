@@ -12,36 +12,16 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Clipcoin.Phone.Services.Interfaces;
+using Clipcoin.Smartphone.SignalManagement.Infrastructure;
 using Clipcoin.Smartphone.SignalManagement.Signals;
+using Newtonsoft.Json;
 
 namespace Clipcoin.Phone.Services.Signals
 {
-    public class SignalNotifier : ScanCallback, IObservable<BeaconSignal>
+    public class SignalNotifier : BaseObservable<BeaconSignal>, ISignalProvider
     {
-        private ConcurrentStack<BleSignal> _signalStack = new ConcurrentStack<BleSignal>();
-
-        private BluetoothLeScanner _scanner;
-
-        private Timer _timer = new Timer { Enabled = false, Interval = 2000 };
-
-        ICollection<IObserver<BeaconSignal>> _observers = new List<IObserver<BeaconSignal>>();
-
-
-
-        public SignalNotifier()
-        {
-            _timer.Elapsed += (s, e) =>
-            {
-                _scanner.StopScan(this);
-                _scanner.StartScan(this);
-                _timer.Stop();
-            };
-        }
-
-        public void SetBleScanner(BluetoothLeScanner scanner)
-        {
-            _scanner = scanner;
-        }
+        //private ConcurrentStack<BleSignal> _signalStack = new ConcurrentStack<BleSignal>();
 
         internal void Complete()
         {
@@ -127,6 +107,12 @@ namespace Clipcoin.Phone.Services.Signals
             }
             catch (IndexOutOfRangeException e) { }
 
+            if (result)
+            {
+                var s = JsonConvert.SerializeObject(record);
+            }
+                
+
             return result;
         }
 
@@ -135,65 +121,22 @@ namespace Clipcoin.Phone.Services.Signals
             return string.Empty;
         }
 
-        private IEnumerable<BleSignal> PopAll()
+        //private IEnumerable<BleSignal> PopAll()
+        //{
+        //    var buffer = new BleSignal[_signalStack.Count];
+        //    _signalStack.TryPopRange(buffer, 0, buffer.Length);
+        //    return buffer;
+        //}
+
+        public void OnBleSignal(BleSignal signal)
         {
-            var buffer = new BleSignal[_signalStack.Count];
-            _signalStack.TryPopRange(buffer, 0, buffer.Length);
-            return buffer;
-        }
+            var beaconSignal = GetBeaconsFromSignals(signal);
 
-        public override void OnScanResult([GeneratedEnum] ScanCallbackType callbackType, ScanResult result)
-        {
-
-            base.OnScanResult(callbackType, result);
-
-            System.Diagnostics.Debug.WriteLine($"*** {DateTime.Now.TimeOfDay} {result.Device.Address}");
-
-            var time = DateTime.Now;
-
-            var bleSignal = new BleSignal(
-                       result.Device.Address,
-                       result.Rssi,
-                       result.ScanRecord.GetBytes(),
-                       time
-                       );
-
-            var beaconSignal = GetBeaconsFromSignals(bleSignal);
             if(!beaconSignal.Equals(BeaconSignal.Default))
             {
                 NotifyAllAsync(beaconSignal);
             }
         }
-
-
-
-        public IDisposable Subscribe(IObserver<BeaconSignal> observer)
-        {
-            if(!_observers.Contains(observer))
-            {
-                _observers.Add(observer);
-            }
-            return new Subscriber(_observers, observer);
-        }
-
-        private class Subscriber : IDisposable
-        {
-            ICollection<IObserver<BeaconSignal>> _observers;
-            IObserver<BeaconSignal> _observer;
-
-            public Subscriber(ICollection<IObserver<BeaconSignal>> observers, IObserver<BeaconSignal> observer)
-            {
-                _observers = observers;
-                _observer = observer;
-            }
-
-            public void Dispose()
-            {
-                if(_observers != null && _observers.Contains(_observer))
-                {
-                    _observers.Remove(_observer);
-                }
-            }
-        }
+       
     }
 }

@@ -44,6 +44,7 @@ namespace Clipcoin.Application.Activities
         ICallback
 
     {
+
         private const int RssiBoost = 5;
 
         TextView tvLog;

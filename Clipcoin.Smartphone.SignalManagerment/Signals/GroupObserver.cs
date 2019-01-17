@@ -13,7 +13,7 @@ namespace Clipcoin.Smartphone.SignalManagement.Signals
         private readonly IPackager _packager;
         private ICollection<BeaconSignal> _signals = new List<BeaconSignal>();
         public GroupID GroupID { get; private set;}
-        public Timer Timer { get; private set; } = new Timer() { Interval = 5000, Enabled = false };
+        public Timer Timer { get; private set; } = new Timer() { Interval = 3000, Enabled = false };
 
         public GroupObserver(GroupID groupId, IPackager packager)
         {

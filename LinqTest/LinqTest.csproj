@@ -179,6 +179,11 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Clipcoin.Android\Clipcoin.Phone.csproj">
+      <Project>{02D884B8-024D-4A8B-9BA1-1E27A9D5BBB6}</Project>
+      <Name>Clipcoin.Phone</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

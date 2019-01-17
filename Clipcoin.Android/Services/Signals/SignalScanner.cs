@@ -22,16 +22,16 @@ namespace Clipcoin.Phone.Services.Signals
     [Service]
     public class SignalScanner : Service, ISignalScanner
     {
-        BluetoothManager bManager;
-        BluetoothAdapter bAdapter;
-        private static SignalNotifier _rangeNotifier;
+        private BluetoothManager bManager;
+        private BluetoothAdapter bAdapter;
+        private static BleSignalHolder _rangeNotifier;
 
-        private SignalNotifier SignalNotifier
+        private BleSignalHolder _signalsScanCallback
         {
             get
             {
                 if (_rangeNotifier == null)
-                    _rangeNotifier = new SignalNotifier();
+                    _rangeNotifier = new BleSignalHolder();
                 return _rangeNotifier;
             }
         }
@@ -40,7 +40,7 @@ namespace Clipcoin.Phone.Services.Signals
         {
             get
             {
-                return SignalNotifier;
+                return _signalsScanCallback.SignalNotifier;
             }
         }
 
@@ -61,21 +61,20 @@ namespace Clipcoin.Phone.Services.Signals
             Logger.Info("Signal scanner started");
             var scanner = bAdapter.BluetoothLeScanner;
 
-            SignalNotifier.SetBleScanner(scanner);
-
             var settings = new ScanSettings.Builder()
-                //.SetReportDelay(1000)
-                .SetScanMode(Android.Bluetooth.LE.ScanMode.LowLatency)
+                .SetReportDelay(0)
+                //.SetPhy(Android.Bluetooth.BluetoothPhy.Le1m)
+                .SetScanMode(Android.Bluetooth.LE.ScanMode.LowLatency)                
                 .Build();
 
-            scanner.StartScan(new List<ScanFilter>() , settings,  SignalNotifier);
+            scanner.StartScan(new List<ScanFilter>() , settings,  _signalsScanCallback);
             return base.OnStartCommand(intent, flags, startId);
         }
 
         public override void OnDestroy()
         {
             //SignalNotifier.Dispose();
-            bAdapter.BluetoothLeScanner.StopScan(SignalNotifier);
+            bAdapter.BluetoothLeScanner.StopScan(_signalsScanCallback);
             base.OnDestroy();
         }
     }

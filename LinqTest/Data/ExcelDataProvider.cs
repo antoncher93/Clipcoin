@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LinqTest.Data
 {
-    public class ExcelDataProvider : DataProvider
+    public class ExcelDataProvider
     {
 
     }
