@@ -24,7 +24,6 @@ using Clipcoin.Smartphone.SignalManagement.Logging;
 using Clipcoin.Smartphone.SignalManagement.Trackers;
 using Java.Lang;
 using Newtonsoft.Json;
-using Square.OkHttp;
 
 namespace Clipcoin.Phone.Services.Classes.Trackers
 {

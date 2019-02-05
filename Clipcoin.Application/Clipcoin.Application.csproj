@@ -134,6 +134,10 @@
       <Project>{98C67735-0EDC-46AB-84A9-3131654FBD7D}</Project>
       <Name>Clipcoin.Smartphone.SignalManagement</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NordicBindingLib\NordicBindingLib.csproj">
+      <Project>{47800679-d139-4175-b5d7-04be88e010eb}</Project>
+      <Name>NordicBindingLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\coin.png" />

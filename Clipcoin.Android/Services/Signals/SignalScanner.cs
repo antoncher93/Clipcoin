@@ -1,21 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.Bluetooth;
-using System.Threading.Tasks;
-using Java.Util;
-using Android.Bluetooth.LE;
 using Clipcoin.Smartphone.SignalManagement.Interfaces;
 using Clipcoin.Smartphone.SignalManagement.Signals;
 using Clipcoin.Smartphone.SignalManagement.Logging;
+using NO.Nordicsemi.Android.Support.V18.Scanner;
+using System.Collections.Generic;
 
 namespace Clipcoin.Phone.Services.Signals
 {
@@ -24,6 +18,8 @@ namespace Clipcoin.Phone.Services.Signals
     {
         private BluetoothManager bManager;
         private BluetoothAdapter bAdapter;
+
+        /*
         private static BleSignalHolder _rangeNotifier;
 
         private BleSignalHolder _signalsScanCallback
@@ -32,6 +28,19 @@ namespace Clipcoin.Phone.Services.Signals
             {
                 if (_rangeNotifier == null)
                     _rangeNotifier = new BleSignalHolder();
+                return _rangeNotifier;
+            }
+        }
+        */
+
+        private static NordicBleSignalHolder _rangeNotifier;
+
+        private NordicBleSignalHolder _signalsScanCallback
+        {
+            get
+            {
+                if (_rangeNotifier == null)
+                    _rangeNotifier = new NordicBleSignalHolder();
                 return _rangeNotifier;
             }
         }
@@ -59,6 +68,7 @@ namespace Clipcoin.Phone.Services.Signals
         public override StartCommandResult OnStartCommand(Intent intent, [GeneratedEnum] StartCommandFlags flags, int startId)
         {
             Logger.Info("Signal scanner started");
+            /*
             var scanner = bAdapter.BluetoothLeScanner;
 
             var settings = new ScanSettings.Builder()
@@ -68,13 +78,38 @@ namespace Clipcoin.Phone.Services.Signals
                 .Build();
 
             scanner.StartScan(new List<ScanFilter>() , settings,  _signalsScanCallback);
+            */
+
+            var scanner = BluetoothLeScannerCompat.Scanner;
+            ScanSettings settings = new ScanSettings.Builder()
+                .SetLegacy(false)
+                .SetScanMode(ScanSettings.ScanModeLowLatency)
+                .SetMatchMode(ScanSettings.MatchModeAggressive)
+                .SetNumOfMatches(ScanSettings.MatchNumMaxAdvertisement)
+                .SetReportDelay(0)
+                .SetUseHardwareBatchingIfSupported(false)
+                .Build();
+            List< ScanFilter > filters = new List<ScanFilter>();
+            //filters
+            //.Add(new ScanFilter.Builder()
+            //.SetServiceUuid("azaza")
+            //.Build());
+
+            scanner.StartScan(filters, settings, _signalsScanCallback);
+
             return base.OnStartCommand(intent, flags, startId);
         }
 
         public override void OnDestroy()
         {
             //SignalNotifier.Dispose();
+            /*
             bAdapter.BluetoothLeScanner.StopScan(_signalsScanCallback);
+            */
+
+            BluetoothLeScannerCompat scanner = BluetoothLeScannerCompat.Scanner;
+            scanner.StopScan(_signalsScanCallback);
+
             base.OnDestroy();
         }
     }
