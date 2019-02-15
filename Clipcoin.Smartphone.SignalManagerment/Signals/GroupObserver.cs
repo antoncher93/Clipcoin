@@ -15,6 +15,8 @@ namespace Clipcoin.Smartphone.SignalManagement.Signals
         public GroupID GroupID { get; private set;}
         public Timer Timer { get; private set; } = new Timer() { Interval = 3000, Enabled = false };
 
+        private Dictionary<string, double> _lastBeaconSignals = new Dictionary<string, double>();
+
         public GroupObserver(GroupID groupId, IPackager packager)
         {
             _packager = packager;
@@ -32,9 +34,17 @@ namespace Clipcoin.Smartphone.SignalManagement.Signals
 
         public void SetSignal(BeaconSignal signal)
         {
-            Timer.Stop();
-            Timer.Start();
-            _signals.Add(signal);
+            if (string.IsNullOrWhiteSpace(signal.Mac))
+                return;
+
+            _lastBeaconSignals[signal.Mac] = signal.Rssi;
+
+            if (_lastBeaconSignals.Count >= 2)
+            {
+                Timer.Stop();
+                Timer.Start();
+                _signals.Add(signal);
+            }
         }
     }
 }
